@@ -979,7 +979,8 @@ CHECK_COLL_LOOP:
     CMP.L   #TYPE_ANGEL, D5
     BEQ     ADD_AN_PTS
     ADD.L   #SHARK_PTS, PLAYER_SCORE
-    BRA     ATE_FISH
+    BRA     WIN_START
+    ;BRA     ATE_FISH
 
 ADD_SM_PTS:
     ADD.L   #SMALL_PTS, PLAYER_SCORE
@@ -1114,6 +1115,7 @@ PLAYER_SIZE         DS.L    1               ;0-5 matching fish types
 
 *~Font name~Courier New~
 *~Font size~10~
+
 
 
 

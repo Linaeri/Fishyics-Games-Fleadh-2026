@@ -22,7 +22,7 @@ TITLE_LOOP:
 	JSR     WASD_CHECK_INPUT		; now check WASD keys
     JSR		PLAYER_MOVEMENT			; Accel from input, drag, clamp speed (8.8)
     JSR		CLAMP_PLAYER			; limit player to stay within the screen edges
-    JSR     DRAW_PLYR_DATA          ; Draw Draw Score, HUD, Player X and Y
+    ;JSR     DRAW_PLYR_DATA          ; Draw Draw Score, HUD, Player X and Y
 	BSR     UPDATE
 	BSR     DRAW_PLAYER
 	
@@ -257,6 +257,7 @@ startpoint10 dc.b '        ||        ',0
 startpoint11 dc.b '                  ',0
 startpoint12 dc.b '-================-',0
 startpoint13 dc.b 'SWIM HERE TO START',0
+
 
 
 

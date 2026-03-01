@@ -10,9 +10,12 @@ QUIT_DOT_X_R        EQU     710
     DS.W    0           ;fix alignment issue
     
 END_START:
+    JSR     LOOP_TITLE_MUSIC 
     ;in case player is in the air, so they do not start following
     MOVE.L  #0, PLYR_VELOCITY_Y
     MOVE.L  #0, PLYR_VELOCITY_X
+    MOVE.L  #PLAYER_X_INIT,         PLAYER_X
+    MOVE.L  #PLAYER_Y_INIT,         PLAYER_Y
     MOVE.L	#IN_WTR_TRUE,	PLYR_IN_WATER_NOW
 END_LOOP:
     ; Enable back buffer
@@ -32,7 +35,7 @@ END_LOOP:
 	JSR     WASD_CHECK_INPUT		; now check WASD keys
     JSR     PLAYER_MOVEMENT			; Accel from input, drag, clamp speed (8.8)
     JSR		CLAMP_PLAYER			; limit player to stay within the screen edges
-	JSR     DRAW_PLYR_DATA          ; Draw Draw Score, HUD, Player X and Y
+	;JSR     DRAW_PLYR_DATA          ; Draw Draw Score, HUD, Player X and Y
 	BSR     UPDATE
 	BSR     DRAW_SKELETON
 	BSR     CHECK_COLL_RESTART
@@ -72,6 +75,8 @@ CHECK_COLL_RESTART:
     CMP.L   #DOTS_Y_H, D1
     BLE     NO_RESTART
     
+    JSR     STOP_TITLE_MUSIC 
+    
     JMP     START
     
 NO_RESTART:
@@ -99,6 +104,8 @@ CHECK_COLL_QUIT:
     ADD.L   PLYR_H_CURRENT, D1
     CMP.L   #DOTS_Y_H, D1
     BLE     NO_QUIT
+    
+    JSR     STOP_TITLE_MUSIC 
     
     SIMHALT
     
@@ -408,6 +415,8 @@ quitpoint10 dc.b '         ||        ',0
 quitpoint11 dc.b '                   ',0
 quitpoint12 dc.b ' -================-',0
 quitpoint13 dc.b ' SWIM HERE TO QUIT ',0
+
+
 
 
 
