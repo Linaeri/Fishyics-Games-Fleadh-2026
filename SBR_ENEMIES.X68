@@ -1240,7 +1240,8 @@ GROWTH_DONE:
 * Description   : end
 *-----------------------------------------------------------
 PLAYER_DIED:
-    MOVE.L  #0, PLAYER_SCORE
+    ;MOVE.L  #0, PLAYER_SCORE
+    BRA     END_START     
     SIMHALT
 
 ENEMY_TABLE_X       DS.L    NUM_ENEMIES
@@ -1261,7 +1262,10 @@ PLAYER_SIZE         DS.L    1               ;0-5 matching fish types
 
 *~Font name~Courier New~
 *~Font size~10~
+
+
+
+*~Font name~Courier New~
+*~Font size~10~
 *~Tab type~1~
 *~Tab size~4~
-
-

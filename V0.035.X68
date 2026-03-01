@@ -420,7 +420,7 @@ DRAW:
 	JSR     DRAW_MOONS
 	JSR     DRAW_PELICAN
 	JSR		DRAW_WATER				; draw water tide
-    ;JSR     DRAW_PLYR_DATA          ; Draw Draw Score, HUD, Player X and Y
+    JSR     DRAW_PLYR_DATA          ; Draw Draw Score, HUD, Player X and Y
     JSR     DRAW_PLAYER             ; Draw Player
     JSR     DRAW_ALL_ENEMIES              ; Draw Enemy
 	JSR     DRAW_SAND               ; Draw Sand   
@@ -687,11 +687,14 @@ OPPS_WAV        DC.B    'opps.wav',0        ; Collision Opps
 	include "SBR_MOONS.X68"
 	include "SBR_PELICAN.X68"
 	include "SBR_TITLE_SCREEN.X68"
+	include "SBR_END_SCREEN.X68"
+	include "SBR_DRAW_SKELETON.X68"
 
     END    START        ; last line of source
 
 
 	
+
 
 
 
