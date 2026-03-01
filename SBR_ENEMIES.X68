@@ -981,6 +981,7 @@ CHECK_COLL_LOOP:
     CMP.L   #TYPE_ANGEL, D5
     BEQ     ADD_AN_PTS
     ADD.L   #SHARK_PTS, PLAYER_SCORE
+    JSR     STOP_TIDE_SOUND             ;in case player dies during tide moving
     BRA     WIN_START
     ;BRA     ATE_FISH
 
@@ -1095,6 +1096,7 @@ GROWTH_DONE:
 PLAYER_DIED:
     ;MOVE.L  #0, PLAYER_SCORE
     JSR     PLAY_DEATH
+    JSR     STOP_TIDE_SOUND             ;in case player dies during tide moving
     BRA     END_START     
     SIMHALT
 
@@ -1117,6 +1119,9 @@ PLAYER_SIZE         DS.L    1               ;0-5 matching fish types
 
 *~Font name~Courier New~
 *~Font size~10~
+
+
+
 
 
 
