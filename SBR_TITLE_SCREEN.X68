@@ -4,6 +4,7 @@ START_DOT_Y_L   EQU     336
 START_DOT_Y_H   EQU     317
 
 TITLE_START:
+    JSR     LOOP_TITLE_MUSIC
 TITLE_LOOP:
     ; Enable back buffer
     MOVE.B  #94,        D0
@@ -13,7 +14,7 @@ TITLE_LOOP:
     MOVE.B  #TC_CURSR_P,D0
     MOVE.W  #$FF00,     D1
     TRAP    #15
-    
+       
     BSR     TITLE_SCREEN
     BSR     STARTING_POINT
     BSR     UPDATE_DELTA_TIME
@@ -61,6 +62,7 @@ CHECK_COLL_START:
     CMP.L   #START_DOT_Y_H, D1
     BLE     TITLE_LOOP
     
+    JSR     STOP_TITLE_MUSIC 
     RTS
     
     
@@ -255,6 +257,8 @@ startpoint10 dc.b '        ||        ',0
 startpoint11 dc.b '                  ',0
 startpoint12 dc.b '-================-',0
 startpoint13 dc.b 'SWIM HERE TO START',0
+
+
 
 
 

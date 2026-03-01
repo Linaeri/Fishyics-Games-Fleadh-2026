@@ -10,6 +10,10 @@ QUIT_DOT_X_R        EQU     710
     DS.W    0           ;fix alignment issue
     
 END_START:
+    ;in case player is in the air, so they do not start following
+    MOVE.L  #0, PLYR_VELOCITY_Y
+    MOVE.L  #0, PLYR_VELOCITY_X
+    MOVE.L	#IN_WTR_TRUE,	PLYR_IN_WATER_NOW
 END_LOOP:
     ; Enable back buffer
     MOVE.B  #94,        D0
@@ -404,6 +408,7 @@ quitpoint10 dc.b '         ||        ',0
 quitpoint11 dc.b '                   ',0
 quitpoint12 dc.b ' -================-',0
 quitpoint13 dc.b ' SWIM HERE TO QUIT ',0
+
 
 
 
