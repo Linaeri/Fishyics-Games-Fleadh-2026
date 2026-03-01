@@ -355,7 +355,40 @@ DRAW_SAND:
 
 DRAW_PLYR_DATA:
     CLR.L   D1
+    
+    ; Player X Message
+    MOVE.B  #TC_CURSR_P,D0          ; Set Cursor Position
+    MOVE.W  #$0202,     D1          ; Col 02, Row 02
+    TRAP    #15                     ; Trap (Perform action)
+    LEA     X_MSG,      A1          ; X Message
+    MOVE    #13,        D0          ; No Line feed
+    TRAP    #15                     ; Trap (Perform action)
+    
+    ; Player X
+    MOVE.B  #TC_CURSR_P, D0          ; Set Cursor Position
+    MOVE.W  #$0502,     D1          ; Col 05, Row 02
+    TRAP    #15                     ; Trap (Perform action)
+    MOVE.B  #03,        D0          ; Display number at D1.L
+    MOVE.L  PLAYER_X,   D1          ; Move X to D1.L
+    TRAP    #15                     ; Trap (Perform action)
+    
+    ; Player Y Message
+    MOVE.B  #TC_CURSR_P,D0          ; Set Cursor Position
+    MOVE.W  #$1002,     D1          ; Col 10, Row 02
+    TRAP    #15                     ; Trap (Perform action)
+    LEA     Y_MSG,      A1          ; Y Message
+    MOVE    #13,        D0          ; No Line feed
+    TRAP    #15                     ; Trap (Perform action)
+    
+    ; Player Y
+    MOVE.B  #TC_CURSR_P,D0          ; Set Cursor Position
+    MOVE.W  #$1202,     D1          ; Col 12, Row 02
+    TRAP    #15                     ; Trap (Perform action)
+    MOVE.B  #03,        D0          ; Display number at D1.L
+    MOVE.L  PLAYER_Y,   D1          ; Move X to D1.L
+    TRAP    #15                     ; Trap (Perform action) 
 
+    
     ; Score label at top center
     MOVE.B  #TC_CURSR_P,D0
     MOVE.W  #$3C00,     D1          ; Col 60, Row 00
@@ -595,6 +628,7 @@ PLAYER_DARKGOLD      equ     $00029EE8
 PLAYER_LIGHTGOLD     equ     $0009BAFD 
 PLAYER_ORANGE        equ     $000561EE
 PLAYER_BLUE          equ     $00C26624
+
 
 
 
