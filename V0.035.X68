@@ -59,6 +59,14 @@ RUN_INDEX   EQU         00          ; Player Run Sound Index
 JMP_INDEX   EQU         01          ; Player Jump Sound Index  
 OPPS_INDEX  EQU         02          ; Player Opps Sound Index
 
+EAT_INDEX   EQU         04
+DEATH_INDEX EQU         05
+TIDE_INDEX  EQU         06
+JUMP_OUT_INDEX  EQU     07
+JUMP_IN_INDEX   EQU     08
+GROW_INDEX  EQU         09
+ACHVMNT_INDEX   EQU     10
+
 
 ENMY_W_INIT EQU         08          ; Enemy initial Width
 ENMY_H_INIT EQU         08          ; Enemy initial Height
@@ -75,8 +83,8 @@ SCREEN_PADDING_Y EQU		15		; How many pixels at the edge of the TOP/BOTTOM screen
 WTR_TIDE_HIGH	EQU		100			; Y value when water is at its highest
 WTR_TIDE_LOW	EQU		400			; Y value when water is at its lowest
 
-WTR_LOW_TIDE_DELAY	EQU		4000		; How many miliseconds before tides goes down
-WTR_HIGH_TIDE_DELAY	EQU		5000		; How many miliseconds before tide goes up
+WTR_LOW_TIDE_DELAY	EQU		400		; How many miliseconds before tides goes down
+WTR_HIGH_TIDE_DELAY	EQU		500		; How many miliseconds before tide goes up
 WTR_TIDE_SPEED	EQU		    $0040		; how fast the tide moves
 
 TIDE_STOP       EQU 0 
@@ -135,6 +143,12 @@ INITIALISE:
     ;BSR     JUMP_LOAD               ; dont have jump.wav
     ;BSR     OPPS_LOAD               ; dont have opps.wav
     BSR     ACH_SND_LOAD            ; Load Achievement Sound into Memory
+    BSR     EAT_LOAD
+    BSR     JUMP_IN_LOAD
+    BSR     JUMP_OUT_LOAD
+    BSR     GROW_LOAD
+    BSR     TIDE_LOAD
+    BSR     DEATH_LOAD
 
     ; Screen Size
     MOVE.B  #TC_SCREEN, D0          ; access screen information
@@ -302,6 +316,7 @@ TIDE_IS_WAITING:
     MOVE.L  #TIDE_DOWN, WTR_TIDE_DIRECTION
     MOVE.L  #IS_MOVING_TRUE, IS_TIDE_MOVING
     MOVE.L  #0, WTR_CURRENT_TIDE_TIME
+    JSR     LOOP_TIDE
     BRA     TIDE_DONE
 
 TIDE_WAIT_AT_LOW:
@@ -313,6 +328,7 @@ TIDE_WAIT_AT_LOW:
     MOVE.L  #TIDE_UP, WTR_TIDE_DIRECTION
     MOVE.L  #IS_MOVING_TRUE, IS_TIDE_MOVING
     MOVE.L  #0, WTR_CURRENT_TIDE_TIME
+    JSR     LOOP_TIDE
     BRA     TIDE_DONE
 
 ;tide is moving
@@ -342,6 +358,7 @@ TIDE_GOING_UP:
     MOVE.L  D0, WTR_Y_SUB
     MOVE.L  #IS_MOVING_FALSE, IS_TIDE_MOVING
     MOVE.L  #0, WTR_CURRENT_TIDE_TIME
+    JSR     STOP_TIDE_SOUND
     BRA     TIDE_DONE
 
 * Moving DOWN (Y increases toward WTR_TIDE_LOW)
@@ -363,6 +380,7 @@ TIDE_GOING_DOWN:
     MOVE.L  D0, WTR_Y_SUB
     MOVE.L  #IS_MOVING_FALSE, IS_TIDE_MOVING
     MOVE.L  #0, WTR_CURRENT_TIDE_TIME
+    JSR     STOP_TIDE_SOUND
 
 TIDE_DONE:
     RTS
@@ -507,6 +525,104 @@ JUMP_LOAD:
 PLAY_JUMP:
 OPPS_LOAD:
 PLAY_OPPS:
+
+EAT_LOAD:
+    LEA     EAT_WAV,   A1
+    MOVE    #EAT_INDEX,D1
+    MOVE    #74,        D0
+    TRAP    #15
+    RTS
+
+PLAY_EAT:
+    MOVEM.L D0-D7/A0-A6, -(SP)
+    MOVE    #EAT_INDEX,D1
+    MOVE    #75,        D0
+    TRAP    #15
+    MOVEM.L (SP)+, D0-D7/A0-A6
+    RTS         
+    
+DEATH_LOAD:
+    LEA     DEATH_WAV,  A1
+    MOVE    #DEATH_INDEX, D1
+    MOVE    #74,        D0
+    TRAP    #15
+    RTS
+
+PLAY_DEATH:
+    MOVEM.L D0-D7/A0-A6, -(SP)
+    MOVE    #DEATH_INDEX, D1
+    MOVE    #75,        D0
+    TRAP    #15
+    MOVEM.L (SP)+, D0-D7/A0-A6
+    RTS
+
+TIDE_LOAD:
+    LEA     TIDE_WAV,   A1
+    MOVE    #TIDE_INDEX, D1
+    MOVE    #74,        D0
+    TRAP    #15
+    RTS
+
+LOOP_TIDE:
+    MOVE    #TIDE_INDEX, D1
+    MOVE.L  #1, D2
+    MOVE    #77, D0
+    TRAP    #15
+    RTS
+
+STOP_TIDE_SOUND:
+    MOVE    #TIDE_INDEX, D1
+    MOVE.L  #2, D2
+    MOVE    #77, D0
+    TRAP    #15
+    RTS
+
+JUMP_OUT_LOAD:
+    LEA     JUMP_OUT_WAV, A1
+    MOVE    #JUMP_OUT_INDEX, D1
+    MOVE    #71,        D0
+    TRAP    #15
+    RTS
+
+PLAY_JUMP_OUT:
+    MOVEM.L D0-D7/A0-A6, -(SP)
+    MOVE    #JUMP_OUT_INDEX, D1
+    MOVE    #72,        D0
+    TRAP    #15
+    MOVEM.L (SP)+, D0-D7/A0-A6
+    RTS
+
+JUMP_IN_LOAD:
+    LEA     JUMP_IN_WAV, A1
+    MOVE    #JUMP_IN_INDEX, D1
+    MOVE    #71,        D0
+    TRAP    #15
+    RTS
+
+PLAY_JUMP_IN:
+    MOVEM.L D0-D7/A0-A6, -(SP)
+    MOVE    #JUMP_IN_INDEX, D1
+    MOVE    #72,        D0
+    TRAP    #15
+    MOVEM.L (SP)+, D0-D7/A0-A6
+    RTS
+
+GROW_LOAD:
+    LEA     GROW_WAV,   A1
+    MOVE    #GROW_INDEX, D1
+    MOVE    #71,        D0
+    TRAP    #15
+    RTS
+
+PLAY_GROW:
+    MOVEM.L D0-D7/A0-A6, -(SP)
+    MOVE    #GROW_INDEX, D1
+    MOVE    #72,        D0
+    TRAP    #15
+    MOVEM.L (SP)+, D0-D7/A0-A6
+    RTS
+
+
     RTS
 
 
@@ -655,6 +771,15 @@ PLYR_H_CURRENT	DS.L	01	; Player height for collision. Changes when player grows
 ;JUMP_WAV        DC.B    'jump.wav',0
 ;RUN_WAV         DC.B    'run.wav',0
 ;OPPS_WAV        DC.B    'opps.wav',0
+EAT_WAV         DC.B    'eat.wav',0
+DEATH_WAV       DC.B    'death.wav',0
+TIDE_WAV        DC.B    'tide.wav',0
+JUMP_OUT_WAV    DC.B    'jump_out.wav',0    ;jumping out of water
+JUMP_IN_WAV     DC.B    'jump_in.wav',0     ;falling back into the water
+GROW_WAV        DC.B    'grow.wav', 0
+;ACHVMNT_WAV     DC.B    'achvmnt.wav',0
+
+    DS.W    0           ;fix alignment issue
 
 
 *-----------------------------------------------------------
@@ -679,6 +804,7 @@ PLYR_H_CURRENT	DS.L	01	; Player height for collision. Changes when player grows
 
 
 	
+
 
 
 

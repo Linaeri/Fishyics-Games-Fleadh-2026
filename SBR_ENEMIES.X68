@@ -1000,6 +1000,7 @@ ADD_AN_PTS:
     ADD.L   #ANGEL_PTS, PLAYER_SCORE
 
 ATE_FISH:
+    JSR     PLAY_EAT
     MOVEM.L D7/A0-A2, -(SP)
     BSR     SPAWN_PELICAN           ;pelican can has chance to spawn in case player eats fish
     BSR     CHECK_GROWTH
@@ -1085,6 +1086,7 @@ GROWTH_DONE:
 *-----------------------------------------------------------
 PLAYER_DIED:
     ;MOVE.L  #0, PLAYER_SCORE
+    JSR     PLAY_DEATH
     BRA     END_START     
     SIMHALT
 
@@ -1107,6 +1109,7 @@ PLAYER_SIZE         DS.L    1               ;0-5 matching fish types
 
 *~Font name~Courier New~
 *~Font size~10~
+
 
 
 

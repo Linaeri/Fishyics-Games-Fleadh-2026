@@ -51,6 +51,7 @@ UWC_WAS_UNDERWATER:
 * Jumped out of the water, give upward boost
 *-----------------------------------------------------------
 UWC_JUST_LEFT_WATER:
+    JSR     PLAY_JUMP_OUT
 	; only boost if already moving upward
 	MOVE.L	PLYR_VELOCITY_Y, D0
 	TST.L	D0
@@ -74,6 +75,7 @@ UWC_APPLY_GRAVITY:
 * Just went into water, slow down so we dont dive too deep
 *-----------------------------------------------------------
 UWC_JUST_ENTERED_WATER:
+    JSR     PLAY_JUMP_IN
 	; cut downward speed in half when hitting the water
 	MOVE.L	PLYR_VELOCITY_Y, D0
 	TST.L	D0
@@ -89,6 +91,7 @@ UWC_DONE:
 *~Font size~10~
 *~Tab type~1~
 *~Tab size~4~
+
 
 
 *~Font name~Courier New~
