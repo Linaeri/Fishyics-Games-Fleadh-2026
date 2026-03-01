@@ -200,6 +200,9 @@ CHECK_PELICAN_COLLISION:
     BGE     .PEL_EAT
 
     ;too small, pelican eats the player
+    MOVEM.L D0-D3/A0-A2, -(SP)
+    JSR     TRIGGER_ACH_PELICAN     ;pelican achievement
+    MOVEM.L (SP)+, D0-D3/A0-A2
     JMP     PLAYER_DIED
 
 .PEL_EAT:
@@ -207,6 +210,7 @@ CHECK_PELICAN_COLLISION:
     ADD.L   #PELICAN_PTS, PLAYER_SCORE
     MOVE.L  #0, PELICAN_ACTIVE
     MOVEM.L D7/A0-A2, -(SP)
+    JSR     TRIGGER_ACH_PELICAN     ;pelican achievement
     BSR     CHECK_GROWTH
     MOVEM.L (SP)+, D7/A0-A2
 

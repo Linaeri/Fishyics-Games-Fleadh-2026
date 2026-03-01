@@ -986,6 +986,9 @@ ADD_SM_PTS:
     BRA     ATE_FISH
 ADD_MD_PTS:
     ADD.L   #MEDIUM_PTS, PLAYER_SCORE
+    MOVEM.L D7/A0-A2, -(SP)
+    JSR     TRIGGER_ACH_NEMO        ;first clownfish eaten = achievement
+    MOVEM.L (SP)+, D7/A0-A2
     BRA     ATE_FISH
 ADD_LG_PTS:
     ADD.L   #LARGE_PTS, PLAYER_SCORE

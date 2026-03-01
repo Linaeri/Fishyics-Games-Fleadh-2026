@@ -59,6 +59,7 @@ RUN_INDEX   EQU         00          ; Player Run Sound Index
 JMP_INDEX   EQU         01          ; Player Jump Sound Index  
 OPPS_INDEX  EQU         02          ; Player Opps Sound Index
 
+
 ENMY_W_INIT EQU         08          ; Enemy initial Width
 ENMY_H_INIT EQU         08          ; Enemy initial Height
 
@@ -130,9 +131,10 @@ INITIALISE:
 
 
     ; Initialise Sounds
-    BSR     RUN_LOAD                ; Load Run Sound into Memory
-    BSR     JUMP_LOAD               ; Load Jump Sound into Memory
-    BSR     OPPS_LOAD               ; Load Opps (Collision) Sound into Memory
+    ;BSR     RUN_LOAD                ; dont have run.wav
+    ;BSR     JUMP_LOAD               ; dont have jump.wav
+    ;BSR     OPPS_LOAD               ; dont have opps.wav
+    BSR     ACH_SND_LOAD            ; Load Achievement Sound into Memory
 
     ; Screen Size
     MOVE.B  #TC_SCREEN, D0          ; access screen information
@@ -208,6 +210,9 @@ INITIALISE:
     
     ;init pelican enemy
     JSR     INIT_PELICAN
+
+    ;init achievements
+    JSR     INIT_ACHIEVEMENTS
 
     ; Enable the screen back buffer(see easy 68k help)
 	MOVE.B  #TC_DBL_BUF,D0          ; 92 Enables Double Buffer
@@ -369,7 +374,7 @@ TIDE_DONE:
 * (Input, Update, Draw). The Enemies Run at Player Jump to Avoid
 *-----------------------------------------------------------
 GAME:
-    BSR     PLAY_RUN                ; Play Run Wav
+    ;BSR     PLAY_RUN                ; no run.wav file
 GAMELOOP:
     ; Main Gameloop
 	BSR 	UPDATE_DELTA_TIME		; Update game time
@@ -392,6 +397,9 @@ GAMELOOP:
     ;pelican stuff
     JSR     UPDATE_PELICAN
     JSR     CHECK_PELICAN_COLLISION
+
+    ;achievements
+    JSR     UPDATE_ACHIEVEMENT
     
     BSR     DRAW                    ; Draw the Scene
 
@@ -423,7 +431,8 @@ DRAW:
     JSR     DRAW_PLYR_DATA          ; Draw Draw Score, HUD, Player X and Y
     JSR     DRAW_PLAYER             ; Draw Player
     JSR     DRAW_ALL_ENEMIES              ; Draw Enemy
-	JSR     DRAW_SAND               ; Draw Sand   
+	JSR     DRAW_SAND               ; Draw Sand
+    JSR     DRAW_ACHIEVEMENT        ; Draw achievement popup
     RTS                             ; Return to subroutine
 
 *----------------------------------------------------------- 
@@ -487,47 +496,20 @@ UPDATE:
 
 *-----------------------------------------------------------
 * Subroutines   : Sound Load and Play
-* Description   : Initialise game sounds into memory 
-* Current Sounds are RUN, JUMP and Opps for Collision
+* Description   : Sound stubs - wav files not available
+*                 Only achievement sound is loaded (in SBR_ACHIEVEMENTS)
 *-----------------------------------------------------------
+; these do nothing since we dont have the wav files
+; but labels are kept so any BSR/JSR calls still work
 RUN_LOAD:
-    LEA     RUN_WAV,    A1          ; Load Wav File into A1
-    MOVE    #RUN_INDEX, D1          ; Assign it INDEX
-    MOVE    #71,        D0          ; Load into memory
-    TRAP    #15                     ; Trap (Perform action)
-    RTS                             ; Return to subroutine
-
 PLAY_RUN:
-    MOVE    #RUN_INDEX, D1          ; Load Sound INDEX
-    MOVE    #72,        D0          ; Play Sound
-    TRAP    #15                     ; Trap (Perform action)
-    RTS                             ; Return to subroutine
-
 JUMP_LOAD:
-    LEA     JUMP_WAV,   A1          ; Load Wav File into A1
-    MOVE    #JMP_INDEX, D1          ; Assign it INDEX
-    MOVE    #71,        D0          ; Load into memory
-    TRAP    #15                     ; Trap (Perform action)
-    RTS                             ; Return to subroutine
-
 PLAY_JUMP:
-    MOVE    #JMP_INDEX, D1          ; Load Sound INDEX
-    MOVE    #72,        D0          ; Play Sound
-    TRAP    #15                     ; Trap (Perform action)
-    RTS                             ; Return to subroutine
-
 OPPS_LOAD:
-    LEA     OPPS_WAV,   A1          ; Load Wav File into A1
-    MOVE    #OPPS_INDEX,D1          ; Assign it INDEX
-    MOVE    #71,        D0          ; Load into memory
-    TRAP    #15                     ; Trap (Perform action)
-    RTS                             ; Return to subroutine
-
 PLAY_OPPS:
-    MOVE    #OPPS_INDEX,D1          ; Load Sound INDEX
-    MOVE    #72,        D0          ; Play Sound
-    TRAP    #15                     ; Trap (Perform action)
-    RTS                             ; Return to subroutine
+    RTS
+
+
 
 
 
@@ -669,9 +651,11 @@ PLYR_H_CURRENT	DS.L	01	; Player height for collision. Changes when player grows
 * so keep the files small. Used https://voicemaker.in/ to 
 * generate and Audacity to convert MP3 to WAV
 *-----------------------------------------------------------
-JUMP_WAV        DC.B    'jump.wav',0        ; Jump Sound
-RUN_WAV         DC.B    'run.wav',0         ; Run Sound
-OPPS_WAV        DC.B    'opps.wav',0        ; Collision Opps
+;wav files commented out, dont have them
+;JUMP_WAV        DC.B    'jump.wav',0
+;RUN_WAV         DC.B    'run.wav',0
+;OPPS_WAV        DC.B    'opps.wav',0
+
 
 *-----------------------------------------------------------
 * Section       : Other files
@@ -689,6 +673,7 @@ OPPS_WAV        DC.B    'opps.wav',0        ; Collision Opps
 	include "SBR_TITLE_SCREEN.X68"
 	include "SBR_END_SCREEN.X68"
 	include "SBR_DRAW_SKELETON.X68"
+	include "SBR_ACHIEVEMENTS.X68"
 
     END    START        ; last line of source
 
