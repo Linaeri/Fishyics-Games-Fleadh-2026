@@ -16,7 +16,7 @@ IS_FLIPPED  DS.L    01  ; SAVES CURRENT FACING
 *-----------------------------------------------------------
 DRAW_PLAYER:
 ;	BRA	DRAW_SKELETON			;============================ debug, draw player 1
-k	BRA	DRAW_3			;============================ debug, draw player 1
+;	BRA	DRAW_3			;============================ debug, draw player 1
 
     ;check player size stage
 	; Stage 0
@@ -638,7 +638,9 @@ PLAYER_0_FIN   			equ	$00C0E3E0
 	include "SBR_DRAW_PLAYER_5.X68"		; player sprite 5
 	include "SBR_DRAW_PLAYER_6.X68"		; player sprite 6
 
-	include "SBR_DRAW_SKELETON.X68"		; player sprite 6
+
+
+
 
 
 
