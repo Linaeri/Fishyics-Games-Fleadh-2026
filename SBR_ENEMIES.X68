@@ -1122,6 +1122,7 @@ PLAYER_SIZE         DS.L    1               ;0-5 matching fish types
 
 
 
+
 *~Font name~Courier New~
 *~Font size~10~
 *~Tab type~1~

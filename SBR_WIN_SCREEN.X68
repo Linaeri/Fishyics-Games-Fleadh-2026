@@ -1,12 +1,23 @@
+PLAYER_Y_WIN_INIT   EQU     290
     DS.W    0           ;fix alignment issue
     
 WIN_START:
     JSR     LOOP_TITLE_MUSIC
+    ;if player is air by any chance, shouldn't be, just making sure
     MOVE.L  #0, PLYR_VELOCITY_Y
     MOVE.L  #0, PLYR_VELOCITY_X
-    MOVE.L  #PLAYER_X_INIT,         PLAYER_X
-    MOVE.L  #PLAYER_Y_INIT,         PLAYER_Y
     MOVE.L	#IN_WTR_TRUE,	PLYR_IN_WATER_NOW
+    
+    ;reseting position
+    MOVE.L  #PLAYER_X_INIT, PLAYER_X
+    MOVE.L  #PLAYER_X_INIT, D1
+    ASL.L   #8, D1
+    MOVE.L  D1, PLYR_X_SUB
+
+    MOVE.L  #PLAYER_Y_WIN_INIT, PLAYER_Y
+    MOVE.L  #PLAYER_Y_WIN_INIT, D1
+    ASL.L   #8, D1
+    MOVE.L  D1, PLYR_Y_SUB
 WIN_LOOP:
     ; Enable back buffer
     MOVE.B  #94,        D0
@@ -127,6 +138,7 @@ win8 dc.b ' \/ | /          \/      ( )    ',0
 win9 dc.b '    |/                       ( )',0
 
 win10 dc.b 'You are the biggest fish in the sea!',0
+
 
 
 

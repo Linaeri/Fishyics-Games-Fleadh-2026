@@ -14,9 +14,19 @@ END_START:
     ;in case player is in the air, so they do not start following
     MOVE.L  #0, PLYR_VELOCITY_Y
     MOVE.L  #0, PLYR_VELOCITY_X
-    MOVE.L  #PLAYER_X_INIT,         PLAYER_X
-    MOVE.L  #PLAYER_Y_INIT,         PLAYER_Y
     MOVE.L	#IN_WTR_TRUE,	PLYR_IN_WATER_NOW
+    
+    ;reseting position
+    MOVE.L  #PLAYER_X_INIT, PLAYER_X
+    MOVE.L  #PLAYER_X_INIT, D1
+    ASL.L   #8, D1
+    MOVE.L  D1, PLYR_X_SUB
+
+    MOVE.L  #PLAYER_Y_INIT, PLAYER_Y
+    MOVE.L  #PLAYER_Y_INIT, D1
+    ASL.L   #8, D1
+    MOVE.L  D1, PLYR_Y_SUB
+    
 END_LOOP:
     ; Enable back buffer
     MOVE.B  #94,        D0
@@ -415,6 +425,7 @@ quitpoint10 dc.b '         ||        ',0
 quitpoint11 dc.b '                   ',0
 quitpoint12 dc.b ' -================-',0
 quitpoint13 dc.b ' SWIM HERE TO QUIT ',0
+
 
 
 
