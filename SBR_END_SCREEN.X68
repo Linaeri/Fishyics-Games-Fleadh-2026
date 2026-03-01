@@ -10,6 +10,7 @@ QUIT_DOT_X_R        EQU     710
     DS.W    0           ;fix alignment issue
     
 END_START:
+    JSR     STOP_BACKGROUND     ;stop background music
     JSR     LOOP_TITLE_MUSIC 
     ;in case player is in the air, so they do not start following
     MOVE.L  #0, PLYR_VELOCITY_Y
@@ -425,6 +426,7 @@ quitpoint10 dc.b '         ||        ',0
 quitpoint11 dc.b '                   ',0
 quitpoint12 dc.b ' -================-',0
 quitpoint13 dc.b ' SWIM HERE TO QUIT ',0
+
 
 
 

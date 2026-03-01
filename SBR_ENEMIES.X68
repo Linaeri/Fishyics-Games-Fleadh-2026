@@ -175,7 +175,7 @@ GET_PROPS:
 *-----------------------------------------------------------
 INIT_ALL_ENEMIES:
     ;initialise player growth state
-    MOVE.L  #0, PLAYER_SIZE
+    MOVE.L  #5, PLAYER_SIZE
     MOVE.L  #PLYR_W_SM, PLYR_W_CURRENT
     MOVE.L  #PLYR_H_SM, PLYR_H_CURRENT
 
@@ -1115,6 +1115,7 @@ PLAYER_SIZE         DS.L    1               ;0-5 matching fish types
 
 *~Font name~Courier New~
 *~Font size~10~
+
 
 
 

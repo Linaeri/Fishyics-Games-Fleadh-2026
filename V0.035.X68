@@ -65,7 +65,8 @@ TIDE_INDEX  EQU         06
 JUMP_OUT_INDEX  EQU     07
 JUMP_IN_INDEX   EQU     08
 GROW_INDEX  EQU         09
-TITLE_INDEX   EQU     10
+TITLE_INDEX         EQU 10
+BACKGROUND_INDEX    EQU 11
 
 
 ENMY_W_INIT EQU         08          ; Enemy initial Width
@@ -150,6 +151,8 @@ INITIALISE:
     BSR     TIDE_LOAD
     BSR     DEATH_LOAD
     BSR     TITLE_LOAD
+    BSR     BACKGROUND_LOAD
+
 
     ; Screen Size
     MOVE.B  #TC_SCREEN, D0          ; access screen information
@@ -394,6 +397,7 @@ TIDE_DONE:
 *-----------------------------------------------------------
 GAME:
     ;BSR     PLAY_RUN                ; no run.wav file
+    BSR     LOOP_BACKGROUND         ;start music
 GAMELOOP:
     ; Main Gameloop
 	BSR 	UPDATE_DELTA_TIME		; Update game time
@@ -647,6 +651,27 @@ STOP_TITLE_MUSIC:
     TRAP    #15
     MOVEM.L (SP)+, D0-D7/A0-A6
     RTS
+    
+BACKGROUND_LOAD:
+    LEA     BACKGROUND_WAV,   A1
+    MOVE    #BACKGROUND_INDEX, D1
+    MOVE    #74,        D0
+    TRAP    #15
+    RTS
+
+LOOP_BACKGROUND:
+    MOVE    #BACKGROUND_INDEX, D1
+    MOVE.L  #1, D2
+    MOVE    #77, D0
+    TRAP    #15
+    RTS
+
+STOP_BACKGROUND:
+    MOVE    #BACKGROUND_INDEX, D1
+    MOVE.L  #2, D2
+    MOVE    #77, D0
+    TRAP    #15
+    RTS
 
     RTS
 
@@ -803,6 +828,7 @@ JUMP_OUT_WAV    DC.B    'jump_out.wav',0    ;jumping out of water
 JUMP_IN_WAV     DC.B    'jump_in.wav',0     ;falling back into the water
 GROW_WAV        DC.B    'grow.wav', 0
 TITLE_WAV       DC.B    'title_song.wav',0
+BACKGROUND_WAV  DC.B    'background.wav',0
 
     DS.W    0           ;fix alignment issue
 
@@ -830,6 +856,7 @@ TITLE_WAV       DC.B    'title_song.wav',0
 
 
 	
+
 
 
 
