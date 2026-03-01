@@ -83,8 +83,8 @@ SCREEN_PADDING_Y EQU		15		; How many pixels at the edge of the TOP/BOTTOM screen
 WTR_TIDE_HIGH	EQU		100			; Y value when water is at its highest
 WTR_TIDE_LOW	EQU		400			; Y value when water is at its lowest
 
-WTR_LOW_TIDE_DELAY	EQU		400		; How many miliseconds before tides goes down
-WTR_HIGH_TIDE_DELAY	EQU		500		; How many miliseconds before tide goes up
+WTR_LOW_TIDE_DELAY	EQU		4000		; How many miliseconds before tides goes down
+WTR_HIGH_TIDE_DELAY	EQU		5000		; How many miliseconds before tide goes up
 WTR_TIDE_SPEED	EQU		    $0040		; how fast the tide moves
 
 TIDE_STOP       EQU 0 
@@ -804,6 +804,8 @@ GROW_WAV        DC.B    'grow.wav', 0
 
 
 	
+
+
 
 
 

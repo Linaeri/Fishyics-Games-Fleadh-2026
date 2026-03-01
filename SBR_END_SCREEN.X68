@@ -27,7 +27,7 @@ END_LOOP:
     JSR     INPUT                   ; Check Keyboard Input
 	JSR     WASD_CHECK_INPUT		; now check WASD keys
     JSR     PLAYER_MOVEMENT			; Accel from input, drag, clamp speed (8.8)
-	JSR     PLYR_UNDERWATER_CHECK	; Gravity if in air, jump boost at water surface
+    JSR		CLAMP_PLAYER			; limit player to stay within the screen edges
 	JSR     DRAW_PLYR_DATA          ; Draw Draw Score, HUD, Player X and Y
 	BSR     UPDATE
 	BSR     DRAW_SKELETON
@@ -404,6 +404,8 @@ quitpoint10 dc.b '         ||        ',0
 quitpoint11 dc.b '                   ',0
 quitpoint12 dc.b ' -================-',0
 quitpoint13 dc.b ' SWIM HERE TO QUIT ',0
+
+
 
 
 
