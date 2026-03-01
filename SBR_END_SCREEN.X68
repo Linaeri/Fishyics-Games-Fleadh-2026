@@ -11,7 +11,7 @@ QUIT_DOT_X_R        EQU     710
     
 END_START:
     JSR     STOP_BACKGROUND     ;stop background music
-    JSR     LOOP_TITLE_MUSIC 
+    JSR     LOOP_OCARINA
     ;in case player is in the air, so they do not start following
     MOVE.L  #0, PLYR_VELOCITY_Y
     MOVE.L  #0, PLYR_VELOCITY_X
@@ -86,7 +86,7 @@ CHECK_COLL_RESTART:
     CMP.L   #DOTS_Y_H, D1
     BLE     NO_RESTART
     
-    JSR     STOP_TITLE_MUSIC 
+    JSR     STOP_OCARINA
     
     JMP     START
     
@@ -116,7 +116,7 @@ CHECK_COLL_QUIT:
     CMP.L   #DOTS_Y_H, D1
     BLE     NO_QUIT
     
-    JSR     STOP_TITLE_MUSIC 
+    JSR     STOP_OCARINA
     
     SIMHALT
     
@@ -426,6 +426,7 @@ quitpoint10 dc.b '         ||        ',0
 quitpoint11 dc.b '                   ',0
 quitpoint12 dc.b ' -================-',0
 quitpoint13 dc.b ' SWIM HERE TO QUIT ',0
+
 
 
 

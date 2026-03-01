@@ -3,7 +3,7 @@ PLAYER_Y_WIN_INIT   EQU     290
     
 WIN_START:
     JSR     STOP_BACKGROUND     ;stop background music
-    JSR     LOOP_TITLE_MUSIC
+    JSR     LOOP_OCARINA
     ;if player is air by any chance, shouldn't be, just making sure
     MOVE.L  #0, PLYR_VELOCITY_Y
     MOVE.L  #0, PLYR_VELOCITY_X
@@ -139,6 +139,7 @@ win8 dc.b ' \/ | /          \/      ( )    ',0
 win9 dc.b '    |/                       ( )',0
 
 win10 dc.b 'You are the biggest fish in the sea!',0
+
 
 
 

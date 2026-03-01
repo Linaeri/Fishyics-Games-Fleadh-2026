@@ -124,6 +124,22 @@ TITLE_SCREEN:
     LEA     title7, A1
     MOVE    #13,    D0
     TRAP    #15
+    
+    MOVE.B  #TC_CURSR_P, D0
+    MOVE.W  #$240C, D1
+    TRAP    #15
+    
+    LEA     title8, A1
+    MOVE    #13,    D0
+    TRAP    #15
+    
+    MOVE.B  #TC_CURSR_P, D0
+    MOVE.W  #$240D, D1
+    TRAP    #15
+    
+    LEA     title9, A1
+    MOVE    #13,    D0
+    TRAP    #15
                         
     RTS
     
@@ -240,8 +256,9 @@ title3 dc.b  '   / ___ / ( ) ___/\  / /_   /\  /\  ( ) ____   ___/\',0
 title4 dc.b  '  / /_    / / / ___/ / __ \ / / / / / / / ___/ / ___/',0    
 title5 dc.b  ' / __/   / / (__  ) / / / // /_/ / / / / /_   (__  )',0     
 title6 dc.b  '/_/     /_/ /____/ /_/ /_/ \__  / / /  \_  / <____/',0      
-title7 dc.b  '                          <____/  \/     \/         ',0
-
+title7 dc.b  '                          <____/  \/     \/        ( )',0
+title8 dc.b  '                                                 ( )',0
+title9 dc.b  '                                                      ( )',0
 
 
 startpoint1 dc.b  '      ______      ',0
@@ -257,6 +274,7 @@ startpoint10 dc.b '        ||        ',0
 startpoint11 dc.b '                  ',0
 startpoint12 dc.b '-================-',0
 startpoint13 dc.b 'SWIM HERE TO START',0
+
 
 
 

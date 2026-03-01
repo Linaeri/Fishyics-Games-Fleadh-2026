@@ -113,6 +113,8 @@ PLYR_H_XXL      EQU     34
 PLYR_W_MAX      EQU     68
 PLYR_H_MAX      EQU     40
 
+;max range of spawning X outside of the screen, so there are no groups of fish
+MAX_SPAWN_X     EQU     500
 
 *-----------------------------------------------------------
 * Section       : Fish Property Lookup Table
@@ -175,7 +177,7 @@ GET_PROPS:
 *-----------------------------------------------------------
 INIT_ALL_ENEMIES:
     ;initialise player growth state
-    MOVE.L  #5, PLAYER_SIZE
+    MOVE.L  #0, PLAYER_SIZE
     MOVE.L  #PLYR_W_SM, PLYR_W_CURRENT
     MOVE.L  #PLYR_H_SM, PLYR_H_CURRENT
 
@@ -255,7 +257,7 @@ INIT_ONE_ENEMY:
     CLR.L   D0
     MOVE.W  SCREEN_W, D0
     MOVE.L  D0, D1
-    ADD.L   #400, D1
+    ADD.L   #MAX_SPAWN_X, D1
     MOVEM.L D5-D7/A0-A2/A4, -(SP)
     JSR     RANDOM
     MOVEM.L (SP)+, D5-D7/A0-A2/A4
@@ -265,7 +267,7 @@ INIT_ONE_ENEMY:
 INIT_SPAWN_LEFT:
     ;moving right -> spawn off left side
     MOVE.L  #0, D0
-    MOVE.L  #300, D1
+    MOVE.L  #MAX_SPAWN_X, D1
     MOVEM.L D5-D7/A0-A2/A4, -(SP)
     JSR     RANDOM
     MOVEM.L (SP)+, D5-D7/A0-A2/A4
@@ -357,7 +359,7 @@ RESET_RIGHT_MOVER:
     CLR.L   D0
     MOVE.W  SCREEN_W, D0
     MOVE.L  D0, D1
-    ADD.L   #300, D1
+    ADD.L   #MAX_SPAWN_X, D1
     MOVEM.L D7/A0-A2/A4, -(SP)
     JSR     RANDOM
     MOVEM.L (SP)+, D7/A0-A2/A4
@@ -367,7 +369,7 @@ RESET_RIGHT_MOVER:
 RESPAWN_OFF_LEFT:
     ;new direction is right, spawn off left side
     MOVE.L  #0, D0
-    MOVE.L  #50, D1
+    MOVE.L  #MAX_SPAWN_X, D1
     MOVEM.L D7/A0-A2/A4, -(SP)
     JSR     RANDOM
     MOVEM.L (SP)+, D7/A0-A2/A4
@@ -1115,6 +1117,7 @@ PLAYER_SIZE         DS.L    1               ;0-5 matching fish types
 
 *~Font name~Courier New~
 *~Font size~10~
+
 
 
 

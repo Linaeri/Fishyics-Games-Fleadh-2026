@@ -67,6 +67,7 @@ JUMP_IN_INDEX   EQU     08
 GROW_INDEX  EQU         09
 TITLE_INDEX         EQU 10
 BACKGROUND_INDEX    EQU 11
+OCARINA_INDEX       EQU 12
 
 
 ENMY_W_INIT EQU         08          ; Enemy initial Width
@@ -152,6 +153,7 @@ INITIALISE:
     BSR     DEATH_LOAD
     BSR     TITLE_LOAD
     BSR     BACKGROUND_LOAD
+    BSR     OCARINA_LOAD
 
 
     ; Screen Size
@@ -673,6 +675,29 @@ STOP_BACKGROUND:
     TRAP    #15
     RTS
 
+OCARINA_LOAD:
+    LEA     OCARINA_WAV,   A1
+    MOVE    #OCARINA_INDEX, D1
+    MOVE    #74,        D0
+    TRAP    #15
+    RTS
+
+LOOP_OCARINA:
+    MOVEM.L D0-D7/A0-A6, -(SP)
+    MOVE    #OCARINA_INDEX, D1
+    MOVE.L  #1, D2
+    MOVE    #77, D0
+    TRAP    #15
+    MOVEM.L (SP)+, D0-D7/A0-A6
+    RTS
+
+STOP_OCARINA:
+    MOVEM.L D0-D7/A0-A6, -(SP)
+    MOVE    #OCARINA_INDEX, D1
+    MOVE.L  #2, D2
+    MOVE    #77, D0
+    TRAP    #15
+    MOVEM.L (SP)+, D0-D7/A0-A6
     RTS
 
 
@@ -829,6 +854,7 @@ JUMP_IN_WAV     DC.B    'jump_in.wav',0     ;falling back into the water
 GROW_WAV        DC.B    'grow.wav', 0
 TITLE_WAV       DC.B    'title_song.wav',0
 BACKGROUND_WAV  DC.B    'background.wav',0
+OCARINA_WAV     DC.B    'ocarina.wav',0
 
     DS.W    0           ;fix alignment issue
 
@@ -856,6 +882,7 @@ BACKGROUND_WAV  DC.B    'background.wav',0
 
 
 	
+
 
 
 
