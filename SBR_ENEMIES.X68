@@ -515,7 +515,7 @@ DO_DRAW_ANGEL:
 
 DO_DRAW_SHARK:
     MOVEM.L D7/A0-A4, -(SP)
-    BSR     DRAW_ENEMY_SHARK
+    BSR     DRAW_SHARK
     MOVEM.L (SP)+, D7/A0-A4
 
 DONE_ENEMY_DRAW:
@@ -905,166 +905,6 @@ DRAW_ENEMY_ANGELFISH:
 
     RTS
 
-DRAW_ENEMY_SHARK:
-    MOVE.L  D1, D5          ; baseX
-    MOVE.L  D2, D6          ; baseY
-
-    ;set colour
-    MOVE.L  #SHARK_CLR, D1
-    MOVE.B  #80, D0
-    TRAP    #15
-    MOVE.L  #SHARK_CLR, D1
-    MOVE.B  #81, D0
-    TRAP    #15
-
-    ; main body
-    MOVE.L  D5, D1
-    MOVE.L  D6, D2
-    MOVE.L  D5, D3
-    ADD.L   #64, D3
-    MOVE.L  D6, D4
-    ADD.L   #36, D4
-    MOVE.B  #87, D0
-    TRAP    #15
-
-    ; snout
-    MOVE.L  D5, D1
-    SUB.L   #12, D1
-    MOVE.L  D6, D2
-    ADD.L   #10, D2
-    MOVE.L  D5, D3
-    MOVE.L  D6, D4
-    ADD.L   #26, D4
-    MOVE.B  #87, D0
-    TRAP    #15
-
-    ; top fin
-    MOVE.L  D5, D1
-    ADD.L   #18, D1
-    MOVE.L  D6, D2
-    SUB.L   #14, D2
-    MOVE.L  D5, D3
-    ADD.L   #36, D3
-    MOVE.L  D6, D4
-    ADD.L   #4, D4
-    MOVE.B  #87, D0
-    TRAP    #15
-
-    ; bottom fin
-    MOVE.L  D5, D1
-    ADD.L   #36, D1
-    MOVE.L  D6, D2
-    ADD.L   #34, D2
-    MOVE.L  D5, D3
-    ADD.L   #48, D3
-    MOVE.L  D6, D4
-    ADD.L   #44, D4
-    MOVE.B  #87, D0
-    TRAP    #15
-
-    ; tail upper
-    MOVE.L  D5, D1
-    ADD.L   #64, D1
-    MOVE.L  D6, D2
-    ADD.L   #4, D2
-    MOVE.L  D5, D3
-    ADD.L   #80, D3
-    MOVE.L  D6, D4
-    ADD.L   #18, D4
-    MOVE.B  #87, D0
-    TRAP    #15
-
-    ; tail lower
-    MOVE.L  D5, D1
-    ADD.L   #64, D1
-    MOVE.L  D6, D2
-    ADD.L   #18, D2
-    MOVE.L  D5, D3
-    ADD.L   #80, D3
-    MOVE.L  D6, D4
-    ADD.L   #32, D4
-    MOVE.B  #87, D0
-    TRAP    #15
-
-    ; teeth
-    MOVE.L  #$00FFFFFF, D1
-    MOVE.B  #80, D0
-    TRAP    #15
-    MOVE.L  #$00FFFFFF, D1
-    MOVE.B  #81, D0
-    TRAP    #15
-
-    MOVE.L  D5, D1
-    SUB.L   #10, D1
-    MOVE.L  D6, D2
-    ADD.L   #18, D2
-    MOVE.L  D5, D3
-    ADD.L   #2, D3
-    MOVE.L  D6, D4
-    ADD.L   #22, D4
-    MOVE.B  #87, D0
-    TRAP    #15
-
-    ; belly
-    MOVE.L  #$00909090, D1
-    MOVE.B  #80, D0
-    TRAP    #15
-    MOVE.L  #$00909090, D1
-    MOVE.B  #81, D0
-    TRAP    #15
-
-    MOVE.L  D5, D1
-    ADD.L   #2, D1
-    MOVE.L  D6, D2
-    ADD.L   #20, D2
-    MOVE.L  D5, D3
-    ADD.L   #56, D3
-    MOVE.L  D6, D4
-    ADD.L   #34, D4
-    MOVE.B  #87, D0
-    TRAP    #15
-
-    ; eye
-    MOVE.L  #$00000000, D1
-    MOVE.B  #80, D0
-    TRAP    #15
-    MOVE.L  #$00000000, D1
-    MOVE.B  #81, D0
-    TRAP    #15
-
-    MOVE.L  D5, D1
-    ADD.L   #4, D1
-    MOVE.L  D6, D2
-    ADD.L   #10, D2
-    MOVE.L  D5, D3
-    ADD.L   #10, D3
-    MOVE.L  D6, D4
-    ADD.L   #16, D4
-    MOVE.B  #87, D0
-    TRAP    #15
-
-    ; eye pupil
-    MOVE.L  #$000000FF, D1
-    MOVE.B  #80, D0
-    TRAP    #15
-    MOVE.L  #$000000FF, D1
-    MOVE.B  #81, D0
-    TRAP    #15
-
-    MOVE.L  D5, D1
-    ADD.L   #6, D1
-    MOVE.L  D6, D2
-    ADD.L   #12, D2
-    MOVE.L  D5, D3
-    ADD.L   #8, D3
-    MOVE.L  D6, D4
-    ADD.L   #14, D4
-    MOVE.B  #87, D0
-    TRAP    #15
-
-    RTS
-
-
 *-----------------------------------------------------------
 * Subroutine    : CHECK_ALL_COLLISIONS
 * Description   : checking colls
@@ -1255,6 +1095,7 @@ PLAYER_SIZE         DS.L    1               ;0-5 matching fish types
     include "SBR_FISH_EAT_FISH.X68"
     include "SBR_DRAW_SARDINE.X68"
     include "SBR_DRAW_CLOWNFISH.X68"
+    include "SBR_DRAW_SHARK.X68"
 
 
 
@@ -1262,6 +1103,7 @@ PLAYER_SIZE         DS.L    1               ;0-5 matching fish types
 
 *~Font name~Courier New~
 *~Font size~10~
+
 
 
 
