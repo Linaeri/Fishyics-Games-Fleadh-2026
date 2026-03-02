@@ -77,7 +77,7 @@ INIT_ACHIEVEMENTS:
     MOVE.L  #0, ACH_WALL_FROM     ;go back to gameover screen by default
     MOVE.L  #0, ACH_FISH_COUNT     ;total fishes eaten this run
     MOVE.L  #0, ACH_AIR_TIME       ;total ms spent in the air
-    BSR     LOAD_ACHIEVEMENTS       ;load saved flags (overwrites zeros)
+    ;BSR     LOAD_ACHIEVEMENTS       ;load saved flags (overwrites zeros)
     RTS
 
 
@@ -1313,6 +1313,7 @@ ACH_SND_IDX EQU         03          ; achievement jingle sound index
 ACH_WAV     DC.B        'achieve.wav',0  ; achievement sound file
 
     DS.W    0                       ;alignment padding
+
 
 
 
