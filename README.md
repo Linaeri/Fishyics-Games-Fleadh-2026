@@ -1,4 +1,3 @@
-```
 
 # 🎮 Game Fleadh 2026  
 
