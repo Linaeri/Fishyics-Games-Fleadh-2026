@@ -28,13 +28,13 @@
 ## 🔗 Project Links  
 
 - 💻 **Source Code:**  
-[https://github.com/Linaeri/Fishyics-Games-Fleadh-2026/blob/main/src]
+  [Link](https://github.com/Linaeri/Fishyics-Games-Fleadh-2026/blob/main/src)
   
 - 📄 **Design Document:**
-  [Link](https://drive.google.com/drive/folders/14CrX_Qxf-SU-aEEYumZbVnwUUgd--k7-?usp=sharing)
+  [Link](https://drive.google.com/file/d/1fCAFFGWXZueTWNKV0gqLLbvWBgtrlcE2/view?usp=sharing)
 
 - 🎬 **Trailer Video:**  
-  [Link](https://youtu.be/2QLrWLoiU7M?si=6OGnst23YVyCTUei)
+  [Link](https://www.youtube.com/watch?v=RQYE_LjkFss)
 
 ## 🛠️ Installation & Running the Game  
 
@@ -42,16 +42,18 @@
          FISHYICS - How To Run
 =======================================
 
-1. Open MAIN.X68 in src/ folder with [EASy68K](http://www.easy68k.com/)
+1. Download [EASy68K](http://www.easy68k.com/)
 
-2. Then inside the simulator press F9 (or click the cyan outlined play button, second row top left)
+2. Open MAIN.X68 in src/ folder in EASy68k
 
-3. Click "Execute"
+3. Then inside the simulator press F9 (or click the cyan outlined play button, second row top left)
 
-4. Press F9 again (similar cyan play button)
+4. Click "Execute"
+
+5. Press F9 again (similar cyan play button)
 
 Thats it, you should be swimming now. WASD to move around, eat fish smaller than you, avoid anything bigger. Good luck.
 
 ## 🔗 External Materials Used 
-Sound effects created with Sfxr: https://sfxr.me/
-Music created with BeepBox: https://www.beepbox.co/
+Sound effects created with [sfxr](https://sfxr.me/)
+Music created with [BeepBox](www.beepbox.co)
