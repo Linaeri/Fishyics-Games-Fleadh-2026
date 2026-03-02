@@ -28,14 +28,14 @@
 ## 🔗 Project Links  
 
 - 💻 **Source Code:**  
-[https://github.com/Linaeri/Fishyics-Games-Fleadh-2026/src](SourceCode)
+[https://github.com/Linaeri/Fishyics-Games-Fleadh-2026/src]
   
 - 💻 **Executable Code:**  
   [https://github.com/Linaeri/Fishyics-Games-Fleadh-2026/blob/main/START%20GAME.lnk]
   
 
-- 📄 **Design Document:**  
-  [Design Document](https://tus.ie/gamesfleadh/game-studio/)](https://drive.google.com/drive/folders/14CrX_Qxf-SU-aEEYumZbVnwUUgd--k7-?usp=sharing)
+- 📄 **Design Document:**
+  [https://drive.google.com/drive/folders/14CrX_Qxf-SU-aEEYumZbVnwUUgd--k7-?usp=sharing]
 
 - 🎬 **Trailer Video:**  
   [Insert link to trailer video](https://youtu.be/2QLrWLoiU7M?si=6OGnst23YVyCTUei)
