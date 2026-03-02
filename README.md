@@ -30,15 +30,11 @@
 - 💻 **Source Code:**  
 [https://github.com/Linaeri/Fishyics-Games-Fleadh-2026/blob/main/src]
   
-- 💻 **Executable Code:**  
-  [https://github.com/Linaeri/Fishyics-Games-Fleadh-2026/blob/main/START%20GAME.lnk]
-  
-
 - 📄 **Design Document:**
-  [https://drive.google.com/drive/folders/14CrX_Qxf-SU-aEEYumZbVnwUUgd--k7-?usp=sharing]
+  [Link](https://drive.google.com/drive/folders/14CrX_Qxf-SU-aEEYumZbVnwUUgd--k7-?usp=sharing)
 
 - 🎬 **Trailer Video:**  
-  [Insert link to trailer video](https://youtu.be/2QLrWLoiU7M?si=6OGnst23YVyCTUei)
+  [Link](https://youtu.be/2QLrWLoiU7M?si=6OGnst23YVyCTUei)
 
 ## 🛠️ Installation & Running the Game  
 
@@ -46,9 +42,7 @@
          FISHYICS - How To Run
 =======================================
 
-1. CLick START GAME file you see in the root directory
-OR
-Open MAIN.X68 in src/ folder with EASy68K
+1. Open MAIN.X68 in src/ folder with [EASy68K](http://www.easy68k.com/)
 
 2. Then inside the simulator press F9 (or click the cyan outlined play button, second row top left)
 
