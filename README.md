@@ -48,5 +48,4 @@
 Thats it, you should be swimming now. WASD to move around, eat fish smaller than you, avoid anything bigger. Good luck.
 
 ## 🔗 External Materials Used 
-Sound effects created with [sfxr](https://sfxr.me/)
-Music created with [BeepBox](www.beepbox.co)
+Sound effects created with [sfxr](https://sfxr.me/), music created with [BeepBox](www.beepbox.co)
