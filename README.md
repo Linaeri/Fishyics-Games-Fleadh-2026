@@ -14,16 +14,7 @@
 
 ## 📝 Brief Description  
 
-[Write a short 2–4 paragraph description of your game here.]
-
-Describe:
-- The genre (e.g., platformer, puzzle, RPG, horror, etc.)
-- The core gameplay mechanics
-- The objective of the game
-- What makes your game unique
-- Target audience (if relevant)
-
-> *"Fishyics is a 2D platform game with growth mechanics. Play as an escaped goldfish on a quest to become the biggest fish in the sea. Feed on smaller fish to grow. Evade bigger fish. Watch out for the changing tides! Survive long enough to eat the shark, and claim the sea as your own. 
+> *"Fishyics is a 2D platform game with growth mechanics. Play as an escaped goldfish on a quest to become the biggest fish in the sea. Feed on smaller fish to grow. Jump out the water to evade bigger fish. Watch out for the changing tides! Survive long enough to eat the shark, and claim the sea as your own. 
 
 ## 🎮 Gameplay Overview  
 
@@ -37,7 +28,7 @@ Describe:
 ## 🔗 Project Links  
 
 - 💻 **Source Code:**  
-  [[[Insert GitHub Repository Link](https://github.com/Linaeri/Fishyics-Games-Fleadh-2026/src)](https://bitbucket.org/MuddyGames/r36s/src/main/)](https://github.com/Linaeri/Fishyics-Games-Fleadh-2026/tree/main/src)
+[https://github.com/Linaeri/Fishyics-Games-Fleadh-2026/src](SourceCode)
   
 - 💻 **Executable Code:**  
   [[[Insert GitHub Repository Link](https://github.com/Linaeri/Fishyics-Games-Fleadh-2026/src)](https://bitbucket.org/MuddyGames/r36s/src/main/)](https://github.com/Linaeri/Fishyics-Games-Fleadh-2026/blob/main/START%20GAME.lnk)
