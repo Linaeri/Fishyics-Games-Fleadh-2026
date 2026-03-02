@@ -14,11 +14,11 @@ It's LEA'ing your best life, one MOVE.L at a time, in a world where the Stack Po
 
 Gameplay Mechanics:
 You're not just swimming around looking pretty out here (though John is a handsome fish, credit where its due).
-You're climbing the food chain, start by eating sardines, move on to clownfish (Sorry Nemo! theres an achievement for that and everything)... and eventually if you've got the PLYR_SIZE for it, sharks.
+You're climbing the food chain, start by eating sardines, move on to clownfish (Sorry Nemo! there's an achievement for that and everything)... and eventually if you've got the PLYR_SIZE for it, sharks.
 
 The game CMP's your size against theirs every frame and if you BLT... well, lets just say your next JSR is to PLAYER_DIED and you'll be looking at the game over screen alongside your skeleton.
 
-There's also a pelican doing fly bys overhead because apparently the sky isn't safe either, sometimes you eat it, sometimes it eats you, proper RTS relationship that (Return To Stomach, if you will).
+There's also a pelican doing fly-bys overhead because apparently the sky isn't safe either, sometimes you eat it, sometimes it eats you, proper RTS relationship that (Return To Stomach, if you will).
 Oh and the tide rises and falls on actual delta time based timers, because we learnt about MULS'ing velocity by time in lectures and wanted to show off. We've even got a moon in the sky that grow and shrink with the tides.
 
 Art and Design:
@@ -39,9 +39,9 @@ We even MOVEM.L our registers like responsible adults. Most of the time.
 The collision detection is good old AABB, or as we like to call it, "is this rectangle touching that rectangle" ;), which is basically the entire game if you think about it. We also have a random number generator -D-D-.
 
 Levels and Environment:
-One ocean. Thats all you get, but its a good ocean. The water level actually moves up and down on a tidal cycle, with delays when it reaches the top and bottom.
+One ocean. That's all you get, but its a good ocean. The water level actually moves up and down on a tidal cycle, with delays when it reaches the top and bottom.
 The moon drift across the sky and grow and shrink with the tides.
 There is 9 achievements to unlock, from eating specific types of fish, to spending a minute airborne, eating 100 fish total and even touching the moon. 
-The achievement wall is its own little screen where you swim around as a skeleton and see all your unlocked achievements displayed in a 3x3 grid. Locked ones show up greyed out with ???? so you know theres something there to work towards.
+The achievement wall is its own little screen where you swim around as a skeleton and see all your unlocked achievements displayed in a 3x3 grid. Locked ones show up greyed out with ???? so you know there's something there to work towards.
 
-So yeah, thats Fishyics. A goldfish, an ocean, and way too many lines of Assembly. If you've read this far you've probably spent more time on this document than we spent on collision detection. Go play the game, eat some fish, dodge the pelican, and maybe one day you'll be big enough that the shark BLE's out of your way. Or you won't, and you'll BLT straight into the game over screen. Either way, the stack is clean and the registers are saved. Probably.
+So yeah, that's Fishyics. A goldfish, an ocean, and way too many lines of Assembly. If you've read this far you've probably spent more time on this document than we spent on collision detection. Go play the game, eat some fish, dodge the pelican, and maybe one day you'll be big enough that the shark BLE's out of your way. Or you won't, and you'll BLT straight into the game over screen. Either way, the stack is clean and the registers are saved. Probably.

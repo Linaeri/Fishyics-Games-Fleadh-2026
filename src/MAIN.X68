@@ -76,7 +76,7 @@ ENMY_H_INIT EQU         08          ; Enemy initial Height
 ENEMY_SPEED EQU 		2			
 	
 SCREEN_PADDING_X EQU		20		; How many pixels at the edge of the LEFT/RIGHT screen the player cant go on
-SCREEN_PADDING_Y EQU		15		; How many pixels at the edge of the TOP/BOTTOM screen the player cant go on
+SCREEN_PADDING_Y EQU		20		; How many pixels at the edge of the TOP/BOTTOM screen the player cant go on
 
 *-----------------------------------------------------------
 * Section       : Water & player water interaction
@@ -473,11 +473,11 @@ DRAW:
 	JSR     DRAW_PELICAN
 	JSR		DRAW_WATER				; draw water tide
     JSR     DRAW_PLYR_DATA          ; Draw Draw Score, HUD, Player X and Y
+	JSR     DRAW_SAND               ; Draw Sand
     JSR     DRAW_PLAYER             ; Draw Player
     JSR     DRAW_ALL_ENEMIES              ; Draw Enemy
     JSR     DRAW_LEFTOVERS          ; Draw falling bone particles
     JSR     DRAW_SPLASH             ; Draw water splash particles
-	JSR     DRAW_SAND               ; Draw Sand
 	JSR     DRAW_SEAWEED             ; Draw seaweed top layer
     JSR     DRAW_ACHIEVEMENT        ; Draw achievement popup
     RTS                             ; Return to subroutine
@@ -908,6 +908,7 @@ OCARINA_WAV     DC.B    'ocarina.wav',0
 
 
 	
+
 
 
 
