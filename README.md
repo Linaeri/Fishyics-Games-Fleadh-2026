@@ -8,7 +8,7 @@
 
 ## 👥 Team Members  
 - Emma Brennan : Designer/Artist/Programmer
-- Adam Pohorilsky   : Programmer/UI
+- Adam Pohořilský   : Programmer/UI
 - Myroslav Sliusarchuk   : Programmer
 
 
