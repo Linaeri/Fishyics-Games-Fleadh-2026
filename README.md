@@ -31,16 +31,13 @@
   [Link](https://github.com/Linaeri/Fishyics-Games-Fleadh-2026/blob/main/src)
   
 - 📄 **Design Document:**
+
   [Link](https://drive.google.com/file/d/1fCAFFGWXZueTWNKV0gqLLbvWBgtrlcE2/view?usp=sharing)
 
 - 🎬 **Trailer Video:**  
   [Link](https://www.youtube.com/watch?v=RQYE_LjkFss)
 
 ## 🛠️ Installation & Running the Game  
-
-=======================================
-         FISHYICS - How To Run
-=======================================
 
 1. Download [EASy68K](http://www.easy68k.com/)
 
