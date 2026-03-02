@@ -31,7 +31,7 @@
   
 - 📄 **Design Document:** [Link](https://drive.google.com/file/d/1fCAFFGWXZueTWNKV0gqLLbvWBgtrlcE2/view?usp=sharing)
 
-- 🎬 **Trailer Video:** [Link](https://www.youtube.com/watch?v=RQYE_LjkFss)
+- 🎬 **Trailer Video:** [Link](https://youtu.be/YEtSXQarWQs)
 
 ## 🛠️ Installation & Running the Game  
 
