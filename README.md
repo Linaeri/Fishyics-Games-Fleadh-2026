@@ -31,11 +31,11 @@
 [https://github.com/Linaeri/Fishyics-Games-Fleadh-2026/src](SourceCode)
   
 - 💻 **Executable Code:**  
-  [[[Insert GitHub Repository Link](https://github.com/Linaeri/Fishyics-Games-Fleadh-2026/src)](https://bitbucket.org/MuddyGames/r36s/src/main/)](https://github.com/Linaeri/Fishyics-Games-Fleadh-2026/blob/main/START%20GAME.lnk)
+  [https://github.com/Linaeri/Fishyics-Games-Fleadh-2026/blob/main/START%20GAME.lnk]
   
 
 - 📄 **Design Document:**  
-  [[Insert link to Game Design Document](https://tus.ie/gamesfleadh/game-studio/)](https://drive.google.com/drive/folders/14CrX_Qxf-SU-aEEYumZbVnwUUgd--k7-?usp=sharing)
+  [Design Document](https://tus.ie/gamesfleadh/game-studio/)](https://drive.google.com/drive/folders/14CrX_Qxf-SU-aEEYumZbVnwUUgd--k7-?usp=sharing)
 
 - 🎬 **Trailer Video:**  
   [Insert link to trailer video](https://youtu.be/2QLrWLoiU7M?si=6OGnst23YVyCTUei)
