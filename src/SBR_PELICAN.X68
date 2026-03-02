@@ -214,30 +214,6 @@ CHECK_PELICAN_COLLISION:
     RTS
 
 ;draw pelican (just a rectangle for now lol)
-DRAW_PELICAN:
-    MOVEM.L D0-D4, -(SP)
-    CMP.L   #1, PELICAN_ACTIVE
-    BNE     .DR_DONE
-
-    MOVE.L  #$00446688, D1
-    MOVE.B  #80, D0
-    TRAP    #15
-    MOVE.L  #$00446688, D1
-    MOVE.B  #81, D0
-    TRAP    #15
-
-    MOVE.L  PELICAN_X, D1
-    MOVE.L  PELICAN_Y, D2
-    MOVE.L  D1, D3
-    ADD.L   #PELICAN_W, D3
-    MOVE.L  D2, D4
-    ADD.L   #PELICAN_H, D4
-    MOVE.B  #87, D0
-    TRAP    #15
-
-.DR_DONE:
-    MOVEM.L (SP)+, D0-D4
-    RTS
 
 
 ;check if player jumped over the pelican (X overlaps + player above it)
@@ -280,6 +256,7 @@ PELICAN_X       DS.L    1
 PELICAN_Y       DS.L    1
 PELICAN_DIR     DS.L    1           ;-1 = left, 1 = right
 PELICAN_ACTIVE  DS.L    1           ;1 = flying, 0 = inactive
+
 
 
 

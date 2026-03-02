@@ -903,11 +903,13 @@ OCARINA_WAV     DC.B    'ocarina.wav',0
 	include "SBR_SPLASH.X68"
 	include "SBR_DRAW_SEAWEED.X68"
 	include "SBR_WIN_SCREEN.X68"
+	include "SBR_DRAW_PELICAN.X68"
 
     END    START        ; last line of source
 
 
 	
+
 
 
 

@@ -689,6 +689,7 @@ PLAYER_1_FIN   			equ	$00C0E3E0
 
 
 
+
 *~Font name~Courier New~
 *~Font size~10~
 *~Tab type~1~

@@ -160,6 +160,15 @@ NO_ACHWALL:
     RTS
 
 END_SCREEN:
+    ; set text background to black
+    MOVE.L  #$00000000, D1
+    MOVE.B  #81, D0
+    TRAP    #15
+    ; set text color to white
+    MOVE.L  #$00FFFFFF, D1
+    MOVE.B  #80, D0
+    TRAP    #15
+
     MOVE.B  #TC_CURSR_P, D0
     MOVE.W  #$1B05, D1
     TRAP    #15
@@ -237,6 +246,15 @@ END_SCREEN:
     RTS
     
 RESTARTING_POINT:
+    ; set text background to black
+    MOVE.L  #$00000000, D1
+    MOVE.B  #81, D0
+    TRAP    #15
+    ; set text color to white
+    MOVE.L  #$00FFFFFF, D1
+    MOVE.B  #80, D0
+    TRAP    #15
+
     MOVE.B  #TC_CURSR_P, D0
     MOVE.W  #$211E, D1
     TRAP    #15
@@ -331,6 +349,15 @@ RESTARTING_POINT:
     RTS
 
 QUITTING_POINT:
+    ; set text background to black
+    MOVE.L  #$00000000, D1
+    MOVE.B  #81, D0
+    TRAP    #15
+    ; set text color to white
+    MOVE.L  #$00FFFFFF, D1
+    MOVE.B  #80, D0
+    TRAP    #15
+
     MOVE.B  #TC_CURSR_P, D0
     MOVE.W  #$4D1E, D1
     TRAP    #15
@@ -425,6 +452,15 @@ QUITTING_POINT:
     RTS
 
 ACHWALL_POINT:
+    ; set text background to black
+    MOVE.L  #$00000000, D1
+    MOVE.B  #81, D0
+    TRAP    #15
+    ; set text color to white
+    MOVE.L  #$00FFFFFF, D1
+    MOVE.B  #80, D0
+    TRAP    #15
+
     MOVE.B  #TC_CURSR_P, D0
     MOVE.W  #$371E, D1
     TRAP    #15
@@ -570,6 +606,7 @@ achwallpt10 dc.b  '         ||        ',0
 achwallpt11 dc.b  '                   ',0
 achwallpt12 dc.b  ' -================-',0
 achwallpt13 dc.b  ' SWIM FOR TROPHIES ',0
+
 
 
 

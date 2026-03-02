@@ -544,6 +544,14 @@ DA_I_MN:
     BRA     DA_AFIC
 
 DA_AFIC:
+    ;reset colors for text so background matches the banner
+    MOVE.L  ACH_CUR_BG, D1
+    MOVE.B  #81, D0              ; fill = banner background
+    TRAP    #15
+    MOVE.L  #ACH_TITLE_CLR, D1
+    MOVE.B  #80, D0              ; pen = gold
+    TRAP    #15
+    
     ;locked ones just show ???? instead
     TST.L   ACH_DRAW_LOCKED
     BNE     DA_LKTX
@@ -670,6 +678,14 @@ DA_C_PJ:
     BRA     DA_DN
 
 DA_LKTX:
+    ;set colors for locked text
+    MOVE.L  ACH_CUR_BG, D1
+    MOVE.B  #81, D0              ; fill = grey background
+    TRAP    #15
+    MOVE.L  #$00FFFFFF, D1
+    MOVE.B  #80, D0              ; pen = white
+    TRAP    #15
+
     ;title line - just says LOCKED
     MOVE.L  ACH_DRAW_X, D1
     ADD.L   #42, D1
@@ -1297,6 +1313,7 @@ ACH_SND_IDX EQU         03          ; achievement jingle sound index
 ACH_WAV     DC.B        'achieve.wav',0  ; achievement sound file
 
     DS.W    0                       ;alignment padding
+
 
 
 

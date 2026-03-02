@@ -60,6 +60,15 @@ WIN_LOOP:
     BRA     WIN_LOOP		
 
 WIN_SCREEN:
+    ; set text background to black
+    MOVE.L  #$00000000, D1
+    MOVE.B  #81, D0
+    TRAP    #15
+    ; set text color to white
+    MOVE.L  #$00FFFFFF, D1
+    MOVE.B  #80, D0
+    TRAP    #15
+
     MOVE.B  #TC_CURSR_P, D0
     MOVE.W  #$3205, D1
     TRAP    #15
@@ -144,6 +153,8 @@ win8 dc.b ' \/ | /          \/      ( )    ',0
 win9 dc.b '    |/                       ( )',0
 
 win10 dc.b 'You are the biggest fish in the sea!',0
+
+
 
 
 
