@@ -60,5 +60,4 @@ Thats it, you should be swimming now. WASD to move around, eat fish smaller than
 
 ## 🔗 External Materials Used 
 Sound effects created with Sfxr: https://sfxr.me/
-title_song.wav from Freesound.org: https://freesound.org/
-
+Music created with BeepBox: https://www.beepbox.co/
