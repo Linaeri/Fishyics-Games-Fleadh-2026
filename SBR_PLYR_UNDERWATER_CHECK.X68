@@ -7,6 +7,7 @@
 * PLYR_IN_WATER_STATE = last frames value
 *-----------------------------------------------------------
 PLYR_UNDERWATER_CHECK:
+	MOVEM.L	D0-D2, -(SP)
 
 	; save what we were last frame
 	MOVE.L	PLYR_IN_WATER_NOW, PLYR_IN_WATER_STATE
@@ -52,6 +53,16 @@ UWC_WAS_UNDERWATER:
 *-----------------------------------------------------------
 UWC_JUST_LEFT_WATER:
     JSR     PLAY_JUMP_OUT
+
+    ;splash particles at the water surface
+    MOVE.L  PLAYER_X, D1
+    MOVE.L  PLYR_W_CURRENT, D2
+    LSR.L   #1, D2
+    ADD.L   D2, D1
+    MOVE.L  D1, SPL_SPAWN_X
+    MOVE.L  WTR_CURRENT_Y, SPL_SPAWN_Y
+    JSR     SPAWN_SPLASH
+
 	; only boost if already moving upward
 	MOVE.L	PLYR_VELOCITY_Y, D0
 	TST.L	D0
@@ -76,6 +87,16 @@ UWC_APPLY_GRAVITY:
 *-----------------------------------------------------------
 UWC_JUST_ENTERED_WATER:
     JSR     PLAY_JUMP_IN
+
+    ;splash
+    MOVE.L  PLAYER_X, D1
+    MOVE.L  PLYR_W_CURRENT, D2
+    LSR.L   #1, D2
+    ADD.L   D2, D1
+    MOVE.L  D1, SPL_SPAWN_X
+    MOVE.L  WTR_CURRENT_Y, SPL_SPAWN_Y
+    JSR     SPAWN_SPLASH
+
 	; cut downward speed in half when hitting the water
 	MOVE.L	PLYR_VELOCITY_Y, D0
 	TST.L	D0
@@ -84,6 +105,7 @@ UWC_JUST_ENTERED_WATER:
 	MOVE.L	D0, PLYR_VELOCITY_Y
 
 UWC_DONE:
+	MOVEM.L	(SP)+, D0-D2
 	RTS
 
 

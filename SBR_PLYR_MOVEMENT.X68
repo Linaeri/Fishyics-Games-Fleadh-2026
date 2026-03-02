@@ -46,6 +46,7 @@ CLEAR_SWIM_HORIZONTAL:
 *				  moving diagonally so you dont go faster than straight.
 *-----------------------------------------------------------
 PLAYER_MOVEMENT:
+	MOVEM.L D0-D1/D3-D5, -(SP)
 
 	; check if we're moving on both axes at once
 	MOVE.L  PLYR_DIRECTION_X, D3
@@ -205,6 +206,7 @@ PM_ZERO_Y:
 	CLR.L   PLYR_VELOCITY_Y
 
 PM_DONE_Y:
+	MOVEM.L (SP)+, D0-D1/D3-D5
 	RTS
 
 
@@ -214,7 +216,7 @@ PM_DONE_Y:
 *				  snap them back to the edge and kill their velocity
 *-----------------------------------------------------------
 CLAMP_PLAYER:
-    ;MOVEM.L D0-D3,-(A7)
+    MOVEM.L D0-D3,-(A7)
 * Clamp X --------------------------------------------------
 	MOVE.L  PLAYER_X, D1
 	CLR.L 	D3
@@ -273,7 +275,7 @@ CLAMP_RESYNC_Y:
 	MOVE.L  D0, PLYR_Y_SUB
 
 DONE_CLAMP:	  
-    ;MOVEM.L (A7)+,D0-D3  
+    MOVEM.L (A7)+,D0-D3  
 	RTS
 
 

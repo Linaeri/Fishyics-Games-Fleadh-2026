@@ -16,7 +16,7 @@ DRAW_PLAYER_3:    ; Size = 1
     MOVE.L  PLAYER_Y,          POS_Y    ; Set variable for x position of player or enemy    
     
     MOVE.L  PLYR_W_INIT,       D5 
-    MOVE.L  #14,               D7       ; Set D7 to the Sprite width(21)
+    MOVE.L  #45,               D7       ; Set D7 to the Sprite width(21)
     
     ;CHECK LAST STATE
     TST.L IS_FLIPPED
@@ -49,10 +49,10 @@ DRAW_PLYR_LEFT_3:
     
 * Line Upper fin  --------------------------------
     ; Set Pixel Colors
-    MOVE.L  #PLAYER_2_FIN,  D1          ; Set Pen color
+    MOVE.L  #PLAYER_3_FIN,  D1          ; Set Pen color
     MOVE.B  #80,                D0          ; Task for Pen Color
     TRAP    #15                             ; Trap (Perform action)
-    MOVE.L  #PLAYER_2_FIN,  D1          ; Set Fill color
+    MOVE.L  #PLAYER_3_FIN,  D1          ; Set Fill color
     MOVE.B  #81,                D0          ; Task for Fill Color
     TRAP    #15                             ; Trap (Perform action)
     
@@ -63,11 +63,11 @@ DRAW_PLYR_LEFT_3:
 
 	; Set X, Y, Width and Height
     MOVE.L  POS_X,   D1       ; X
-    ADD.L   #6,        D1       ; Width
+    ADD.L   #10,        D1       ; Width
     MOVE.L  PLAYER_Y,   D2       ; Y
     ADD.L   #0,        D2       ; Height
     MOVE.L  POS_X,   D3  
-    ADD.L   #16,        D3       ; Width
+    ADD.L   #18,        D3       ; Width
     MOVE.L  PLAYER_Y,   D4 
     ADD.L   #-7,        D4       ; Height
 
@@ -81,81 +81,8 @@ DRAW_PLYR_LEFT_3:
     TRAP    #15                 ; Trap (Perform action)
 
 
-* Square Upper Fin Main --------------------------------
-
-    ; Set Pixel Colors
-    MOVE.L  #PLAYER_2_FIN,  D1          ; Set Pen color
-    MOVE.B  #80,                D0          ; Task for Pen Color
-    TRAP    #15                             ; Trap (Perform action)
-    MOVE.L  #PLAYER_2_FIN,  D1          ; Set Fill color
-    MOVE.B  #81,                D0          ; Task for Fill Color
-    TRAP    #15                             ; Trap (Perform action)
-
-	; Set X, Y, Width and Height
-    MOVE.L  POS_X,   D1       ; X
-    ADD.L   #13,        D1       ; Width
-    MOVE.L  PLAYER_Y,   D2       ; Y
-    ADD.L   #-5,        D2       ; Height
-    MOVE.L  POS_X,   D3  
-    ADD.L   #15,        D3       ; Width
-    MOVE.L  PLAYER_Y,   D4 
-    ADD.L   #0,        D4       ; Height
+* Line Upper Fin end  --------------------------------
     
-    ; Draw Player
-    MOVE.B  #87,        D0          ; Draw Player
-    TRAP    #15                     ; Trap (Perform action
-
-* Square Upper Fin Fill --------------------------------
-
-    ; Set Pixel Colors
-    MOVE.L  #PLAYER_2_FIN,  D1          ; Set Pen color
-    MOVE.B  #80,                D0          ; Task for Pen Color
-    TRAP    #15                             ; Trap (Perform action)
-    MOVE.L  #PLAYER_2_FIN,  D1          ; Set Fill color
-    MOVE.B  #81,                D0          ; Task for Fill Color
-    TRAP    #15                             ; Trap (Perform action)
-
-	; Set X, Y, Width and Height
-    MOVE.L  POS_X,   D1       ; X
-    ADD.L   #9,        D1       ; Width
-    MOVE.L  PLAYER_Y,   D2       ; Y
-    ADD.L   #-3,        D2       ; Height
-    MOVE.L  POS_X,   D3  
-    ADD.L   #18,        D3       ; Width
-    MOVE.L  PLAYER_Y,   D4 
-    ADD.L   #0,        D4       ; Height
-    
-    ; Draw Player
-    MOVE.B  #87,        D0          ; Draw Player
-    TRAP    #15                     ; Trap (Perform action
-
-
-* Square Tail fin Outer --------------------------------
-
-    ; Set Pixel Colors
-    MOVE.L  #PLAYER_2_FIN,  D1          ; Set Pen color
-    MOVE.B  #80,                D0          ; Task for Pen Color
-    TRAP    #15                             ; Trap (Perform action)
-    MOVE.L  #PLAYER_2_FIN,  D1          ; Set Fill color
-    MOVE.B  #81,                D0          ; Task for Fill Color
-    TRAP    #15                             ; Trap (Perform action)
-
-	; Set X, Y, Width and Height
-    MOVE.L  POS_X,   D1       ; X
-    ADD.L   #35,        D1       ; Width
-    MOVE.L  PLAYER_Y,   D2       ; Y
-    ADD.L   #-6,        D2       ; Height
-    MOVE.L  POS_X,   D3  
-    ADD.L   #40,        D3       ; Width
-    MOVE.L  PLAYER_Y,   D4 
-    ADD.L   #12,        D4       ; Height
-    
-    ; Draw Player
-    MOVE.B  #87,        D0          ; Draw Player
-    TRAP    #15                     ; Trap (Perform action
-
-* Line Tail upper  --------------------------------
-
   ; Set Pen Width
     MOVE.L  #04,    D1          ; Set pen pixel width
     MOVE.B  #93,    D0          ; Task for Pen Color
@@ -163,57 +90,81 @@ DRAW_PLYR_LEFT_3:
 
 	; Set X, Y, Width and Height
     MOVE.L  POS_X,   D1       ; X
-    ADD.L   #34,        D1       ; Width
+    ADD.L   #20,        D1       ; Width
     MOVE.L  PLAYER_Y,   D2       ; Y
-    ADD.L   #-2,        D2       ; Height
+    ADD.L   #-3,        D2       ; Height
     MOVE.L  POS_X,   D3  
-    ADD.L   #40,        D3       ; Width
+    ADD.L   #24,        D3       ; Width
     MOVE.L  PLAYER_Y,   D4 
-    ADD.L   #-8,        D4       ; Height
+    ADD.L   #0,        D4       ; Height
 
 	  ; Draw Player
     MOVE.B  #84,        D0          ; Draw Player
     TRAP    #15                     ; Trap (Perform action)
 	
-* Line Tail Lower  --------------------------------
-
-	; Set X, Y, Width and Height
-    MOVE.L  POS_X,   D1       ; X
-    ADD.L   #34,        D1       ; Width
-    MOVE.L  PLAYER_Y,   D2       ; Y
-    ADD.L   #8,        D2       ; Height
-    MOVE.L  POS_X,   D3  
-    ADD.L   #40,        D3       ; Width
-    MOVE.L  PLAYER_Y,   D4 
-    ADD.L   #15,        D4       ; Height
-
-	  ; Draw Player
-    MOVE.B  #84,        D0          ; Draw Player
-    TRAP    #15                     ; Trap (Perform action)
-	
-
 	; ReSet Pen Width
     MOVE.L  #01,    D1          ; Set pen pixel width
     MOVE.B  #93,    D0          ; Task for Pen Color
     TRAP    #15                 ; Trap (Perform action)
 
-* Square Tail fin  --------------------------------
 
-    ; Set Pixel Colors
-    MOVE.L  #PLAYER_2_RED,  D1          ; Set Pen color
-    MOVE.B  #80,                D0          ; Task for Pen Color
-    TRAP    #15                             ; Trap (Perform action)
-    MOVE.L  #PLAYER_2_RED,  D1          ; Set Fill color
-    MOVE.B  #81,                D0          ; Task for Fill Color
-    TRAP    #15                             ; Trap (Perform action)
+* Square Upper Fin Base 1--------------------------------
 
-    ; Set X, Y, Width and Height
+	; Set X, Y, Width and Height
     MOVE.L  POS_X,   D1       ; X
-    ADD.L   #31,        D1       ; Width
+    ADD.L   #13,        D1       ; Width
     MOVE.L  PLAYER_Y,   D2       ; Y
     ADD.L   #-2,        D2       ; Height
     MOVE.L  POS_X,   D3  
-    ADD.L   #35,        D3       ; Width
+    ADD.L   #22,        D3       ; Width
+    MOVE.L  PLAYER_Y,   D4 
+    ADD.L   #0,        D4       ; Height
+    
+    ; Draw Player
+    MOVE.B  #87,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action
+
+* Square Upper Fin Base 2 --------------------------------
+
+	; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #15,        D1       ; Width
+    MOVE.L  PLAYER_Y,   D2       ; Y
+    ADD.L   #-4,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #21,        D3       ; Width
+    MOVE.L  PLAYER_Y,   D4 
+    ADD.L   #0,        D4       ; Height
+    
+    ; Draw Player
+    MOVE.B  #87,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action
+
+* Square Upper Fin Base 3 --------------------------------
+
+	; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #16,        D1       ; Width
+    MOVE.L  PLAYER_Y,   D2       ; Y
+    ADD.L   #-6,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #20,        D3       ; Width
+    MOVE.L  PLAYER_Y,   D4 
+    ADD.L   #0,        D4       ; Height
+    
+    ; Draw Player
+    MOVE.B  #87,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action
+
+* Square Tail Middle --------------------------------
+
+	; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #34,        D1       ; Width
+    MOVE.L  PLAYER_Y,   D2       ; Y
+    ADD.L   #-1,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #38,        D3       ; Width
     MOVE.L  PLAYER_Y,   D4 
     ADD.L   #8,        D4       ; Height
     
@@ -221,139 +172,17 @@ DRAW_PLYR_LEFT_3:
     MOVE.B  #87,        D0          ; Draw Player
     TRAP    #15                     ; Trap (Perform action
 
-* Square Body 1 top --------------------------------
-    ; Set Pixel Colors
-    MOVE.L  #PLAYER_0_GOLD,  D1          ; Set Pen color
-    MOVE.B  #80,                D0          ; Task for Pen Color
-    TRAP    #15                             ; Trap (Perform action)
-    MOVE.L  #PLAYER_0_GOLD,  D1          ; Set Fill color
-    MOVE.B  #81,                D0          ; Task for Fill Color
-    TRAP    #15                             ; Trap (Perform action)
 
-	; Set X, Y, Width and Height
-    MOVE.L  POS_X,   D1       ; X
-    ADD.L   #-3,        D1       ; Width
-    MOVE.L  PLAYER_Y,   D2       ; Y
-    ADD.L   #3,        D2       ; Height
-    MOVE.L  POS_X,   D3  
-    ADD.L   #33,        D3       ; Width
-    MOVE.L  PLAYER_Y,   D4 
-    ADD.L   #6,        D4       ; Height
-    
-    ; Draw Player
-    MOVE.B  #87,        D0          ; Draw Player
-    TRAP    #15                     ; Trap (Perform action
-
-* Square Body 2 middle --------------------------------
-	; Set X, Y, Width and Height
-    MOVE.L  POS_X,   D1       ; X
-    ADD.L   #-3,        D1       ; Width
-    MOVE.L  PLAYER_Y,   D2       ; Y
-    ADD.L   #6,        D2       ; Height
-    MOVE.L  POS_X,   D3  
-    ADD.L   #26,        D3       ; Width
-    MOVE.L  PLAYER_Y,   D4 
-    ADD.L   #10,        D4       ; Height
-    
-    ; Draw Player
-    MOVE.B  #87,        D0          ; Draw Player
-    TRAP    #15                     ; Trap (Perform action
-
-* Square Body 3 bottom --------------------------------
-	; Set X, Y, Width and Height
-    MOVE.L  POS_X,   D1       ; X
-    ADD.L   #-0,        D1       ; Width
-    MOVE.L  PLAYER_Y,   D2       ; Y
-    ADD.L   #10,        D2       ; Height
-    MOVE.L  POS_X,   D3  
-    ADD.L   #22,        D3       ; Width
-    MOVE.L  PLAYER_Y,   D4 
-    ADD.L   #12,        D4       ; Height
-    
-    ; Draw Player
-    MOVE.B  #87,        D0          ; Draw Player
-    TRAP    #15                     ; Trap (Perform action
-
-* Square top banner  --------------------------------
-    ; Set Pixel Colors
-    MOVE.L  #PLAYER_0_ORANGE,  D1          ; Set Pen color
-    MOVE.B  #80,                D0          ; Task for Pen Color
-    TRAP    #15                             ; Trap (Perform action)
-    MOVE.L  #PLAYER_0_ORANGE,  D1          ; Set Fill color
-    MOVE.B  #81,                D0          ; Task for Fill Color
-    TRAP    #15                             ; Trap (Perform action)
-
-	; Set X, Y, Width and Height
-    MOVE.L  POS_X,   D1       ; X
-    ADD.L   #0,        D1       ; Width
-    MOVE.L  PLAYER_Y,   D2       ; Y
-    ADD.L   #0,        D2       ; Height
-    MOVE.L  POS_X,   D3  
-    ADD.L   #33,        D3       ; Width
-    MOVE.L  PLAYER_Y,   D4 
-    ADD.L   #3,        D4       ; Height
-    
-    ; Draw Player
-    MOVE.B  #87,        D0          ; Draw Player
-    TRAP    #15                     ; Trap (Perform action
-
-* Square bottom banner  --------------------------------
-    ; Set Pixel Colors
-    MOVE.L  #PLAYER_2_YELLOW,  D1          ; Set Pen color
-    MOVE.B  #80,                D0          ; Task for Pen Color
-    TRAP    #15                             ; Trap (Perform action)
-    MOVE.L  #PLAYER_2_YELLOW,  D1          ; Set Fill color
-    MOVE.B  #81,                D0          ; Task for Fill Color
-    TRAP    #15                             ; Trap (Perform action)
-
-	; Set X, Y, Width and Height
-    MOVE.L  POS_X,   D1       ; X
-    ADD.L   #3,        D1       ; Width
-    MOVE.L  PLAYER_Y,   D2       ; Y
-    ADD.L   #12,        D2       ; Height
-    MOVE.L  POS_X,   D3  
-    ADD.L   #22,        D3       ; Width
-    MOVE.L  PLAYER_Y,   D4 
-    ADD.L   #14,        D4       ; Height
-    
-    ; Draw Player
-    MOVE.B  #87,        D0          ; Draw Player
-    TRAP    #15                     ; Trap (Perform action
-
-
-* Square Lower Fin Main --------------------------------
+* Line Upper Tail Base   --------------------------------
 
     ; Set Pixel Colors
-    MOVE.L  #PLAYER_2_FIN,  D1          ; Set Pen color
+    MOVE.L  #PLAYER_3_FIN,  D1          ; Set Pen color
     MOVE.B  #80,                D0          ; Task for Pen Color
     TRAP    #15                             ; Trap (Perform action)
-    MOVE.L  #PLAYER_2_FIN,  D1          ; Set Fill color
+    MOVE.L  #PLAYER_3_FIN,  D1          ; Set Fill color
     MOVE.B  #81,                D0          ; Task for Fill Color
-    TRAP    #15                             ; Trap (Perform action)
+    TRAP    #15                             ; Trap (Perf
 
-	; Set X, Y, Width and Height
-    MOVE.L  POS_X,   D1       ; X
-    ADD.L   #9,        D1       ; Width
-    MOVE.L  PLAYER_Y,   D2       ; Y
-    ADD.L   #10,        D2       ; Height
-    MOVE.L  POS_X,   D3  
-    ADD.L   #11,        D3       ; Width
-    MOVE.L  PLAYER_Y,   D4 
-    ADD.L   #16,        D4       ; Height
-    
-    ; Draw Player
-    MOVE.B  #87,        D0          ; Draw Player
-    TRAP    #15                     ; Trap (Perform action
-
-* Line Lower fin  --------------------------------
-    ; Set Pixel Colors
-    MOVE.L  #PLAYER_2_FIN,  D1          ; Set Pen color
-    MOVE.B  #80,                D0          ; Task for Pen Color
-    TRAP    #15                             ; Trap (Perform action)
-    MOVE.L  #PLAYER_2_FIN,  D1          ; Set Fill color
-    MOVE.B  #81,                D0          ; Task for Fill Color
-    TRAP    #15                             ; Trap (Perform action)
-    
   ; Set Pen Width
     MOVE.L  #04,    D1          ; Set pen pixel width
     MOVE.B  #93,    D0          ; Task for Pen Color
@@ -361,13 +190,64 @@ DRAW_PLYR_LEFT_3:
 
 	; Set X, Y, Width and Height
     MOVE.L  POS_X,   D1       ; X
-    ADD.L   #7,        D1       ; Width
+    ADD.L   #32,        D1       ; Width
     MOVE.L  PLAYER_Y,   D2       ; Y
-    ADD.L   #13,        D2       ; Height
+    ADD.L   #0,        D2       ; Height
     MOVE.L  POS_X,   D3  
-    ADD.L   #11,        D3       ; Width
+    ADD.L   #42,        D3       ; Width
     MOVE.L  PLAYER_Y,   D4 
-    ADD.L   #17,        D4       ; Height
+    ADD.L   #-7,        D4       ; Height
+
+	  ; Draw Player
+    MOVE.B  #84,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action)
+	
+
+* Line Upper Tail End  --------------------------------
+
+	; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #42,        D1       ; Width
+    MOVE.L  PLAYER_Y,   D2       ; Y
+    ADD.L   #-7,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #38,        D3       ; Width
+    MOVE.L  PLAYER_Y,   D4 
+    ADD.L   #1,        D4       ; Height
+
+	  ; Draw Player
+    MOVE.B  #84,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action)
+	
+
+* Line Lower Tail Base   --------------------------------
+
+	; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #32,        D1       ; Width
+    MOVE.L  PLAYER_Y,   D2       ; Y
+    ADD.L   #7,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #42,        D3       ; Width
+    MOVE.L  PLAYER_Y,   D4 
+    ADD.L   #14,        D4       ; Height
+
+	  ; Draw Player
+    MOVE.B  #84,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action)
+	
+
+* Line Lower Tail End  --------------------------------
+
+	; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #42,        D1       ; Width
+    MOVE.L  PLAYER_Y,   D2       ; Y
+    ADD.L   #14,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #38,        D3       ; Width
+    MOVE.L  PLAYER_Y,   D4 
+    ADD.L   #6,        D4       ; Height
 
 	  ; Draw Player
     MOVE.B  #84,        D0          ; Draw Player
@@ -378,48 +258,168 @@ DRAW_PLYR_LEFT_3:
     MOVE.B  #93,    D0          ; Task for Pen Color
     TRAP    #15                 ; Trap (Perform action)
 
-
-* Square Top fin 1 (vertical)  --------------------------------
-
+* Square Top Banner -------------------------------
     ; Set Pixel Colors
-    MOVE.L  #PLAYER_2_RED,  D1          ; Set Pen color
-    MOVE.B  #80,                D0          ; Task for Pen Color
+    MOVE.L  #PLAYER_3_RED,       D1          ; Set pen color
+    MOVE.B  #80,                D0          ; Task for Background Color
     TRAP    #15                             ; Trap (Perform action)
-    MOVE.L  #PLAYER_2_RED,  D1          ; Set Fill color
+    MOVE.L  #PLAYER_3_RED,               D1          ; Set Fill color
     MOVE.B  #81,                D0          ; Task for Fill Color
     TRAP    #15                             ; Trap (Perform action)
 
-    ; Set X, Y, Width and Height
+       ; Set X, Y, Width and Height
     MOVE.L  POS_X,   D1       ; X
-    ADD.L   #16,        D1       ; Width
-    MOVE.L  PLAYER_Y,   D2       ; Y
-    ADD.L   #-8,        D2       ; Height
+    ADD.L   #0,        D1       ; Width
+    MOVE.L  POS_Y,   D2       ; Y
+    ADD.L   #00,        D2       ; Height
     MOVE.L  POS_X,   D3  
-    ADD.L   #18,        D3       ; Width
-    MOVE.L  PLAYER_Y,   D4 
-    ADD.L   #0,        D4       ; Height
+    ADD.L   #034,        D3       ; Width
+    MOVE.L  POS_Y,   D4 
+    ADD.L   #02,        D4       ; Height
     
     ; Draw Player
     MOVE.B  #87,        D0          ; Draw Player
-    TRAP    #15                     ; Trap (Perform action
+    TRAP    #15                     ; Trap (Perform action)
 
-* Square Bottom fin 1 (vertical)  --------------------------------
+* Square Bottom Banner -------------------------------
+    ; Set Pixel Colors
+    MOVE.L  #PLAYER_3_YELLOW,       D1          ; Set pen color
+    MOVE.B  #80,                D0          ; Task for Background Color
+    TRAP    #15                             ; Trap (Perform action)
+    MOVE.L  #PLAYER_3_YELLOW,               D1          ; Set Fill color
+    MOVE.B  #81,                D0          ; Task for Fill Color
+    TRAP    #15                             ; Trap (Perform action)
 
-    ; Set X, Y, Width and Height
+       ; Set X, Y, Width and Height
     MOVE.L  POS_X,   D1       ; X
-    ADD.L   #11,        D1       ; Width
-    MOVE.L  PLAYER_Y,   D2       ; Y
-    ADD.L   #10,        D2       ; Height
+    ADD.L   #4,        D1       ; Width
+    MOVE.L  POS_Y,   D2       ; Y
+    ADD.L   #14,        D2       ; Height
     MOVE.L  POS_X,   D3  
-    ADD.L   #13,        D3       ; Width
-    MOVE.L  PLAYER_Y,   D4 
-    ADD.L   #18,        D4       ; Height
+    ADD.L   #23,        D3       ; Width
+    MOVE.L  POS_Y,   D4 
+    ADD.L   #16,        D4       ; Height
     
     ; Draw Player
     MOVE.B  #87,        D0          ; Draw Player
-    TRAP    #15                     ; Trap (Perform action
+    TRAP    #15                     ; Trap (Perform action)
 
-* Square eye -------------------------------
+* Square Body 1 topmost -------------------------------
+    ; Set Pixel Colors
+    MOVE.L  #PLAYER_3_ORANGE,       D1          ; Set pen color
+    MOVE.B  #80,                D0          ; Task for Background Color
+    TRAP    #15                             ; Trap (Perform action)
+    MOVE.L  #PLAYER_3_ORANGE,               D1          ; Set Fill color
+    MOVE.B  #81,                D0          ; Task for Fill Color
+    TRAP    #15                             ; Trap (Perform action)
+
+       ; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #-4,        D1       ; Width
+    MOVE.L  POS_Y,   D2       ; Y
+    ADD.L   #2,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #34,        D3       ; Width
+    MOVE.L  POS_Y,   D4 
+    ADD.L   #7,        D4       ; Height
+    
+    ; Draw Player
+    MOVE.B  #87,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action)
+
+* Square Body 2  -------------------------------
+    ; Set Pixel Colors
+    MOVE.L  #PLAYER_3_ORANGE,       D1          ; Set pen color
+    MOVE.B  #80,                D0          ; Task for Background Color
+    TRAP    #15                             ; Trap (Perform action)
+    MOVE.L  #PLAYER_3_ORANGE,               D1          ; Set Fill color
+    MOVE.B  #81,                D0          ; Task for Fill Color
+    TRAP    #15                             ; Trap (Perform action)
+
+       ; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #0,        D1       ; Width
+    MOVE.L  POS_Y,   D2       ; Y
+    ADD.L   #7,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #29,        D3       ; Width
+    MOVE.L  POS_Y,   D4 
+    ADD.L   #11,        D4       ; Height
+    
+    ; Draw Player
+    MOVE.B  #87,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action)
+
+* Square Body 3  -------------------------------
+    ; Set Pixel Colors
+    MOVE.L  #PLAYER_3_ORANGE,       D1          ; Set pen color
+    MOVE.B  #80,                D0          ; Task for Background Color
+    TRAP    #15                             ; Trap (Perform action)
+    MOVE.L  #PLAYER_3_ORANGE,               D1          ; Set Fill color
+    MOVE.B  #81,                D0          ; Task for Fill Color
+    TRAP    #15                             ; Trap (Perform action)
+
+       ; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #0,        D1       ; Width
+    MOVE.L  POS_Y,   D2       ; Y
+    ADD.L   #11,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #23,        D3       ; Width
+    MOVE.L  POS_Y,   D4 
+    ADD.L   #14,        D4       ; Height
+    
+    ; Draw Player
+    MOVE.B  #87,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action)
+
+* Square Nose  -------------------------------
+    ; Set Pixel Colors
+    MOVE.L  #PLAYER_3_ORANGE,       D1          ; Set pen color
+    MOVE.B  #80,                D0          ; Task for Background Color
+    TRAP    #15                             ; Trap (Perform action)
+    MOVE.L  #PLAYER_3_ORANGE,               D1          ; Set Fill color
+    MOVE.B  #81,                D0          ; Task for Fill Color
+    TRAP    #15                             ; Trap (Perform action)
+
+       ; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #-4,        D1       ; Width
+    MOVE.L  POS_Y,   D2       ; Y
+    ADD.L   #2,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #0,        D3       ; Width
+    MOVE.L  POS_Y,   D4 
+    ADD.L   #12,        D4       ; Height
+    
+    ; Draw Player
+    MOVE.B  #87,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action)
+
+* Square Top Banner 2 -------------------------------
+    ; Set Pixel Colors
+    MOVE.L  #PLAYER_3_RED,       D1          ; Set pen color
+    MOVE.B  #80,                D0          ; Task for Background Color
+    TRAP    #15                             ; Trap (Perform action)
+    MOVE.L  #PLAYER_3_RED,               D1          ; Set Fill color
+    MOVE.B  #81,                D0          ; Task for Fill Color
+    TRAP    #15                             ; Trap (Perform action)
+
+       ; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #-4,        D1       ; Width
+    MOVE.L  POS_Y,   D2       ; Y
+    ADD.L   #2,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #34,        D3       ; Width
+    MOVE.L  POS_Y,   D4 
+    ADD.L   #04,        D4       ; Height
+    
+    ; Draw Player
+    MOVE.B  #87,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action)
+
+* Square eye -------------------------------============================
     ; Set Pixel Colors
     MOVE.L  #BLACK,       D1          ; Set pen color
     MOVE.B  #80,                D0          ; Task for Background Color
@@ -430,39 +430,1093 @@ DRAW_PLYR_LEFT_3:
 
        ; Set X, Y, Width and Height
     MOVE.L  POS_X,   D1       ; X
-    ADD.L   #2,        D1       ; Width
+    ADD.L   #1,        D1       ; Width
     MOVE.L  POS_Y,   D2       ; Y
-    ADD.L   #03,        D2       ; Height
+    ADD.L   #04,        D2       ; Height
     MOVE.L  POS_X,   D3  
     ADD.L   #04,        D3       ; Width
     MOVE.L  POS_Y,   D4 
-    ADD.L   #05,        D4       ; Height
+    ADD.L   #07,        D4       ; Height
     
     ; Draw Player
     MOVE.B  #87,        D0          ; Draw Player
     TRAP    #15                     ; Trap (Perform action)
-    RTS                             ; Return to subroutine
+
+
+
+* Square Left Fin 1 -------------------------------
+
+    ; Set Pixel Colors
+    MOVE.L  #PLAYER_3_FIN,  D1          ; Set Pen color
+    MOVE.B  #80,                D0          ; Task for Pen Color
+    TRAP    #15                             ; Trap (Perform action)
+    MOVE.L  #PLAYER_3_FIN,  D1          ; Set Fill color
+    MOVE.B  #81,                D0          ; Task for Fill Color
+    TRAP    #15                             ; Trap (Perform action)
+
+       ; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #7,        D1       ; Width
+    MOVE.L  POS_Y,   D2       ; Y
+    ADD.L   #12,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #12,        D3       ; Width
+    MOVE.L  POS_Y,   D4 
+    ADD.L   #16,        D4       ; Height
+    
+    ; Draw Player
+    MOVE.B  #87,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action)
+
+* Square Left Fin 2 -------------------------------
+
+       ; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #10,        D1       ; Width
+    MOVE.L  POS_Y,   D2       ; Y
+    ADD.L   #12,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #12,        D3       ; Width
+    MOVE.L  POS_Y,   D4 
+    ADD.L   #20,        D4       ; Height
+    
+    ; Draw Player
+    MOVE.B  #87,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action)
+
+* Square Right Fin 1 -------------------------------
+
+       ; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #17,        D1       ; Width
+    MOVE.L  POS_Y,   D2       ; Y
+    ADD.L   #13,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #26,        D3       ; Width
+    MOVE.L  POS_Y,   D4 
+    ADD.L   #16,        D4       ; Height
+    
+    ; Draw Player
+    MOVE.B  #87,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action)
+
+* Square Right Fin 2 -------------------------------
+
+       ; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #22,        D1       ; Width
+    MOVE.L  POS_Y,   D2       ; Y
+    ADD.L   #13,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #26,        D3       ; Width
+    MOVE.L  POS_Y,   D4 
+    ADD.L   #19,        D4       ; Height
+    
+    ; Draw Player
+    MOVE.B  #87,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action)
+
+
+* Line Left Fin   --------------------------------
+    
+  ; Set Pen Width
+    MOVE.L  #04,    D1          ; Set pen pixel width
+    MOVE.B  #93,    D0          ; Task for Pen Color
+    TRAP    #15                 ; Trap (Perform action) 
+
+	; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #8,        D1       ; Width
+    MOVE.L  PLAYER_Y,   D2       ; Y
+    ADD.L   #16,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #11,        D3       ; Width
+    MOVE.L  PLAYER_Y,   D4 
+    ADD.L   #21,        D4       ; Height
+
+	  ; Draw Player
+    MOVE.B  #84,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action)
+	
+
+* Line Right Fin  --------------------------------
+
+	; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #18,        D1       ; Width
+    MOVE.L  PLAYER_Y,   D2       ; Y
+    ADD.L   #16,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #25,        D3       ; Width
+    MOVE.L  PLAYER_Y,   D4 
+    ADD.L   #21,        D4       ; Height
+
+	  ; Draw Player
+    MOVE.B  #84,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action)
+	
+	; ReSet Pen Width
+    MOVE.L  #01,    D1          ; Set pen pixel width
+    MOVE.B  #93,    D0          ; Task for Pen Color
+    TRAP    #15                 ; Trap (Perform action)
+
+
+* Square Top Trim H   --------------------------------
+
+    ; Set Pixel Colors
+    MOVE.L  #PLAYER_3_TRIM,  D1          ; Set Pen color
+    MOVE.B  #80,                D0          ; Task for Pen Color
+    TRAP    #15                             ; Trap (Perform action)
+    MOVE.L  #PLAYER_3_TRIM,  D1          ; Set Fill color
+    MOVE.B  #81,                D0          ; Task for Fill Color
+    TRAP    #15                             ; Trap (Perform action)    
+
+	; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #16,        D1       ; Width
+    MOVE.L  PLAYER_Y,   D2       ; Y
+    ADD.L   #-7,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #21,        D3       ; Width
+    MOVE.L  PLAYER_Y,   D4 
+    ADD.L   #-8,        D4       ; Height
+
+	  ; Draw Player
+    MOVE.B  #87,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action)
+
+* Square Top Trim V   --------------------------------
+
+	; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #20,        D1       ; Width
+    MOVE.L  PLAYER_Y,   D2       ; Y
+    ADD.L   #-7,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #21,        D3       ; Width
+    MOVE.L  PLAYER_Y,   D4 
+    ADD.L   #-5,        D4       ; Height
+
+	  ; Draw Player
+    MOVE.B  #87,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action)
+
+* Square Left Trim V   --------------------------------
+
+	; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #12,        D1       ; Width
+    MOVE.L  PLAYER_Y,   D2       ; Y
+    ADD.L   #12,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #13,        D3       ; Width
+    MOVE.L  PLAYER_Y,   D4 
+    ADD.L   #21,        D4       ; Height
+
+	  ; Draw Player
+    MOVE.B  #87,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action)
+
+* Square Left Trim H   --------------------------------
+
+	; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #10,        D1       ; Width
+    MOVE.L  PLAYER_Y,   D2       ; Y
+    ADD.L   #21,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #13,        D3       ; Width
+    MOVE.L  PLAYER_Y,   D4 
+    ADD.L   #22,        D4       ; Height
+
+	  ; Draw Player
+    MOVE.B  #87,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action)
+
+* Square Right Trim V   --------------------------------
+
+	; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #26,        D1       ; Width
+    MOVE.L  PLAYER_Y,   D2       ; Y
+    ADD.L   #13,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #27,        D3       ; Width
+    MOVE.L  PLAYER_Y,   D4 
+    ADD.L   #20,        D4       ; Height
+
+	  ; Draw Player
+    MOVE.B  #87,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action)
+
+* Square Right Trim H   --------------------------------
+
+	; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #24,        D1       ; Width
+    MOVE.L  PLAYER_Y,   D2       ; Y
+    ADD.L   #21,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #27,        D3       ; Width
+    MOVE.L  PLAYER_Y,   D4 
+    ADD.L   #22,        D4       ; Height
+
+	  ; Draw Player
+    MOVE.B  #87,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action)
+
+* Square Tail Trim H   --------------------------------
+
+	; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #38,        D1       ; Width
+    MOVE.L  PLAYER_Y,   D2       ; Y
+    ADD.L   #1,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #39,        D3       ; Width
+    MOVE.L  PLAYER_Y,   D4 
+    ADD.L   #6,        D4       ; Height
+
+	  ; Draw Player
+    MOVE.B  #87,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action)
+
+* Square Tail trimline up   --------------------------------
+	; Set Pen Width
+    MOVE.L  #03,    D1          ; Set pen pixel width
+    MOVE.B  #93,    D0          ; Task for Pen Color
+    TRAP    #15                 ; Trap (Perform action) 
+
+	; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #43,        D1       ; Width
+    MOVE.L  PLAYER_Y,   D2       ; Y
+    ADD.L   #-8,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #39,        D3       ; Width
+    MOVE.L  PLAYER_Y,   D4 
+    ADD.L   #1,        D4       ; Height
+
+	  ; Draw Player
+    MOVE.B  #84,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action)
+
+* Line tail trimline down  --------------------------------
+
+	; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #43,        D1       ; Width
+    MOVE.L  PLAYER_Y,   D2       ; Y
+    ADD.L   #15,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #39,        D3       ; Width
+    MOVE.L  PLAYER_Y,   D4 
+    ADD.L   #5,        D4       ; Height
+
+	  ; Draw Player
+    MOVE.B  #84,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action)
+	
+	
+	; ReSet Pen Width
+    MOVE.L  #01,    D1          ; Set pen pixel width
+    MOVE.B  #93,    D0          ; Task for Pen Color
+    TRAP    #15                 ; Trap (Perform action)
 
 
 	RTS
 
-*-----------------------------------------------------------
+*---------------------------------------------------------------------------------------------------------
 * Subroutine    : Draw Player Facing Right (Flipped)
 * Description   : Flip the Player Draw
-*-----------------------------------------------------------
+*--------------------------------------------------------------------------------------------------------
 DRAW_PLYR_FLIP_3:
 
     MOVE.L #1, IS_FLIPPED
+
+* Line Upper fin  --------------------------------
+    ; Set Pixel Colors
+    MOVE.L  #PLAYER_3_FIN,  D1          ; Set Pen color
+    MOVE.B  #80,                D0          ; Task for Pen Color
+    TRAP    #15                             ; Trap (Perform action)
+    MOVE.L  #PLAYER_3_FIN,  D1          ; Set Fill color
+    MOVE.B  #81,                D0          ; Task for Fill Color
+    TRAP    #15                             ; Trap (Perform action)
+    
+  ; Set Pen Width
+    MOVE.L  #04,    D1          ; Set pen pixel width
+    MOVE.B  #93,    D0          ; Task for Pen Color
+    TRAP    #15                 ; Trap (Perform action) 
+
+	; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #10,        D1       ; Width
+    MOVE.L  PLAYER_Y,   D2       ; Y
+    ADD.L   #0,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #18,        D3       ; Width
+    MOVE.L  PLAYER_Y,   D4 
+    ADD.L   #-7,        D4       ; Height
+             	        
+    ; FLIP IT
+    JSR FLIP_X
+  
+	  ; Draw Player
+    MOVE.B  #84,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action)
+	
+	; ReSet Pen Width
+    MOVE.L  #01,    D1          ; Set pen pixel width
+    MOVE.B  #93,    D0          ; Task for Pen Color
+    TRAP    #15                 ; Trap (Perform action)
+
+
+* Line Upper Fin end  --------------------------------
+    
+  ; Set Pen Width
+    MOVE.L  #04,    D1          ; Set pen pixel width
+    MOVE.B  #93,    D0          ; Task for Pen Color
+    TRAP    #15                 ; Trap (Perform action) 
+
+	; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #20,        D1       ; Width
+    MOVE.L  PLAYER_Y,   D2       ; Y
+    ADD.L   #-3,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #24,        D3       ; Width
+    MOVE.L  PLAYER_Y,   D4 
+    ADD.L   #0,        D4       ; Height
+             	        
+    ; FLIP IT
+    JSR FLIP_X
+  
+	  ; Draw Player
+    MOVE.B  #84,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action)
+	
+	; ReSet Pen Width
+    MOVE.L  #01,    D1          ; Set pen pixel width
+    MOVE.B  #93,    D0          ; Task for Pen Color
+    TRAP    #15                 ; Trap (Perform action)
+
+
+* Square Upper Fin Base 1--------------------------------
+
+	; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #13,        D1       ; Width
+    MOVE.L  PLAYER_Y,   D2       ; Y
+    ADD.L   #-2,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #22,        D3       ; Width
+    MOVE.L  PLAYER_Y,   D4 
+    ADD.L   #0,        D4       ; Height
+                 	        
+    ; FLIP IT
+    JSR FLIP_X
+  
+    ; Draw Player
+    MOVE.B  #87,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action
+
+* Square Upper Fin Base 2 --------------------------------
+
+	; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #15,        D1       ; Width
+    MOVE.L  PLAYER_Y,   D2       ; Y
+    ADD.L   #-4,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #21,        D3       ; Width
+    MOVE.L  PLAYER_Y,   D4 
+    ADD.L   #0,        D4       ; Height
+                 	        
+    ; FLIP IT
+    JSR FLIP_X
+  
+    ; Draw Player
+    MOVE.B  #87,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action
+
+* Square Upper Fin Base 3 --------------------------------
+
+	; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #16,        D1       ; Width
+    MOVE.L  PLAYER_Y,   D2       ; Y
+    ADD.L   #-6,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #20,        D3       ; Width
+    MOVE.L  PLAYER_Y,   D4 
+    ADD.L   #0,        D4       ; Height
+                 	        
+    ; FLIP IT
+    JSR FLIP_X
+  
+    ; Draw Player
+    MOVE.B  #87,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action
+
+* Square Tail Middle --------------------------------
+
+	; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #34,        D1       ; Width
+    MOVE.L  PLAYER_Y,   D2       ; Y
+    ADD.L   #-1,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #38,        D3       ; Width
+    MOVE.L  PLAYER_Y,   D4 
+    ADD.L   #8,        D4       ; Height
+                 	        
+    ; FLIP IT
+    JSR FLIP_X
+  
+    ; Draw Player
+    MOVE.B  #87,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action
+
+
+* Line Upper Tail Base   --------------------------------
+
+    ; Set Pixel Colors
+    MOVE.L  #PLAYER_3_FIN,  D1          ; Set Pen color
+    MOVE.B  #80,                D0          ; Task for Pen Color
+    TRAP    #15                             ; Trap (Perform action)
+    MOVE.L  #PLAYER_3_FIN,  D1          ; Set Fill color
+    MOVE.B  #81,                D0          ; Task for Fill Color
+    TRAP    #15                             ; Trap (Perf
+
+  ; Set Pen Width
+    MOVE.L  #04,    D1          ; Set pen pixel width
+    MOVE.B  #93,    D0          ; Task for Pen Color
+    TRAP    #15                 ; Trap (Perform action) 
+
+	; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #32,        D1       ; Width
+    MOVE.L  PLAYER_Y,   D2       ; Y
+    ADD.L   #0,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #42,        D3       ; Width
+    MOVE.L  PLAYER_Y,   D4 
+    ADD.L   #-7,        D4       ; Height
+             	        
+    ; FLIP IT
+    JSR FLIP_X
+  
+	  ; Draw Player
+    MOVE.B  #84,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action)
+	
+
+* Line Upper Tail End  --------------------------------
+
+	; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #42,        D1       ; Width
+    MOVE.L  PLAYER_Y,   D2       ; Y
+    ADD.L   #-7,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #38,        D3       ; Width
+    MOVE.L  PLAYER_Y,   D4 
+    ADD.L   #1,        D4       ; Height
+             	        
+    ; FLIP IT
+    JSR FLIP_X
+  
+	  ; Draw Player
+    MOVE.B  #84,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action)
+	
+
+* Line Lower Tail Base   --------------------------------
+
+	; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #32,        D1       ; Width
+    MOVE.L  PLAYER_Y,   D2       ; Y
+    ADD.L   #7,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #42,        D3       ; Width
+    MOVE.L  PLAYER_Y,   D4 
+    ADD.L   #14,        D4       ; Height
+             	        
+    ; FLIP IT
+    JSR FLIP_X
+  
+	  ; Draw Player
+    MOVE.B  #84,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action)
+	
+
+* Line Lower Tail End  --------------------------------
+
+	; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #42,        D1       ; Width
+    MOVE.L  PLAYER_Y,   D2       ; Y
+    ADD.L   #14,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #38,        D3       ; Width
+    MOVE.L  PLAYER_Y,   D4 
+    ADD.L   #6,        D4       ; Height
+             	        
+    ; FLIP IT
+    JSR FLIP_X
+  
+	  ; Draw Player
+    MOVE.B  #84,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action)
+	
+	; ReSet Pen Width
+    MOVE.L  #01,    D1          ; Set pen pixel width
+    MOVE.B  #93,    D0          ; Task for Pen Color
+    TRAP    #15                 ; Trap (Perform action)
+
+* Square Top Banner -------------------------------
+    ; Set Pixel Colors
+    MOVE.L  #PLAYER_3_RED,       D1          ; Set pen color
+    MOVE.B  #80,                D0          ; Task for Background Color
+    TRAP    #15                             ; Trap (Perform action)
+    MOVE.L  #PLAYER_3_RED,               D1          ; Set Fill color
+    MOVE.B  #81,                D0          ; Task for Fill Color
+    TRAP    #15                             ; Trap (Perform action)
+
+       ; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #0,        D1       ; Width
+    MOVE.L  POS_Y,   D2       ; Y
+    ADD.L   #00,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #034,        D3       ; Width
+    MOVE.L  POS_Y,   D4 
+    ADD.L   #02,        D4       ; Height
+                 	        
+    ; FLIP IT
+    JSR FLIP_X
+  
+    ; Draw Player
+    MOVE.B  #87,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action)
+
+* Square Bottom Banner -------------------------------
+    ; Set Pixel Colors
+    MOVE.L  #PLAYER_3_YELLOW,       D1          ; Set pen color
+    MOVE.B  #80,                D0          ; Task for Background Color
+    TRAP    #15                             ; Trap (Perform action)
+    MOVE.L  #PLAYER_3_YELLOW,               D1          ; Set Fill color
+    MOVE.B  #81,                D0          ; Task for Fill Color
+    TRAP    #15                             ; Trap (Perform action)
+
+       ; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #4,        D1       ; Width
+    MOVE.L  POS_Y,   D2       ; Y
+    ADD.L   #14,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #23,        D3       ; Width
+    MOVE.L  POS_Y,   D4 
+    ADD.L   #16,        D4       ; Height
+                 	        
+    ; FLIP IT
+    JSR FLIP_X
+  
+    ; Draw Player
+    MOVE.B  #87,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action)
+
+* Square Body 1 topmost -------------------------------
+    ; Set Pixel Colors
+    MOVE.L  #PLAYER_3_ORANGE,       D1          ; Set pen color
+    MOVE.B  #80,                D0          ; Task for Background Color
+    TRAP    #15                             ; Trap (Perform action)
+    MOVE.L  #PLAYER_3_ORANGE,               D1          ; Set Fill color
+    MOVE.B  #81,                D0          ; Task for Fill Color
+    TRAP    #15                             ; Trap (Perform action)
+
+       ; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #-4,        D1       ; Width
+    MOVE.L  POS_Y,   D2       ; Y
+    ADD.L   #2,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #34,        D3       ; Width
+    MOVE.L  POS_Y,   D4 
+    ADD.L   #7,        D4       ; Height
+                 	        
+    ; FLIP IT
+    JSR FLIP_X
+  
+    ; Draw Player
+    MOVE.B  #87,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action)
+
+* Square Body 2  -------------------------------
+    ; Set Pixel Colors
+    MOVE.L  #PLAYER_3_ORANGE,       D1          ; Set pen color
+    MOVE.B  #80,                D0          ; Task for Background Color
+    TRAP    #15                             ; Trap (Perform action)
+    MOVE.L  #PLAYER_3_ORANGE,               D1          ; Set Fill color
+    MOVE.B  #81,                D0          ; Task for Fill Color
+    TRAP    #15                             ; Trap (Perform action)
+
+       ; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #0,        D1       ; Width
+    MOVE.L  POS_Y,   D2       ; Y
+    ADD.L   #7,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #29,        D3       ; Width
+    MOVE.L  POS_Y,   D4 
+    ADD.L   #11,        D4       ; Height
+                 	        
+    ; FLIP IT
+    JSR FLIP_X
+  
+    ; Draw Player
+    MOVE.B  #87,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action)
+
+* Square Body 3  -------------------------------
+    ; Set Pixel Colors
+    MOVE.L  #PLAYER_3_ORANGE,       D1          ; Set pen color
+    MOVE.B  #80,                D0          ; Task for Background Color
+    TRAP    #15                             ; Trap (Perform action)
+    MOVE.L  #PLAYER_3_ORANGE,               D1          ; Set Fill color
+    MOVE.B  #81,                D0          ; Task for Fill Color
+    TRAP    #15                             ; Trap (Perform action)
+
+       ; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #0,        D1       ; Width
+    MOVE.L  POS_Y,   D2       ; Y
+    ADD.L   #11,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #23,        D3       ; Width
+    MOVE.L  POS_Y,   D4 
+    ADD.L   #14,        D4       ; Height
+                 	        
+    ; FLIP IT
+    JSR FLIP_X
+  
+    ; Draw Player
+    MOVE.B  #87,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action)
+
+* Square Nose  -------------------------------
+
+       ; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #-4,        D1       ; Width
+    MOVE.L  POS_Y,   D2       ; Y
+    ADD.L   #2,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #0,        D3       ; Width
+    MOVE.L  POS_Y,   D4 
+    ADD.L   #12,        D4       ; Height
+                 	        
+    ; FLIP IT
+    JSR FLIP_X
+  
+    ; Draw Player
+    MOVE.B  #87,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action)
+
+* Square Top Banner 2 -------------------------------
+    ; Set Pixel Colors
+    MOVE.L  #PLAYER_3_RED,       D1          ; Set pen color
+    MOVE.B  #80,                D0          ; Task for Background Color
+    TRAP    #15                             ; Trap (Perform action)
+    MOVE.L  #PLAYER_3_RED,               D1          ; Set Fill color
+    MOVE.B  #81,                D0          ; Task for Fill Color
+    TRAP    #15                             ; Trap (Perform action)
+
+       ; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #-4,        D1       ; Width
+    MOVE.L  POS_Y,   D2       ; Y
+    ADD.L   #2,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #34,        D3       ; Width
+    MOVE.L  POS_Y,   D4 
+    ADD.L   #04,        D4       ; Height
+                 	        
+    ; FLIP IT
+    JSR FLIP_X
+  
+    ; Draw Player
+    MOVE.B  #87,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action)
+
+* Square eye -------------------------------============================
+    ; Set Pixel Colors
+    MOVE.L  #BLACK,       D1          ; Set pen color
+    MOVE.B  #80,                D0          ; Task for Background Color
+    TRAP    #15                             ; Trap (Perform action)
+    MOVE.L  #BLACK,               D1          ; Set Fill color
+    MOVE.B  #81,                D0          ; Task for Fill Color
+    TRAP    #15                             ; Trap (Perform action)
+
+       ; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #1,        D1       ; Width
+    MOVE.L  POS_Y,   D2       ; Y
+    ADD.L   #04,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #04,        D3       ; Width
+    MOVE.L  POS_Y,   D4 
+    ADD.L   #07,        D4       ; Height
+                 	        
+    ; FLIP IT
+    JSR FLIP_X
+  
+    ; Draw Player
+    MOVE.B  #87,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action)
+
+
+
+* Square Left Fin 1 -------------------------------
+
+    ; Set Pixel Colors
+    MOVE.L  #PLAYER_3_FIN,  D1          ; Set Pen color
+    MOVE.B  #80,                D0          ; Task for Pen Color
+    TRAP    #15                             ; Trap (Perform action)
+    MOVE.L  #PLAYER_3_FIN,  D1          ; Set Fill color
+    MOVE.B  #81,                D0          ; Task for Fill Color
+    TRAP    #15                             ; Trap (Perform action)
+
+       ; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #7,        D1       ; Width
+    MOVE.L  POS_Y,   D2       ; Y
+    ADD.L   #12,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #12,        D3       ; Width
+    MOVE.L  POS_Y,   D4 
+    ADD.L   #16,        D4       ; Height
+                 	        
+    ; FLIP IT
+    JSR FLIP_X
+  
+    ; Draw Player
+    MOVE.B  #87,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action)
+
+* Square Left Fin 2 -------------------------------
+
+       ; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #10,        D1       ; Width
+    MOVE.L  POS_Y,   D2       ; Y
+    ADD.L   #12,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #12,        D3       ; Width
+    MOVE.L  POS_Y,   D4 
+    ADD.L   #20,        D4       ; Height
+                 	        
+    ; FLIP IT
+    JSR FLIP_X
+  
+    ; Draw Player
+    MOVE.B  #87,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action)
+
+* Square Right Fin 1 -------------------------------
+
+       ; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #17,        D1       ; Width
+    MOVE.L  POS_Y,   D2       ; Y
+    ADD.L   #13,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #26,        D3       ; Width
+    MOVE.L  POS_Y,   D4 
+    ADD.L   #16,        D4       ; Height
+                 	        
+    ; FLIP IT
+    JSR FLIP_X
+  
+    ; Draw Player
+    MOVE.B  #87,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action)
+
+* Square Right Fin 2 -------------------------------
+
+       ; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #22,        D1       ; Width
+    MOVE.L  POS_Y,   D2       ; Y
+    ADD.L   #13,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #26,        D3       ; Width
+    MOVE.L  POS_Y,   D4 
+    ADD.L   #19,        D4       ; Height
+                 	        
+    ; FLIP IT
+    JSR FLIP_X
+  
+    ; Draw Player
+    MOVE.B  #87,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action)
+
+
+* Line Left Fin   --------------------------------
+    
+  ; Set Pen Width
+    MOVE.L  #04,    D1          ; Set pen pixel width
+    MOVE.B  #93,    D0          ; Task for Pen Color
+    TRAP    #15                 ; Trap (Perform action) 
+
+	; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #8,        D1       ; Width
+    MOVE.L  PLAYER_Y,   D2       ; Y
+    ADD.L   #16,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #11,        D3       ; Width
+    MOVE.L  PLAYER_Y,   D4 
+    ADD.L   #21,        D4       ; Height
+             	        
+    ; FLIP IT
+    JSR FLIP_X
+  
+	  ; Draw Player
+    MOVE.B  #84,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action)
+	
+
+* Line Right Fin  --------------------------------
+
+	; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #18,        D1       ; Width
+    MOVE.L  PLAYER_Y,   D2       ; Y
+    ADD.L   #16,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #25,        D3       ; Width
+    MOVE.L  PLAYER_Y,   D4 
+    ADD.L   #21,        D4       ; Height
+             	        
+    ; FLIP IT
+    JSR FLIP_X
+  
+	  ; Draw Player
+    MOVE.B  #84,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action)
+	
+	; ReSet Pen Width
+    MOVE.L  #01,    D1          ; Set pen pixel width
+    MOVE.B  #93,    D0          ; Task for Pen Color
+    TRAP    #15                 ; Trap (Perform action)
+
+
+* Square Top Trim H   --------------------------------
+
+    ; Set Pixel Colors
+    MOVE.L  #PLAYER_3_TRIM,  D1          ; Set Pen color
+    MOVE.B  #80,                D0          ; Task for Pen Color
+    TRAP    #15                             ; Trap (Perform action)
+    MOVE.L  #PLAYER_3_TRIM,  D1          ; Set Fill color
+    MOVE.B  #81,                D0          ; Task for Fill Color
+    TRAP    #15                             ; Trap (Perform action)    
+
+	; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #16,        D1       ; Width
+    MOVE.L  PLAYER_Y,   D2       ; Y
+    ADD.L   #-7,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #21,        D3       ; Width
+    MOVE.L  PLAYER_Y,   D4 
+    ADD.L   #-8,        D4       ; Height
+             	        
+    ; FLIP IT
+    JSR FLIP_X
+  
+	  ; Draw Player
+    MOVE.B  #87,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action)
+
+* Square Top Trim V   --------------------------------
+
+	; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #20,        D1       ; Width
+    MOVE.L  PLAYER_Y,   D2       ; Y
+    ADD.L   #-7,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #21,        D3       ; Width
+    MOVE.L  PLAYER_Y,   D4 
+    ADD.L   #-4,        D4       ; Height
+             	        
+    ; FLIP IT
+    JSR FLIP_X
+  
+	  ; Draw Player
+    MOVE.B  #87,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action)
+
+* Square Left Trim V   --------------------------------
+
+	; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #12,        D1       ; Width
+    MOVE.L  PLAYER_Y,   D2       ; Y
+    ADD.L   #12,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #13,        D3       ; Width
+    MOVE.L  PLAYER_Y,   D4 
+    ADD.L   #21,        D4       ; Height
+             	        
+    ; FLIP IT
+    JSR FLIP_X
+  
+	  ; Draw Player
+    MOVE.B  #87,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action)
+
+* Square Left Trim H   --------------------------------
+
+	; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #10,        D1       ; Width
+    MOVE.L  PLAYER_Y,   D2       ; Y
+    ADD.L   #21,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #13,        D3       ; Width
+    MOVE.L  PLAYER_Y,   D4 
+    ADD.L   #22,        D4       ; Height
+             	        
+    ; FLIP IT
+    JSR FLIP_X
+  
+	  ; Draw Player
+    MOVE.B  #87,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action)
+
+* Square Right Trim V   --------------------------------
+
+	; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #26,        D1       ; Width
+    MOVE.L  PLAYER_Y,   D2       ; Y
+    ADD.L   #13,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #27,        D3       ; Width
+    MOVE.L  PLAYER_Y,   D4 
+    ADD.L   #20,        D4       ; Height
+             	        
+    ; FLIP IT
+    JSR FLIP_X
+  
+	  ; Draw Player
+    MOVE.B  #87,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action)
+
+* Square Right Trim H   --------------------------------
+
+	; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #24,        D1       ; Width
+    MOVE.L  PLAYER_Y,   D2       ; Y
+    ADD.L   #21,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #27,        D3       ; Width
+    MOVE.L  PLAYER_Y,   D4 
+    ADD.L   #22,        D4       ; Height
+             	        
+    ; FLIP IT
+    JSR FLIP_X
+  
+	  ; Draw Player
+    MOVE.B  #87,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action)
+
+* Square Tail Trim H   --------------------------------
+
+	; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #38,        D1       ; Width
+    MOVE.L  PLAYER_Y,   D2       ; Y
+    ADD.L   #1,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #39,        D3       ; Width
+    MOVE.L  PLAYER_Y,   D4 
+    ADD.L   #6,        D4       ; Height
+             	        
+    ; FLIP IT
+    JSR FLIP_X
+  
+	  ; Draw Player
+    MOVE.B  #87,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action)
+
+* Square Tail trimline up   --------------------------------
+	; Set Pen Width
+    MOVE.L  #03,    D1          ; Set pen pixel width
+    MOVE.B  #93,    D0          ; Task for Pen Color
+    TRAP    #15                 ; Trap (Perform action) 
+
+	; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #43,        D1       ; Width
+    MOVE.L  PLAYER_Y,   D2       ; Y
+    ADD.L   #-8,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #39,        D3       ; Width
+    MOVE.L  PLAYER_Y,   D4 
+    ADD.L   #1,        D4       ; Height
+             	        
+    ; FLIP IT
+    JSR FLIP_X
+  
+	  ; Draw Player
+    MOVE.B  #84,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action)
+
+* Line tail trimline down  --------------------------------
+
+	; Set X, Y, Width and Height
+    MOVE.L  POS_X,   D1       ; X
+    ADD.L   #43,        D1       ; Width
+    MOVE.L  PLAYER_Y,   D2       ; Y
+    ADD.L   #15,        D2       ; Height
+    MOVE.L  POS_X,   D3  
+    ADD.L   #39,        D3       ; Width
+    MOVE.L  PLAYER_Y,   D4 
+    ADD.L   #5,        D4       ; Height
+             	        
+    ; FLIP IT
+    JSR FLIP_X
+  
+	  ; Draw Player
+    MOVE.B  #84,        D0          ; Draw Player
+    TRAP    #15                     ; Trap (Perform action)
+	
+	; ReSet Pen Width
+    MOVE.L  #01,    D1          ; Set pen pixel width
+    MOVE.B  #93,    D0          ; Task for Pen Color
+    TRAP    #15                 ; Trap (Perform action)
+
+
+	RTS
+
 
 *------------------------
 ; HEX CODES
 *------------------------
 
-PLAYER_3_RED	    	equ	$00095BB3
-PLAYER_3_ORANGE	    	equ	$000A80CF
-PLAYER_3_GOLD			equ	$0022ABE5
-PLAYER_3_YELLOW	    	equ	$0084DEF5
-PLAYER_3_FIN   			equ	$00C4EDF5
+PLAYER_3_FIN	    	equ	$0032418C
+PLAYER_3_RED    		equ	$003D4FA8
+PLAYER_3_ORANGE			equ	$005696E3
+PLAYER_3_YELLOW	    	equ	$0097D2F7
+PLAYER_3_TRIM  			equ	$00BCDBE0
+
+
+
 
 
 

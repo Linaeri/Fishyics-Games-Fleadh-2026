@@ -3,6 +3,7 @@
 * Description   : Bigger fish eats smaller on coll
 *-----------------------------------------------------------
 FISH_EAT_FISH:
+    MOVEM.L D0-D6/A0-A3, -(SP)
     MOVE.L  #0, FEF_I           ;outer index
 
 ;outer loop
@@ -105,6 +106,12 @@ FEF_INNER:
     MOVE.L  #-200, (A0,D0.L)
     LEA     ENEMY_TABLE_DIR, A1
     MOVE.L  #-1, (A1,D0.L)         ;force left so it resets next frame
+    ;spawn bone crumbs at j's position
+    MOVE.L  D4, LFTOVR_SPAWN_X
+    MOVE.L  D5, LFTOVR_SPAWN_Y
+    MOVEM.L D0-D6/A0-A2, -(SP)
+    JSR     SPAWN_LEFTOVERS
+    MOVEM.L (SP)+, D0-D6/A0-A2
     BRA     FEF_NEXT_INNER
 
 FEF_EAT_I:
@@ -113,6 +120,12 @@ FEF_EAT_I:
     MOVE.L  #-200, (A0,D0.L)
     LEA     ENEMY_TABLE_DIR, A1
     MOVE.L  #-1, (A1,D0.L)         ;force left so it resets next frame
+    ;spawn bone crumbs at i's position
+    MOVE.L  D1, LFTOVR_SPAWN_X
+    MOVE.L  D2, LFTOVR_SPAWN_Y
+    MOVEM.L D0-D6/A0-A2, -(SP)
+    JSR     SPAWN_LEFTOVERS
+    MOVEM.L (SP)+, D0-D6/A0-A2
     BRA     FEF_NEXT_OUTER
 
 FEF_NEXT_INNER:
@@ -124,6 +137,7 @@ FEF_NEXT_OUTER:
     BRA     FEF_OUTER
 
 FEF_DONE:
+    MOVEM.L (SP)+, D0-D6/A0-A3
     RTS
 
 FEF_I              DS.L    1

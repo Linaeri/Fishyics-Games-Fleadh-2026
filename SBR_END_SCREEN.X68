@@ -7,6 +7,9 @@ DOTS_Y_L            EQU     484
 QUIT_DOT_X_L        EQU     663
 QUIT_DOT_X_R        EQU     710
 
+ACHWALL_DOT_X_L     EQU     490
+ACHWALL_DOT_X_R     EQU     535
+
     DS.W    0           ;fix alignment issue
     
 END_START:
@@ -38,19 +41,24 @@ END_LOOP:
     MOVE.W  #$FF00,     D1
     TRAP    #15
     
-    BSR     END_SCREEN
-    BSR     RESTARTING_POINT
-    BSR     QUITTING_POINT
-    BSR     UPDATE_DELTA_TIME
+    JSR     END_SCREEN
+    JSR     RESTARTING_POINT
+    JSR     QUITTING_POINT
+    JSR     ACHWALL_POINT
+    JSR     UPDATE_DELTA_TIME
     JSR     INPUT                   ; Check Keyboard Input
 	JSR     WASD_CHECK_INPUT		; now check WASD keys
     JSR     PLAYER_MOVEMENT			; Accel from input, drag, clamp speed (8.8)
     JSR		CLAMP_PLAYER			; limit player to stay within the screen edges
 	;JSR     DRAW_PLYR_DATA          ; Draw Draw Score, HUD, Player X and Y
-	BSR     UPDATE
-	BSR     DRAW_SKELETON
-	BSR     CHECK_COLL_RESTART
-	BSR     CHECK_COLL_QUIT
+	JSR     UPDATE
+	JSR     DRAW_SKELETON
+	JSR     CHECK_COLL_RESTART
+	JSR     CHECK_COLL_QUIT
+	MOVE.L  #0, ACH_WALL_FROM
+	JSR     CHECK_COLL_ACHWALL
+	JSR     UPDATE_ACHIEVEMENT
+	JSR     DRAW_ACHIEVEMENT
 	
 	; Swap buffer to show everything
     MOVE.B  #94,        D0
@@ -121,6 +129,34 @@ CHECK_COLL_QUIT:
     SIMHALT
     
 NO_QUIT:
+    RTS
+
+CHECK_COLL_ACHWALL:
+    ;PLAYER_X < ACHWALL_DOT_X_R ?
+    MOVE.L  PLAYER_X, D1
+    CMP.L   #ACHWALL_DOT_X_R, D1
+    BGE     NO_ACHWALL
+
+    ;PLAYER_X + PLAYER_W > ACHWALL_DOT_X_L ?
+    MOVE.L  PLAYER_X, D1
+    ADD.L   PLYR_W_CURRENT, D1
+    CMP.L   #ACHWALL_DOT_X_L, D1
+    BLE     NO_ACHWALL
+
+    ;PLAYER_Y < DOTS_Y_L ?
+    MOVE.L  PLAYER_Y, D1
+    CMP.L   #DOTS_Y_L, D1
+    BGE     NO_ACHWALL
+
+    ;PLAYER_Y + PLAYER_H > DOTS_Y_H ?
+    MOVE.L  PLAYER_Y, D1
+    ADD.L   PLYR_H_CURRENT, D1
+    CMP.L   #DOTS_Y_H, D1
+    BLE     NO_ACHWALL
+
+    JMP     ACH_WALL_START
+
+NO_ACHWALL:
     RTS
 
 END_SCREEN:
@@ -388,6 +424,100 @@ QUITTING_POINT:
 
     RTS
 
+ACHWALL_POINT:
+    MOVE.B  #TC_CURSR_P, D0
+    MOVE.W  #$371E, D1
+    TRAP    #15
+    LEA     achwallpt1, A1
+    MOVE    #13,    D0
+    TRAP    #15
+
+    MOVE.B  #TC_CURSR_P, D0
+    MOVE.W  #$371F, D1
+    TRAP    #15
+    LEA     achwallpt2, A1
+    MOVE    #13,    D0
+    TRAP    #15
+
+    MOVE.B  #TC_CURSR_P, D0
+    MOVE.W  #$3720, D1
+    TRAP    #15
+    LEA     achwallpt3, A1
+    MOVE    #13,    D0
+    TRAP    #15
+
+    MOVE.B  #TC_CURSR_P, D0
+    MOVE.W  #$3721, D1
+    TRAP    #15
+    LEA     achwallpt4, A1
+    MOVE    #13,    D0
+    TRAP    #15
+
+    MOVE.B  #TC_CURSR_P, D0
+    MOVE.W  #$3722, D1
+    TRAP    #15
+    LEA     achwallpt5, A1
+    MOVE    #13,    D0
+    TRAP    #15
+
+    MOVE.B  #TC_CURSR_P, D0
+    MOVE.W  #$3723, D1
+    TRAP    #15
+    LEA     achwallpt6, A1
+    MOVE    #13,    D0
+    TRAP    #15
+
+    MOVE.B  #TC_CURSR_P, D0
+    MOVE.W  #$3724, D1
+    TRAP    #15
+    LEA     achwallpt7, A1
+    MOVE    #13,    D0
+    TRAP    #15
+
+    MOVE.B  #TC_CURSR_P, D0
+    MOVE.W  #$3725, D1
+    TRAP    #15
+    LEA     achwallpt8, A1
+    MOVE    #13,    D0
+    TRAP    #15
+
+    MOVE.B  #TC_CURSR_P, D0
+    MOVE.W  #$3726, D1
+    TRAP    #15
+    LEA     achwallpt9, A1
+    MOVE    #13,    D0
+    TRAP    #15
+
+    MOVE.B  #TC_CURSR_P, D0
+    MOVE.W  #$3727, D1
+    TRAP    #15
+    LEA     achwallpt10, A1
+    MOVE    #13,    D0
+    TRAP    #15
+
+    MOVE.B  #TC_CURSR_P, D0
+    MOVE.W  #$3728, D1
+    TRAP    #15
+    LEA     achwallpt11, A1
+    MOVE    #13,    D0
+    TRAP    #15
+
+    MOVE.B  #TC_CURSR_P, D0
+    MOVE.W  #$3729, D1
+    TRAP    #15
+    LEA     achwallpt12, A1
+    MOVE    #13,    D0
+    TRAP    #15
+
+    MOVE.B  #TC_CURSR_P, D0
+    MOVE.W  #$372A, D1
+    TRAP    #15
+    LEA     achwallpt13, A1
+    MOVE    #13,    D0
+    TRAP    #15
+
+    RTS
+
 gameover1 dc.b '                          ( )                                            ',0
 gameover2 dc.b '   __/\__            ( )                   /\____                        ',0
 gameover3 dc.b '  / ____/ |\___    ___  ___    ____       / __  _\ _   __ |\____    ___/\',0
@@ -426,6 +556,20 @@ quitpoint10 dc.b '         ||        ',0
 quitpoint11 dc.b '                   ',0
 quitpoint12 dc.b ' -================-',0
 quitpoint13 dc.b ' SWIM HERE TO QUIT ',0
+
+achwallpt1  dc.b  '       ______      ',0
+achwallpt2  dc.b  '      |      |     ',0
+achwallpt3  dc.b  '      |______|     ',0
+achwallpt4  dc.b  '                   ',0
+achwallpt5  dc.b  '         /\        ',0
+achwallpt6  dc.b  '        //\\       ',0
+achwallpt7  dc.b  '       //  \\      ',0
+achwallpt8  dc.b  '         ||        ',0
+achwallpt9  dc.b  '         ||        ',0
+achwallpt10 dc.b  '         ||        ',0
+achwallpt11 dc.b  '                   ',0
+achwallpt12 dc.b  ' -================-',0
+achwallpt13 dc.b  ' SWIM FOR TROPHIES ',0
 
 
 

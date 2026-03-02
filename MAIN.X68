@@ -85,8 +85,8 @@ SCREEN_PADDING_Y EQU		15		; How many pixels at the edge of the TOP/BOTTOM screen
 WTR_TIDE_HIGH	EQU		100			; Y value when water is at its highest
 WTR_TIDE_LOW	EQU		400			; Y value when water is at its lowest
 
-WTR_LOW_TIDE_DELAY	EQU		4000		; How many miliseconds before tides goes down
-WTR_HIGH_TIDE_DELAY	EQU		5000		; How many miliseconds before tide goes up
+WTR_LOW_TIDE_DELAY	EQU		4500		; How many miliseconds before tides goes down
+WTR_HIGH_TIDE_DELAY	EQU		2000		; How many miliseconds before tide goes up
 WTR_TIDE_SPEED	EQU		    $0040		; how fast the tide moves
 
 TIDE_STOP       EQU 0 
@@ -144,10 +144,10 @@ INITIALISE:
     ;BSR     RUN_LOAD                ; dont have run.wav
     ;BSR     JUMP_LOAD               ; dont have jump.wav
     ;BSR     OPPS_LOAD               ; dont have opps.wav
-    BSR     ACH_SND_LOAD            ; Load Achievement Sound into Memory
-    BSR     EAT_LOAD
-    BSR     JUMP_IN_LOAD
-    BSR     JUMP_OUT_LOAD
+    JSR     ACH_SND_LOAD            ; Load Achievement Sound into Memory
+    JSR     EAT_LOAD
+    JSR     JUMP_IN_LOAD
+    JSR     JUMP_OUT_LOAD
     BSR     GROW_LOAD
     BSR     TIDE_LOAD
     BSR     DEATH_LOAD
@@ -234,6 +234,12 @@ INITIALISE:
     ;init achievements
     JSR     INIT_ACHIEVEMENTS
 
+    ;init bone leftover particles
+    JSR     INIT_LEFTOVERS
+
+    ;init water splash particles
+    JSR     INIT_SPLASH
+
     ; Enable the screen back buffer(see easy 68k help)
 	MOVE.B  #TC_DBL_BUF,D0          ; 92 Enables Double Buffer
     MOVE.B  #17,        D1          ; Combine Tasks
@@ -272,6 +278,7 @@ INITIALISE:
 * Description   : Calculates time passed since last frame
 *-----------------------------------------------------------
 UPDATE_DELTA_TIME:
+    MOVEM.L D0-D2, -(SP)
     MOVE.B  #8, D0          ; Get elapsed milliseconds
     TRAP    #15
     MOVE.L  D1, CURRENT_TIME
@@ -289,6 +296,7 @@ STORE_DELTA:
     MOVE.L  D2, DELTA_TIME
     MOVE.L  CURRENT_TIME, LAST_TIME	; put current time into last for next cycle
 
+    MOVEM.L (SP)+, D0-D2
     RTS
 
 *-----------------------------------------------------------
@@ -296,6 +304,7 @@ STORE_DELTA:
 * Description   : Calculates change in the water Y level 
 *-----------------------------------------------------------
 UPDATE_TIDE:
+    MOVEM.L D0-D2, -(SP)
     ;is tide currently moving?
     MOVE.L  IS_TIDE_MOVING, D0
     CMP.L   #IS_MOVING_TRUE, D0
@@ -314,7 +323,7 @@ TIDE_IS_WAITING:
     CMP.L   #WTR_TIDE_LOW, D1
     BGE     TIDE_WAIT_AT_LOW
 
-    ;waiting at HIGH (top of screen) ---
+    ;waiting at HIGH ---
     MOVE.L  WTR_CURRENT_TIDE_TIME, D1
     CMP.L   #WTR_LOW_TIDE_DELAY, D1
     BLT     TIDE_DONE               ; delay not elapsed yet
@@ -326,7 +335,7 @@ TIDE_IS_WAITING:
     BRA     TIDE_DONE
 
 TIDE_WAIT_AT_LOW:
-    ; waiting at LOW (bottom of screen) ---
+    ; waiting at LOW ---
     MOVE.L  WTR_CURRENT_TIDE_TIME, D1
     CMP.L   #WTR_HIGH_TIDE_DELAY, D1
     BLT     TIDE_DONE               ; delay not elapsed yet
@@ -349,18 +358,18 @@ TIDE_IS_MOVING:
 TIDE_GOING_UP:
     MOVE.L  #WTR_TIDE_SPEED, D1
     MOVE.L  DELTA_TIME, D2
-    MULS    D2, D1					; speed * time gives us how far to move this frame
-    SUB.L   D1, WTR_Y_SUB			; subtract because up = lower Y
+    MULS    D2, D1					; speed * time = how far to move
+    SUB.L   D1, WTR_Y_SUB			; up = lower Y
     MOVE.L  WTR_Y_SUB, D1
-    ASR.L   #8, D1					; drop the fractional part to get the actual pixel row
+    ASR.L   #8, D1					; pixel row
     MOVE.L  D1, WTR_CURRENT_Y
 
     CMP.L   #WTR_TIDE_HIGH, D1
-    BGT     TIDE_DONE				; not at the top yet
-    ; clamp to high limit and stop
+    BGT     TIDE_DONE				; not at top yet
+    ; clamp and stop
     MOVE.L  #WTR_TIDE_HIGH, WTR_CURRENT_Y
     MOVE.L  #WTR_TIDE_HIGH, D0
-    ASL.L   #8, D0					; rebuild fractional Y from the clamped value
+    ASL.L   #8, D0					; fractional Y
     MOVE.L  D0, WTR_Y_SUB
     MOVE.L  #IS_MOVING_FALSE, IS_TIDE_MOVING
     MOVE.L  #0, WTR_CURRENT_TIDE_TIME
@@ -372,23 +381,24 @@ TIDE_GOING_DOWN:
     MOVE.L  #WTR_TIDE_SPEED, D1
     MOVE.L  DELTA_TIME, D2
     MULS    D2, D1					; speed * time
-    ADD.L   D1, WTR_Y_SUB			; add because down = higher Y
+    ADD.L   D1, WTR_Y_SUB			; down = higher Y
     MOVE.L  WTR_Y_SUB, D1
-    ASR.L   #8, D1					; get pixel row from fractional
+    ASR.L   #8, D1					; pixel row
     MOVE.L  D1, WTR_CURRENT_Y
 
     CMP.L   #WTR_TIDE_LOW, D1
-    BLT     TIDE_DONE				; not at the bottom yet
-    ; clamp to low limit and stop
+    BLT     TIDE_DONE				; not at bottom yet
+    ; clamp and stop
     MOVE.L  #WTR_TIDE_LOW, WTR_CURRENT_Y
     MOVE.L  #WTR_TIDE_LOW, D0
-    ASL.L   #8, D0					; rebuild fractional Y
+    ASL.L   #8, D0					; fractional Y
     MOVE.L  D0, WTR_Y_SUB
     MOVE.L  #IS_MOVING_FALSE, IS_TIDE_MOVING
     MOVE.L  #0, WTR_CURRENT_TIDE_TIME
     JSR     STOP_TIDE_SOUND
 
 TIDE_DONE:
+    MOVEM.L (SP)+, D0-D2
     RTS
     
 *-----------------------------------------------------------    
@@ -404,7 +414,7 @@ GAMELOOP:
     ; Main Gameloop
 	BSR 	UPDATE_DELTA_TIME		; Update game time
 	BSR		UPDATE_TIDE				; Calculate change in the water Y level 
-	BSR     UPDATE_MOONS
+	JSR     UPDATE_MOONS
     JSR     INPUT                   ; Check Keyboard Input
 	JSR		WASD_CHECK_INPUT		; now check WASD keys
 	
@@ -422,9 +432,18 @@ GAMELOOP:
     ;pelican stuff
     JSR     UPDATE_PELICAN
     JSR     CHECK_PELICAN_COLLISION
+    JSR     CHECK_PELICAN_JUMP
+
+    ;bone leftovers falling
+    JSR     UPDATE_LEFTOVERS
+
+    ;water splash particles
+    JSR     UPDATE_SPLASH
 
     ;achievements
     JSR     UPDATE_ACHIEVEMENT
+    JSR     UPDATE_AIR_TIME         ;track time spent in the air
+    JSR     CHECK_MOON_COLLISION    ;moon touch achievement
     
     BSR     DRAW                    ; Draw the Scene
 
@@ -456,7 +475,10 @@ DRAW:
     JSR     DRAW_PLYR_DATA          ; Draw Draw Score, HUD, Player X and Y
     JSR     DRAW_PLAYER             ; Draw Player
     JSR     DRAW_ALL_ENEMIES              ; Draw Enemy
+    JSR     DRAW_LEFTOVERS          ; Draw falling bone particles
+    JSR     DRAW_SPLASH             ; Draw water splash particles
 	JSR     DRAW_SAND               ; Draw Sand
+	JSR     DRAW_SEAWEED             ; Draw seaweed top layer
     JSR     DRAW_ACHIEVEMENT        ; Draw achievement popup
     RTS                             ; Return to subroutine
 
@@ -465,6 +487,7 @@ DRAW:
 * Description   : Main update loop update Player and Enemies
 *-----------------------------------------------------------
 UPDATE:
+	MOVEM.L D1-D2, -(SP)
 ;    ; Update the Players Positon based on Velocity and Gravity
 ;    CLR.L   D1                      ; Clear contents of D1 (XOR is faster)
 ;    MOVE.L  PLYR_VELOCITY, D1       ; Fetch Player Velocity
@@ -500,10 +523,10 @@ UPDATE:
 	; X position
 	MOVE.L  PLYR_VELOCITY_X, D1
 	MOVE.L  DELTA_TIME, D2
-	MULS    D2, D1					; velocity * time = distance this frame
-	ADD.L   D1, PLYR_X_SUB			; accumulate into fractional X
+	MULS    D2, D1					; velocity * time
+	ADD.L   D1, PLYR_X_SUB			; add to fractional X
 	MOVE.L  PLYR_X_SUB, D1
-	ASR.L   #8, D1					; drop fractional bits to get pixel X
+	ASR.L   #8, D1					; pixel X
 	MOVE.L  D1, PLAYER_X
 
 
@@ -516,13 +539,13 @@ UPDATE:
 	ASR.L   #8, D1					; pixel Y
 	MOVE.L  D1, PLAYER_Y
 
+	MOVEM.L (SP)+, D1-D2
     RTS                             ; Return to subroutine  
 
 
 *-----------------------------------------------------------
 * Subroutines   : Sound Load and Play
-* Description   : Sound stubs - wav files not available
-*                 Only achievement sound is loaded (in SBR_ACHIEVEMENTS)
+* Description   : most sounds are stubs cos we dont have the wav files
 *-----------------------------------------------------------
 ; these do nothing since we dont have the wav files
 ; but labels are kept so any BSR/JSR calls still work
@@ -876,6 +899,9 @@ OCARINA_WAV     DC.B    'ocarina.wav',0
 	include "SBR_END_SCREEN.X68"
 	include "SBR_DRAW_SKELETON.X68"
 	include "SBR_ACHIEVEMENTS.X68"
+	include "SBR_LEFTOVERS.X68"
+	include "SBR_SPLASH.X68"
+	include "SBR_DRAW_SEAWEED.X68"
 	include "SBR_WIN_SCREEN.X68"
 
     END    START        ; last line of source

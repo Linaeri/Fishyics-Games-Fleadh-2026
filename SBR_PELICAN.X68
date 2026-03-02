@@ -9,13 +9,9 @@ PELICAN_SPD         EQU     3
 PELICAN_SAFE_SZ     EQU     4       ;player size needed to survive
 PELICAN_PTS         EQU     150
 
-PELICAN_Y_OFFSET    EQU 40          ; pixels above current tide Y
+PELICAN_Y_OFFSET    EQU 40          ;how far above the water it flies
 
-
-*-----------------------------------------------------------
-* Subroutine    : INIT_PELICAN
-* Description   : set up the bird
-*-----------------------------------------------------------
+;initial state, off screen
 INIT_PELICAN:
     MOVE.L  #0, PELICAN_ACTIVE
     MOVE.L  #-200, PELICAN_X       ;off screen
@@ -23,12 +19,9 @@ INIT_PELICAN:
     MOVE.L  #1, PELICAN_DIR        ;default right
     RTS
 
-
-*-----------------------------------------------------------
-* Subroutine    : SPAWN_PELICAN
-* Description   : spawn if player eats a fish
-*-----------------------------------------------------------
+;spawn the bird when player eats something
 SPAWN_PELICAN:
+    MOVEM.L D0-D3, -(SP)
     ;only spawn if not already active
     CMP.L   #1, PELICAN_ACTIVE
     BEQ     .SP_DONE
@@ -77,14 +70,12 @@ SPAWN_PELICAN:
     MOVE.L  D0, PELICAN_Y
 
 .SP_DONE:
+    MOVEM.L (SP)+, D0-D3
     RTS
 
-
-*-----------------------------------------------------------
-* Subroutine    : UPDATE_PELICAN
-* Description   : move pelican
-*-----------------------------------------------------------
+;move it across the screen, follow the waterline
 UPDATE_PELICAN:
+    MOVEM.L D0-D1, -(SP)
     ;skip if not active
     CMP.L   #1, PELICAN_ACTIVE
     BNE     .UP_DONE
@@ -154,14 +145,12 @@ UPDATE_PELICAN:
     MOVE.L  #0, PELICAN_ACTIVE     ;deactivate
 
 .UP_DONE:
+    MOVEM.L (SP)+, D0-D1
     RTS
 
-
-*-----------------------------------------------------------
-* Subroutine    : CHECK_PELICAN_COLLISION
-* Description   : check colls
-*-----------------------------------------------------------
+;AABB collision with the player
 CHECK_PELICAN_COLLISION:
+    MOVEM.L D0-D2, -(SP)
     ;skip if not active
     CMP.L   #1, PELICAN_ACTIVE
     BNE     .PEL_CD
@@ -203,22 +192,30 @@ CHECK_PELICAN_COLLISION:
     MOVEM.L D0-D3/A0-A2, -(SP)
     JSR     TRIGGER_ACH_PELICAN     ;pelican achievement
     MOVEM.L (SP)+, D0-D3/A0-A2
+    MOVEM.L (SP)+, D0-D2            ;restore our own frame
     JMP     PLAYER_DIED
 
 .PEL_EAT:
     ;player eats the pelican
     ADD.L   #PELICAN_PTS, PLAYER_SCORE
     MOVE.L  #0, PELICAN_ACTIVE
+    ;--- pelican counts as a fish for tracking ---
+    ADD.L   #1, ACH_FISH_COUNT
     MOVEM.L D7/A0-A2, -(SP)
-    JSR     TRIGGER_ACH_PELICAN     ;pelican achievement
-    BSR     CHECK_GROWTH
+    JSR     TRIGGER_ACH_PELICAN     ;pelican achievement (interact)
+    JSR     TRIGGER_ACH_AIRFORCE    ;"Air Force" - ate a pelican
+    JSR     TRIGGER_ACH_FIRST_FISH  ;first fish of any kind
+    JSR     TRIGGER_ACH_100FISH     ;100 fishes milestone
+    JSR     CHECK_GROWTH
     MOVEM.L (SP)+, D7/A0-A2
 
 .PEL_CD:
+    MOVEM.L (SP)+, D0-D2
     RTS
 
-;draw pelican placeholder
+;draw pelican (just a rectangle for now lol)
 DRAW_PELICAN:
+    MOVEM.L D0-D4, -(SP)
     CMP.L   #1, PELICAN_ACTIVE
     BNE     .DR_DONE
 
@@ -239,6 +236,43 @@ DRAW_PELICAN:
     TRAP    #15
 
 .DR_DONE:
+    MOVEM.L (SP)+, D0-D4
+    RTS
+
+
+;check if player jumped over the pelican (X overlaps + player above it)
+CHECK_PELICAN_JUMP:
+    MOVEM.L D0-D2, -(SP)
+    ;already got this one? skip
+    CMP.L   #1, ACH_UNLOCKED_9
+    BEQ     .CPJ_DN
+    ;pelican has to be on screen
+    CMP.L   #1, PELICAN_ACTIVE
+    BNE     .CPJ_DN
+
+    ;X overlap: player right > pelican left?
+    MOVE.L  PLAYER_X, D0
+    ADD.L   PLYR_W_CURRENT, D0
+    CMP.L   PELICAN_X, D0
+    BLE     .CPJ_DN
+    ;player left < pelican right?
+    MOVE.L  PLAYER_X, D0
+    MOVE.L  PELICAN_X, D1
+    ADD.L   #PELICAN_W, D1
+    CMP.L   D1, D0
+    BGE     .CPJ_DN
+
+    ;player above pelican? (player bottom < pelican top)
+    MOVE.L  PLAYER_Y, D0
+    ADD.L   PLYR_H_CURRENT, D0
+    CMP.L   PELICAN_Y, D0
+    BGE     .CPJ_DN
+
+    ;jumped right over it
+    JSR     TRIGGER_ACH_PELJMP
+
+.CPJ_DN:
+    MOVEM.L (SP)+, D0-D2
     RTS
 
 

@@ -15,16 +15,16 @@ TITLE_LOOP:
     MOVE.W  #$FF00,     D1
     TRAP    #15
        
-    BSR     TITLE_SCREEN
-    BSR     STARTING_POINT
-    BSR     UPDATE_DELTA_TIME
+    JSR     TITLE_SCREEN
+    JSR     STARTING_POINT
+    JSR     UPDATE_DELTA_TIME
     JSR     INPUT                   ; Check Keyboard Input
 	JSR     WASD_CHECK_INPUT		; now check WASD keys
     JSR		PLAYER_MOVEMENT			; Accel from input, drag, clamp speed (8.8)
     JSR		CLAMP_PLAYER			; limit player to stay within the screen edges
     ;JSR     DRAW_PLYR_DATA          ; Draw Draw Score, HUD, Player X and Y
-	BSR     UPDATE
-	BSR     DRAW_PLAYER
+	JSR     UPDATE
+	JSR     DRAW_PLAYER
 	
 	; Swap buffer to show everything
     MOVE.B  #94,        D0

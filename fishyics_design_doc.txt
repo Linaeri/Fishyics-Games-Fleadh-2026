@@ -1,0 +1,47 @@
+~ Fishyics ~
+
+Game Overview:
+Meet John Fishyics,
+A goldfish who TRAP'd his way out of a fishbowl and straight
+Into the open ocean.
+
+He's not your average pet shop escapee,
+He's got 8 Data Registers full of determination and
+7 Address Registers all pointing at the food chain.
+
+Think of it as a "small fish, big pond" kind of story, except the pond is the entire screen and everything swimming in it has a CMP with your PLAYER_SIZE.
+It's LEA'ing your best life, one MOVE.L at a time, in a world where the Stack Pointer is your only real friend.
+
+Gameplay Mechanics:
+You're not just swimming around looking pretty out here (though John is a handsome fish, credit where its due).
+You're climbing the food chain, start by eating sardines, move on to clownfish (Sorry Nemo! theres an achievement for that and everything)... and eventually if you've got the PLYR_SIZE for it, sharks.
+
+The game CMP's your size against theirs every frame and if you BLT... well, lets just say your next JSR is to PLAYER_DIED and you'll be looking at the game over screen alongside your skeleton.
+
+There's also a pelican doing fly bys overhead because apparently the sky isn't safe either, sometimes you eat it, sometimes it eats you, proper RTS relationship that (Return To Stomach, if you will).
+Oh and the tide rises and falls on actual delta time based timers, because we learnt about MULS'ing velocity by time in lectures and wanted to show off. We've even got a moon in the sky that grow and shrink with the tides.
+
+Art and Design:
+Rectangles.
+Ellipses.
+Lines.
+The odd pixel coordinate here and there.
+Every fish is lovingly hand drawn using TRAP #15 calls, one MOVE.L at a time.
+The clownfish sprite alone is about 200 lines of Assembly and we're not even sorry.
+Pixar would be shaking in their boots (or their D0 registers, at least).
+
+We've got 6 different player skins that unlock as you grow bigger, water splash particles when you jump in and out of the water, bone debris leftovers when fish get eaten, and a full achievement banner system with a trophy wall you can swim around in.
+Also the water has this nice gradient effect at the bottom with sand dunes.
+
+Technology:
+68K Assembly on EASy68K. The game runs on double buffering, proper delta time so it runs the same speed on every machine (not completely), sub pixel positioning using fixed point so fish can actually move slower than 1 pixel per frame (took ages to figure that one out), and an achievement system that saves to a .dat file on disk so your progress survives between sessions.
+We even MOVEM.L our registers like responsible adults. Most of the time.
+The collision detection is good old AABB, or as we like to call it, "is this rectangle touching that rectangle" ;), which is basically the entire game if you think about it. We also have a random number generator -D-D-.
+
+Levels and Environment:
+One ocean. Thats all you get, but its a good ocean. The water level actually moves up and down on a tidal cycle, with delays when it reaches the top and bottom.
+The moon drift across the sky and grow and shrink with the tides.
+There is 9 achievements to unlock, from eating specific types of fish, to spending a minute airborne, eating 100 fish total and even touching the moon. 
+The achievement wall is its own little screen where you swim around as a skeleton and see all your unlocked achievements displayed in a 3x3 grid. Locked ones show up greyed out with ???? so you know theres something there to work towards.
+
+So yeah, thats Fishyics. A goldfish, an ocean, and way too many lines of Assembly. If you've read this far you've probably spent more time on this document than we spent on collision detection. Go play the game, eat some fish, dodge the pelican, and maybe one day you'll be big enough that the shark BLE's out of your way. Or you won't, and you'll BLT straight into the game over screen. Either way, the stack is clean and the registers are saved. Probably.

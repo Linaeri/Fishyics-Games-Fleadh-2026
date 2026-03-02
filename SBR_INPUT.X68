@@ -15,6 +15,7 @@
 * Description   : Process Keyboard Input
 *-----------------------------------------------------------
 INPUT:
+    MOVEM.L D0-D2, -(SP)
     ; Process Input
 	CLR.L   D2
     CLR.L   D1                      ; Clear Data Register
@@ -27,6 +28,7 @@ INPUT:
     ; Check if key still pressed
     CMP.B   #$FF,       D1          ; Is it still pressed
     BEQ     PROCESS_INPUT           ; Process Last Key
+    MOVEM.L (SP)+, D0-D2
     RTS                             ; Return to subroutine
 
 *-----------------------------------------------------------
@@ -40,6 +42,7 @@ PROCESS_INPUT:
     CMP.L   #ESCAPE,    CURRENT_KEY ; Is Current Key Escape
     BEQ     EXIT                    ; Exit if Escape
   
+    MOVEM.L (SP)+, D0-D2
     RTS                             ; Return to subroutine
     
 *-----------------------------------------------------------
@@ -47,6 +50,7 @@ PROCESS_INPUT:
 * Description   : See Easy68k help manual for reference - checks the state of 4 specified keys 
 *-----------------------------------------------------------
 WASD_CHECK_INPUT:
+    MOVEM.L D0-D1, -(SP)
 
     ; Assume no movement this frame - clear x and y directions
      MOVE.L  #0, PLYR_DIRECTION_X
@@ -97,6 +101,7 @@ WASD_CHECK_INPUT:
 	 ENDI
 
 	
+	MOVEM.L (SP)+, D0-D1
 	RTS
 
 *----------------------------------------------------

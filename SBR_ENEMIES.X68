@@ -1,7 +1,4 @@
-*-----------------------------------------------------------
-* Section       : Enemy Counts
-* Description   : How many of each fish type to spawn
-*-----------------------------------------------------------
+;how many of each fish to spawn
 NUM_SARDINE     EQU     5
 NUM_CLOWNFISH   EQU     5
 NUM_SPOTTY      EQU     5
@@ -65,7 +62,7 @@ ANGEL_CLR       EQU     $00FFFF00       ;cyan
 ;shark properties
 SHARK_W         EQU     64
 SHARK_H         EQU     36
-SHARK_SPD       EQU     1
+SHARK_SPD       EQU     3
 SHARK_CLR       EQU     $00505050       ;dark grey
 
 SARDINE_YMIN    EQU     80          
@@ -92,12 +89,15 @@ SHARK_PTS       EQU     200
 ;min spawn window
 MIN_SPAWN_WINDOW   EQU 80
 
+;how close a fish needs to be before it reacts to the player (px)
+REACT_DIST          EQU     65
+
 ;growth thresholds in score points
-GROW_THRESH_1   EQU     100
-GROW_THRESH_2   EQU     300
-GROW_THRESH_3   EQU     600
-GROW_THRESH_4   EQU     1000        
-GROW_THRESH_5   EQU     1500
+GROW_THRESH_1   EQU     50    ; 10 fishes was too much so
+GROW_THRESH_2   EQU     200   ; 300 points was reachable by me just before the tide was starting to move so it was change to be more dynamic
+GROW_THRESH_3   EQU     1000  ; at this point you have 3 times of fish to eat and dodge the bigger fishes so this part will be engaging and can be a bit longer
+GROW_THRESH_4   EQU     1500  ; a bit crabs      
+GROW_THRESH_5   EQU     3500  
 
 ;player sizes per growth stage, MOVE TO PLAYER
 PLYR_W_SM       EQU     8
@@ -116,11 +116,9 @@ PLYR_H_MAX      EQU     40
 ;max range of spawning X outside of the screen, so there are no groups of fish
 MAX_SPAWN_X     EQU     500
 
-*-----------------------------------------------------------
-* Section       : Fish Property Lookup Table
-* Description   : 20 bytes per type: W, H, Speed, Y_MIN, Y_MAX
-*         Access: base + (type * 20) + offset
-*-----------------------------------------------------------
+;lookup table for fish properties
+;20 bytes per type: W, H, Speed, Y_MIN, Y_MAX
+;access: base + (type * 20) + offset
 FISH_PROPS:
     ;type 0 - sardine, offset 0
     DC.L    SMALL_W
@@ -160,10 +158,7 @@ FISH_PROPS:
     DC.L    SHARK_YMAX
 
 
-*-----------------------------------------------------------
-* Subroutine    : GET_PROPS
-* Description   : access properties of types
-*-----------------------------------------------------------
+;get properties for fish type in D5
 GET_PROPS:
     MULU    #PROP_SIZE, D5          ;type * 20
     LEA     FISH_PROPS, A3
@@ -296,6 +291,7 @@ INIT_SPAWN_Y:
 * Description   : :)
 *-----------------------------------------------------------
 MOVE_ALL_ENEMIES:
+    MOVEM.L D1-D7/A0-A5, -(SP)
     LEA     ENEMY_TABLE_X, A0
     LEA     ENEMY_TABLE_Y, A1
     LEA     ENEMY_TABLE_TYPE, A2
@@ -327,7 +323,7 @@ MOVE_ENEMY_LOOP:
     CMP.L   D4, D3
     BGE     RESET_RIGHT_MOVER
     MOVE.L  D3, (A0)
-    BRA     NEXT_ENEMY
+    BRA     APPLY_FISH_AI
 
 CHECK_LEFT_EDGE:
     MOVE.L  PROP_W(A3), D4
@@ -335,7 +331,7 @@ CHECK_LEFT_EDGE:
     CMP.L   D4, D3
     BLE     RESET_LEFT_MOVER
     MOVE.L  D3, (A0)
-    BRA     NEXT_ENEMY
+    BRA     APPLY_FISH_AI
 
 RESET_LEFT_MOVER:
 RESET_RIGHT_MOVER:
@@ -414,6 +410,84 @@ RESET_ENEMY_Y:
     MOVEM.L (SP)+, D7/A0-A2/A4
     MOVE.L  D3, (A1)
 
+*-----------------------------------------------------------
+* AI: bigger fish chase, smaller fish flee, only when close
+*-----------------------------------------------------------
+APPLY_FISH_AI:
+    ;check X distance to player
+    MOVE.L  (A0), D1
+    SUB.L   PLAYER_X, D1
+    TST.L   D1
+    BPL     .AI_DX_POS
+    NEG.L   D1
+.AI_DX_POS:
+    CMP.L   #REACT_DIST, D1
+    BGE     NEXT_ENEMY              ;too far horizontally, ignore
+
+    ;check Y distance to player
+    MOVE.L  (A1), D1
+    SUB.L   PLAYER_Y, D1
+    TST.L   D1
+    BPL     .AI_DY_POS
+    NEG.L   D1
+.AI_DY_POS:
+    CMP.L   #REACT_DIST, D1
+    BGE     NEXT_ENEMY              ;too far vertically, ignore
+
+    ;close enough - decide chase or flee
+    MOVE.L  (A2), D1                ;fish type = size tier
+    CMP.L   PLAYER_SIZE, D1
+    BGT     .AI_CHASE               ;fish is bigger, hunt the player
+    BRA     .AI_FLEE                ;fish is smaller or equal, run away
+
+    ;--- CHASE: move toward the player ---
+.AI_CHASE:
+    ;nudge Y toward the player (1px/frame, subtle)
+    MOVE.L  (A1), D1
+    CMP.L   PLAYER_Y, D1
+    BEQ     .AI_CHASE_X
+    BGT     .AI_CHASE_UP
+    ADD.L   #1, (A1)                ;fish above player, drift down
+    BRA     .AI_CHASE_X
+.AI_CHASE_UP:
+    SUB.L   #1, (A1)                ;fish below player, drift up
+.AI_CHASE_X:
+    ;turn to face the player horizontally
+    MOVE.L  (A0), D1
+    CMP.L   PLAYER_X, D1
+    BEQ     .AI_CHASE_DONE
+    BGT     .AI_CHASE_LEFT          ;fish is right of player, face left
+    MOVE.L  #1, (A4)                ;fish is left of player, face right
+    BRA     .AI_CHASE_DONE
+.AI_CHASE_LEFT:
+    MOVE.L  #-1, (A4)               ;turn left toward player
+.AI_CHASE_DONE:
+    BRA     NEXT_ENEMY
+
+    ;--- FLEE: move away from the player ---
+.AI_FLEE:
+    ;nudge Y away from the player (1px/frame)
+    MOVE.L  (A1), D1
+    CMP.L   PLAYER_Y, D1
+    BEQ     .AI_FLEE_X
+    BGT     .AI_FLEE_DOWN
+    SUB.L   #1, (A1)                ;fish above player, swim further up
+    BRA     .AI_FLEE_X
+.AI_FLEE_DOWN:
+    ADD.L   #1, (A1)                ;fish below player, swim further down
+.AI_FLEE_X:
+    ;turn away from the player horizontally
+    MOVE.L  (A0), D1
+    CMP.L   PLAYER_X, D1
+    BEQ     .AI_FLEE_DONE
+    BGT     .AI_FLEE_RIGHT          ;fish is right of player, flee right
+    MOVE.L  #-1, (A4)               ;fish is left of player, flee left
+    BRA     .AI_FLEE_DONE
+.AI_FLEE_RIGHT:
+    MOVE.L  #1, (A4)                ;turn right away from player
+.AI_FLEE_DONE:
+    BRA     NEXT_ENEMY
+
 NEXT_ENEMY:
     ;if tide rose above a fish, push it down to the water line
     MOVE.L  (A1), D3
@@ -430,6 +504,7 @@ NEXT_ENEMY:
 
     JSR     FISH_EAT_FISH
 
+    MOVEM.L (SP)+, D1-D7/A0-A5
     RTS
 
 *-----------------------------------------------------------
@@ -437,6 +512,7 @@ NEXT_ENEMY:
 * Description   : draw enemies
 *-----------------------------------------------------------
 DRAW_ALL_ENEMIES:
+    MOVEM.L D1-D7/A0-A4, -(SP)
     LEA     ENEMY_TABLE_X, A0
     LEA     ENEMY_TABLE_Y, A1
     LEA     ENEMY_TABLE_TYPE, A2
@@ -498,14 +574,16 @@ DO_DRAW_MEDIUM:
     BRA     DONE_ENEMY_DRAW
 
 DO_DRAW_LARGE:
+    MOVE.L  (A4), D3
     MOVEM.L D7/A0-A4, -(SP)
-    BSR     DRAW_ENEMY_FISH_LARGE
+    JSR     DRAW_SPOTTY
     MOVEM.L (SP)+, D7/A0-A4
     BRA     DONE_ENEMY_DRAW
 
 DO_DRAW_CRAB:
+    MOVE.L  (A4), D3
     MOVEM.L D7/A0-A4, -(SP)
-    BSR     DRAW_ENEMY_CRAB
+    JSR     DRAW_CRAB
     MOVEM.L (SP)+, D7/A0-A4
     BRA     DONE_ENEMY_DRAW
 
@@ -529,6 +607,7 @@ SKIP_DRAW_ENEMY:
     ADDA.L  #4, A4
     DBRA    D7, DRAW_ENEMY_LOOP
 
+    MOVEM.L (SP)+, D1-D7/A0-A4
     RTS
 
 
@@ -913,6 +992,7 @@ DRAW_ENEMY_ANGELFISH:
 * Description   : checking colls
 *-----------------------------------------------------------
 CHECK_ALL_COLLISIONS:
+    MOVEM.L D1-D7/A0-A5, -(SP)
     LEA     ENEMY_TABLE_X, A0
     LEA     ENEMY_TABLE_Y, A1
     LEA     ENEMY_TABLE_TYPE, A2
@@ -956,10 +1036,17 @@ CHECK_COLL_LOOP:
 ;collision detected
     MOVE.L  (A2), D5
     CMP.L   PLAYER_SIZE, D5
-    BGT     PLAYER_DIED
+    BLE     .PLAYER_EATS
+    ;fish is bigger -> player dies. Restore stack before jumping.
+    MOVEM.L (SP)+, D1-D7/A0-A5
+    JMP     PLAYER_DIED
+.PLAYER_EATS:
 
     ;player eats this fish
     MOVE.L  #1, COLLISION_FLAG
+    ;remember where this fish was (for the crumbs)
+    MOVE.L  (A0), LFTOVR_SPAWN_X
+    MOVE.L  (A1), LFTOVR_SPAWN_Y
     MOVE.L  #-200, (A0)
     
     ;force direction left so it hits wrap and gets new random Y
@@ -981,8 +1068,13 @@ CHECK_COLL_LOOP:
     CMP.L   #TYPE_ANGEL, D5
     BEQ     ADD_AN_PTS
     ADD.L   #SHARK_PTS, PLAYER_SCORE
+    MOVEM.L D7/A0-A2, -(SP)
+    JSR     TRIGGER_ACH_SHARK       ;first shark eaten = achievement
+    MOVEM.L (SP)+, D7/A0-A2
     JSR     STOP_TIDE_SOUND             ;in case player dies during tide moving
-    BRA     WIN_START
+    ;restore outer frame before jumping to win screen
+    MOVEM.L (SP)+, D1-D7/A0-A5
+    JMP     WIN_START
     ;BRA     ATE_FISH
 
 ADD_SM_PTS:
@@ -999,15 +1091,23 @@ ADD_LG_PTS:
     BRA     ATE_FISH
 ADD_CR_PTS:
     ADD.L   #CRAB_PTS, PLAYER_SCORE
+    MOVEM.L D7/A0-A2, -(SP)
+    JSR     TRIGGER_ACH_CRAB        ;first crab eaten = achievement
+    MOVEM.L (SP)+, D7/A0-A2
     BRA     ATE_FISH
 ADD_AN_PTS:
     ADD.L   #ANGEL_PTS, PLAYER_SCORE
 
 ATE_FISH:
     JSR     PLAY_EAT
+    ;--- track total fish eaten ---
+    ADD.L   #1, ACH_FISH_COUNT
     MOVEM.L D7/A0-A2, -(SP)
-    BSR     SPAWN_PELICAN           ;pelican can has chance to spawn in case player eats fish
-    BSR     CHECK_GROWTH
+    JSR     TRIGGER_ACH_FIRST_FISH  ;first fish of any kind
+    JSR     TRIGGER_ACH_100FISH     ;100 fishes milestone
+    JSR     SPAWN_LEFTOVERS         ;spit out some food crumbs
+    JSR     SPAWN_PELICAN           ;chance for the pelican to show up
+    JSR     CHECK_GROWTH
     MOVEM.L (SP)+, D7/A0-A2
 
 NO_COLL_THIS:
@@ -1020,13 +1120,12 @@ NO_COLL_THIS:
     BNE     COLL_CHECK_DONE
 
 COLL_CHECK_DONE:
+    MOVEM.L (SP)+, D1-D7/A0-A5
     RTS
 
-*-----------------------------------------------------------
-* Subroutine    : CHECK_GROWTH
-* Description   : Grow player if score high enough
-*-----------------------------------------------------------
+;grow player when they hit score thresholds
 CHECK_GROWTH:
+    MOVEM.L D0, -(SP)
     MOVE.L  PLAYER_SCORE, D0
 
     ;check from highest threshold down
@@ -1040,7 +1139,7 @@ CHECK_GROWTH:
     BGE     TRY_GROW_2
     CMP.L   #GROW_THRESH_1, D0
     BGE     TRY_GROW_1
-    RTS
+    BRA     GROWTH_DONE
 
 TRY_GROW_1:
     CMP.L   #1, PLAYER_SIZE
@@ -1049,7 +1148,7 @@ TRY_GROW_1:
     JSR     PLAY_GROW
     MOVE.L  #PLYR_W_MD, PLYR_W_CURRENT
     MOVE.L  #PLYR_H_MD, PLYR_H_CURRENT
-    RTS
+    BRA     GROWTH_DONE
 
 TRY_GROW_2:
     CMP.L   #2, PLAYER_SIZE
@@ -1058,7 +1157,7 @@ TRY_GROW_2:
     MOVE.L  #2, PLAYER_SIZE
     MOVE.L  #PLYR_W_LG, PLYR_W_CURRENT
     MOVE.L  #PLYR_H_LG, PLYR_H_CURRENT
-    RTS
+    BRA     GROWTH_DONE
 
 TRY_GROW_3:
     CMP.L   #3, PLAYER_SIZE
@@ -1067,7 +1166,7 @@ TRY_GROW_3:
     MOVE.L  #3, PLAYER_SIZE
     MOVE.L  #PLYR_W_XL, PLYR_W_CURRENT
     MOVE.L  #PLYR_H_XL, PLYR_H_CURRENT
-    RTS
+    BRA     GROWTH_DONE
 
 TRY_GROW_4:
     CMP.L   #4, PLAYER_SIZE
@@ -1076,7 +1175,7 @@ TRY_GROW_4:
     MOVE.L  #4, PLAYER_SIZE
     MOVE.L  #PLYR_W_XXL, PLYR_W_CURRENT
     MOVE.L  #PLYR_H_XXL, PLYR_H_CURRENT
-    RTS
+    BRA     GROWTH_DONE
 
 TRY_GROW_5:
     CMP.L   #5, PLAYER_SIZE
@@ -1086,6 +1185,7 @@ TRY_GROW_5:
     MOVE.L  #PLYR_W_MAX, PLYR_W_CURRENT
     MOVE.L  #PLYR_H_MAX, PLYR_H_CURRENT
 GROWTH_DONE:
+    MOVEM.L (SP)+, D0
     RTS
 
 
@@ -1097,7 +1197,7 @@ PLAYER_DIED:
     ;MOVE.L  #0, PLAYER_SCORE
     JSR     PLAY_DEATH
     JSR     STOP_TIDE_SOUND             ;in case player dies during tide moving
-    BRA     END_START     
+    JMP     END_START     
     SIMHALT
 
 ENEMY_TABLE_X       DS.L    NUM_ENEMIES
@@ -1112,6 +1212,8 @@ PLAYER_SIZE         DS.L    1               ;0-5 matching fish types
     include "SBR_DRAW_SARDINE.X68"
     include "SBR_DRAW_CLOWNFISH.X68"
     include "SBR_DRAW_SHARK.X68"
+    include "SBR_DRAW_CRAB.X68"
+    include "SBR_DRAW_SPOTTY.X68"
 
 
 

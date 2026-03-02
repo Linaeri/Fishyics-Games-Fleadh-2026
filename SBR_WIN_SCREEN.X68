@@ -29,19 +29,24 @@ WIN_LOOP:
     MOVE.W  #$FF00,     D1
     TRAP    #15
     
-    BSR     WIN_SCREEN
-    BSR     RESTARTING_POINT
-    BSR     QUITTING_POINT
-    BSR     UPDATE_DELTA_TIME
+    JSR     WIN_SCREEN
+    JSR     RESTARTING_POINT
+    JSR     QUITTING_POINT
+    JSR     ACHWALL_POINT
+    JSR     UPDATE_DELTA_TIME
     JSR     INPUT                   ; Check Keyboard Input
 	JSR     WASD_CHECK_INPUT		; now check WASD keys
     JSR     PLAYER_MOVEMENT			; Accel from input, drag, clamp speed (8.8)
 	JSR     CLAMP_PLAYER
 	;JSR     DRAW_PLYR_DATA          ; Draw Draw Score, HUD, Player X and Y
-	BSR     UPDATE
-	BSR     DRAW_PLAYER
-	BSR     CHECK_COLL_RESTART
-	BSR     CHECK_COLL_QUIT
+	JSR     UPDATE
+	JSR     DRAW_PLAYER
+	JSR     CHECK_COLL_RESTART
+	JSR     CHECK_COLL_QUIT
+	MOVE.L  #1, ACH_WALL_FROM
+	JSR     CHECK_COLL_ACHWALL
+	JSR     UPDATE_ACHIEVEMENT
+	JSR     DRAW_ACHIEVEMENT
 	
 	; Swap buffer to show everything
     MOVE.B  #94,        D0

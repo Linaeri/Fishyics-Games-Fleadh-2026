@@ -17,6 +17,7 @@
 * Description   : Draw water level as a box
 *-----------------------------------------------------------
 DRAW_WATER:
+    MOVEM.L D0-D6/A0, -(SP)
     ; high tide background
     MOVE.L  #$00AE9E2E, D1      ; Use base gradient color or HIGHTIDE
     BSR     SET_COLORS
@@ -42,7 +43,7 @@ DRAW_WATER:
     LEA     SHALLOW_TABLE, A0   ; Point to the list of colors
     MOVE.W  #6, D5              ; 7 colors (count starts at 0 for DBRA)
     MOVE.W  #56, D6             ; Initial Height Offset (8 * 7)
-.shallow_loop:
+SHALLOW_LOOP:
     MOVE.L  (A0)+, D1           ; Load color and move to next in table
     BSR     SET_COLORS
     MOVE.L  #0, D1              ; X
@@ -53,13 +54,13 @@ DRAW_WATER:
     MOVE.B  #87, D0             ; Draw
     TRAP    #15
     SUB.W   #8, D6              ; Shrink height for the next (inner) layer
-    DBRA    D5, .shallow_loop
+    DBRA    D5, SHALLOW_LOOP
 
     ; tide gradient
     LEA     TIDE_TABLE, A0      ; Point to Tide colors
     MOVE.W  #8, D5              ; 9 colors
     MOVE.W  #72, D6             ; Initial Height Offset (8 * 9)
-.tide_loop:
+TIDE_LOOP:
     MOVE.L  (A0)+, D1
     BSR     SET_COLORS
     MOVE.L  #0, D1              ; X
@@ -71,7 +72,7 @@ DRAW_WATER:
     MOVE.B  #87, D0
     TRAP    #15
     SUB.W   #8, D6
-    DBRA    D5, .tide_loop
+    DBRA    D5, TIDE_LOOP
 
     ; waterline
     MOVE.L  #WATERLINE, D1
@@ -91,6 +92,7 @@ DRAW_WATER:
     MOVE.L  #01, D1
     MOVE.B  #93, D0
     TRAP    #15
+    MOVEM.L (SP)+, D0-D6/A0
     RTS
 
 ; sets both pen and fill to the colour in D1
@@ -114,6 +116,7 @@ TIDE_TABLE:
 * Description   : Draw background elements behind water level
 *-----------------------------------------------------------
 DRAW_BACKGROUND:
+    MOVEM.L D0-D4, -(SP)
 * Draw Sky --------------------------------
     ; Set Pixel Colors
     MOVE.L  #SKY,       D1          ; Set Background color
@@ -132,6 +135,7 @@ DRAW_BACKGROUND:
     MOVE.B  #87,        D0          ; Draw Sky
     TRAP    #15                     ; Trap (Perform action)	
     
+    MOVEM.L (SP)+, D0-D4
     RTS
 
 *-----------------------------------------------------------
@@ -139,8 +143,284 @@ DRAW_BACKGROUND:
 * Description   : Draw Sand using layered rectangles and ellipses
 *-----------------------------------------------------------    
 DRAW_SAND:
+    MOVEM.L D0-D4, -(SP)
 
-    MOVE.L   #50,          SAND_Y         ; Set how high sand should be from bottom of the screen
+SEAWEED_MID          equ     $00448F0E
+SEAWEED_DARK         equ     $0039710F
+
+    MOVE.L   #50,         SAND_Y         ; Set how high sand should be from bottom of the screen
+
+***---------------- SEAWEED PATCH A ----------------***
+    MOVE.L   #720,         SEAWEED_X      ; Set Seaweed X location
+    MOVE.L   #718,         SEAWEED_Y      ; Set Seaweed Y position
+
+* Draw Seaweed Patch A --------------------------------
+    ; Set Pixel Colors
+    MOVE.L  #SEAWEED_DARK,      D1          ; Set pen color
+    MOVE.B  #80,                D0          ; Task for pen Color
+    TRAP    #15                             ; Trap (Perform action)
+    MOVE.L  #SEAWEED_DARK,      D1          ; Set background color
+    MOVE.B  #81,                D0          ; Task for Background Color
+    TRAP    #15                             ; Trap (Perform action)
+    ; Set Pen Width
+    MOVE.L  #06,    D1          ; Set pen pixel width
+    MOVE.B  #93,    D0          ; Task for Pen Color
+    TRAP    #15                 ; Trap (Perform action)
+
+* Draw Seaweed A bottom --------------------------------
+    ; Set Pixel Colors
+    MOVE.L  #SEAWEED_DARK,      D1          ; Set pen color
+    MOVE.B  #80,                D0          ; Task for pen Color
+    TRAP    #15                             ; Trap (Perform action)
+    ; Set Pen Width
+    MOVE.L  #10,    D1          ; Set pen pixel width
+    MOVE.B  #93,    D0          ; Task for Pen Color
+    TRAP    #15                 ; Trap (Perform action)
+    ; Set X, Y, Width and Height
+    MOVE.L  SEAWEED_X,      D1       ; X origin
+    ADD.L   #00,            D1       ; X Offset
+    MOVE.L  SEAWEED_Y,      D2       ; Y origin
+    SUB.L   #00,            D2       ; Y Offset
+    MOVE.L  SEAWEED_X,      D3       ; X Origin
+    ADD.L   #08,            D3       ; Width
+    MOVE.L  SEAWEED_Y,      D4       ; Y origin
+    SUB.L   #30,            D4       ; Height
+    ; Draw Seaweed
+    MOVE.B  #84,          D0         ; Draw Line
+    TRAP    #15                      ; Trap (Perform action)
+
+* Draw Seaweed A2 bottom --------------------------------
+    ; Set Pixel Colors
+    MOVE.L  #SEAWEED_DARK,      D1          ; Set pen color
+    MOVE.B  #80,                D0          ; Task for pen Color
+    TRAP    #15                             ; Trap (Perform action)
+    ; Set Pen Width
+    MOVE.L  #10,    D1          ; Set pen pixel width
+    MOVE.B  #93,    D0          ; Task for Pen Color
+    TRAP    #15                 ; Trap (Perform action)
+    ; Set X, Y, Width and Height
+    MOVE.L  SEAWEED_X,      D1       ; X origin
+    ADD.L   #19,            D1       ; X Offset
+    MOVE.L  SEAWEED_Y,      D2       ; Y origin
+    SUB.L   #00,            D2       ; Y Offset
+    MOVE.L  SEAWEED_X,      D3       ; X Origin
+    ADD.L   #13,            D3       ; Width
+    MOVE.L  SEAWEED_Y,      D4       ; Y origin
+    SUB.L   #50,            D4       ; Height
+    ; Draw Seaweed
+    MOVE.B  #84,          D0         ; Draw Line
+    TRAP    #15                      ; Trap (Perform action)
+
+* Draw Seaweed B bottom --------------------------------
+    ; Set X, Y, Width and Height
+    MOVE.L  SEAWEED_X,      D1       ; X origin
+    ADD.L   #40,            D1       ; X Offset
+    MOVE.L  SEAWEED_Y,      D2       ; Y origin
+    SUB.L   #00,            D2       ; Y Offset
+    MOVE.L  SEAWEED_X,      D3       ; X Origin
+    ADD.L   #36,            D3       ; Width
+    MOVE.L  SEAWEED_Y,      D4       ; Y origin
+    SUB.L   #20,            D4       ; Height
+    ; Draw Seaweed
+    MOVE.B  #84,          D0         ; Draw Line
+    TRAP    #15                      ; Trap (Perform action)
+
+* Draw Seaweed A top --------------------------------
+    ; Set Pen Width
+    MOVE.L  #05,    D1          ; Set pen pixel width
+    MOVE.B  #93,    D0          ; Task for Pen Color
+    TRAP    #15                 ; Trap (Perform action)
+    ; Set X, Y, Width and Height
+    MOVE.L  SEAWEED_X,      D1       ; X origin
+    ADD.L   #08,            D1       ; X Offset
+    MOVE.L  SEAWEED_Y,      D2       ; Y origin
+    SUB.L   #30,            D2       ; Y Offset
+    MOVE.L  SEAWEED_X,      D3       ; X Origin
+    ADD.L   #00,            D3       ; Width
+    MOVE.L  SEAWEED_Y,      D4       ; Y origin
+    SUB.L   #70,            D4       ; Height
+    ; Draw Seaweed
+    MOVE.B  #84,          D0         ; Draw Line
+    TRAP    #15                      ; Trap (Perform action)
+
+* Draw Seaweed A2 top --------------------------------
+    ; Set Pen Width
+    MOVE.L  #06,    D1          ; Set pen pixel width
+    MOVE.B  #93,    D0          ; Task for Pen Color
+    TRAP    #15                 ; Trap (Perform action)
+    ; Set X, Y, Width and Height
+    MOVE.L  SEAWEED_X,      D1       ; X origin
+    ADD.L   #13,            D1       ; X Offset
+    MOVE.L  SEAWEED_Y,      D2       ; Y origin
+    SUB.L   #50,            D2       ; Y Offset
+    MOVE.L  SEAWEED_X,      D3       ; X Origin
+    ADD.L   #21,            D3       ; Width
+    MOVE.L  SEAWEED_Y,      D4       ; Y origin
+    SUB.L   #85,            D4       ; Height
+    ; Draw Seaweed
+    MOVE.B  #84,          D0         ; Draw Line
+    TRAP    #15                      ; Trap (Perform action)
+
+* Draw Seaweed B top --------------------------------
+    ; Set X, Y, Width and Height
+    MOVE.L  SEAWEED_X,      D1       ; X origin
+    ADD.L   #36,            D1       ; X Offset
+    MOVE.L  SEAWEED_Y,      D2       ; Y origin
+    SUB.L   #20,            D2       ; Y Offset
+    MOVE.L  SEAWEED_X,      D3       ; X Origin
+    ADD.L   #29,            D3       ; Width
+    MOVE.L  SEAWEED_Y,      D4       ; Y origin
+    SUB.L   #48,            D4       ; Height
+    ; Draw Seaweed
+    MOVE.B  #84,          D0         ; Draw Line
+    TRAP    #15                      ; Trap (Perform action)
+
+* Draw Seaweed C  --------------------------------
+    ; Set X, Y, Width and Height
+    MOVE.L  SEAWEED_X,      D1       ; X origin
+    ADD.L   #-10,            D1       ; X Offset
+    MOVE.L  SEAWEED_Y,      D2       ; Y origin
+    SUB.L   #00,            D2       ; Y Offset
+    MOVE.L  SEAWEED_X,      D3       ; X Origin
+    ADD.L   #-15,            D3       ; Width
+    MOVE.L  SEAWEED_Y,      D4       ; Y origin
+    SUB.L   #45,            D4       ; Height
+    ; Draw Seaweed
+    MOVE.B  #84,          D0         ; Draw Line
+    TRAP    #15                      ; Trap (Perform action)
+
+***---------------- SEAWEED PATCH B ----------------***
+    MOVE.L   #160,         SEAWEED_X      ; Set Seaweed X location
+    MOVE.L   #738,         SEAWEED_Y      ; Set Seaweed Y position
+
+* Draw Seaweed Patch B --------------------------------
+
+* Draw Seaweed A bottom --------------------------------
+    ; Set Pixel Colors
+    MOVE.L  #SEAWEED_DARK,      D1          ; Set pen color
+    MOVE.B  #80,                D0          ; Task for pen Color
+    TRAP    #15                             ; Trap (Perform action)
+    ; Set Pen Width
+    MOVE.L  #08,    D1          ; Set pen pixel width
+    MOVE.B  #93,    D0          ; Task for Pen Color
+    TRAP    #15                 ; Trap (Perform action)
+    ; Set X, Y, Width and Height
+    MOVE.L  SEAWEED_X,      D1       ; X origin
+    ADD.L   #-10,            D1       ; X Offset
+    MOVE.L  SEAWEED_Y,      D2       ; Y origin
+    SUB.L   #00,            D2       ; Y Offset
+    MOVE.L  SEAWEED_X,      D3       ; X Origin
+    ADD.L   #00,            D3       ; Width
+    MOVE.L  SEAWEED_Y,      D4       ; Y origin
+    SUB.L   #30,            D4       ; Height
+    ; Draw Seaweed
+    MOVE.B  #84,          D0         ; Draw Line
+    TRAP    #15                      ; Trap (Perform action)
+
+* Draw Seaweed A2 bottom --------------------------------
+    ; Set Pixel Colors
+    MOVE.L  #SEAWEED_DARK,      D1          ; Set pen color
+    MOVE.B  #80,                D0          ; Task for pen Color
+    TRAP    #15                             ; Trap (Perform action)
+    ; Set Pen Width
+    MOVE.L  #10,    D1          ; Set pen pixel width
+    MOVE.B  #93,    D0          ; Task for Pen Color
+    TRAP    #15                 ; Trap (Perform action)
+    ; Set X, Y, Width and Height
+    MOVE.L  SEAWEED_X,      D1       ; X origin
+    ADD.L   #19,            D1       ; X Offset
+    MOVE.L  SEAWEED_Y,      D2       ; Y origin
+    SUB.L   #00,            D2       ; Y Offset
+    MOVE.L  SEAWEED_X,      D3       ; X Origin
+    ADD.L   #13,            D3       ; Width
+    MOVE.L  SEAWEED_Y,      D4       ; Y origin
+    SUB.L   #50,            D4       ; Height
+    ; Draw Seaweed
+    MOVE.B  #84,          D0         ; Draw Line
+    TRAP    #15                      ; Trap (Perform action)
+
+* Draw Seaweed B bottom --------------------------------
+    ; Set X, Y, Width and Height
+    MOVE.L  SEAWEED_X,      D1       ; X origin
+    ADD.L   #40,            D1       ; X Offset
+    MOVE.L  SEAWEED_Y,      D2       ; Y origin
+    SUB.L   #00,            D2       ; Y Offset
+    MOVE.L  SEAWEED_X,      D3       ; X Origin
+    ADD.L   #36,            D3       ; Width
+    MOVE.L  SEAWEED_Y,      D4       ; Y origin
+    SUB.L   #20,            D4       ; Height
+    ; Draw Seaweed
+    MOVE.B  #84,          D0         ; Draw Line
+    TRAP    #15                      ; Trap (Perform action)
+
+* Draw Seaweed A top --------------------------------
+    ; Set Pen Width
+    MOVE.L  #05,    D1          ; Set pen pixel width
+    MOVE.B  #93,    D0          ; Task for Pen Color
+    TRAP    #15                 ; Trap (Perform action)
+    ; Set X, Y, Width and Height
+    MOVE.L  SEAWEED_X,      D1       ; X origin
+    ADD.L   #00,            D1       ; X Offset
+    MOVE.L  SEAWEED_Y,      D2       ; Y origin
+    SUB.L   #30,            D2       ; Y Offset
+    MOVE.L  SEAWEED_X,      D3       ; X Origin
+    ADD.L   #-04,            D3       ; Width
+    MOVE.L  SEAWEED_Y,      D4       ; Y origin
+    SUB.L   #70,            D4       ; Height
+    ; Draw Seaweed
+    MOVE.B  #84,          D0         ; Draw Line
+    TRAP    #15                      ; Trap (Perform action)
+
+* Draw Seaweed A2 top --------------------------------
+    ; Set Pen Width
+    MOVE.L  #06,    D1          ; Set pen pixel width
+    MOVE.B  #93,    D0          ; Task for Pen Color
+    TRAP    #15                 ; Trap (Perform action)
+    ; Set X, Y, Width and Height
+    MOVE.L  SEAWEED_X,      D1       ; X origin
+    ADD.L   #13,            D1       ; X Offset
+    MOVE.L  SEAWEED_Y,      D2       ; Y origin
+    SUB.L   #50,            D2       ; Y Offset
+    MOVE.L  SEAWEED_X,      D3       ; X Origin
+    ADD.L   #21,            D3       ; Width
+    MOVE.L  SEAWEED_Y,      D4       ; Y origin
+    SUB.L   #85,            D4       ; Height
+    ; Draw Seaweed
+    MOVE.B  #84,          D0         ; Draw Line
+    TRAP    #15                      ; Trap (Perform action)
+
+* Draw Seaweed B top --------------------------------
+    ; Set X, Y, Width and Height
+    MOVE.L  SEAWEED_X,      D1       ; X origin
+    ADD.L   #34,            D1       ; X Offset
+    MOVE.L  SEAWEED_Y,      D2       ; Y origin
+    SUB.L   #20,            D2       ; Y Offset
+    MOVE.L  SEAWEED_X,      D3       ; X Origin
+    ADD.L   #34,            D3       ; Width
+    MOVE.L  SEAWEED_Y,      D4       ; Y origin
+    SUB.L   #52,            D4       ; Height
+    ; Draw Seaweed
+    MOVE.B  #84,          D0         ; Draw Line
+    TRAP    #15                      ; Trap (Perform action)
+
+* Draw Seaweed C  --------------------------------
+    ; Set X, Y, Width and Height
+    MOVE.L  SEAWEED_X,      D1       ; X origin
+    ADD.L   #40,            D1       ; X Offset
+    MOVE.L  SEAWEED_Y,      D2       ; Y origin
+    SUB.L   #00,            D2       ; Y Offset
+    MOVE.L  SEAWEED_X,      D3       ; X Origin
+    ADD.L   #45,            D3       ; Width
+    MOVE.L  SEAWEED_Y,      D4       ; Y origin
+    SUB.L   #45,            D4       ; Height
+    ; Draw Seaweed
+    MOVE.B  #84,          D0         ; Draw Line
+    TRAP    #15                      ; Trap (Perform action)
+
+     ; ReSet Pen Width
+    MOVE.L  #01,    D1          ; Set pen pixel width
+    MOVE.B  #93,    D0          ; Task for Pen Color
+    TRAP    #15                 ; Trap (Perform action)
 
 * Draw Sand Base --------------------------------
     ; Set Pixel Colors
@@ -346,6 +626,7 @@ DRAW_SAND:
     MOVE.B  #87,        D0          ; Draw Gradient Section
     TRAP    #15                     ; Trap (Perform action)    
     
+    MOVEM.L (SP)+, D0-D4
     RTS    
 
 *-----------------------------------------------------------
@@ -354,6 +635,7 @@ DRAW_SAND:
 *-----------------------------------------------------------
 
 DRAW_PLYR_DATA:
+    MOVEM.L D0-D1/A1, -(SP)
     CLR.L   D1
     
     ; Player X Message
@@ -512,6 +794,7 @@ DRAW_PLYR_DATA:
     ;MOVE    #13,        D0
     ;TRAP    #15
 
+    MOVEM.L (SP)+, D0-D1/A1
     RTS  
 
 *-----------------------------------------------------------
@@ -571,6 +854,9 @@ POS_Y   DS.L    01      ; Stores fish instance Y and used to draw
 FISH_DIRECTION_X    DS.L    01
 
 SAND_Y  DS.L    01      ; How high to draw sand from the bottom of the screen
+
+SEAWEED_X DS.L		01
+SEAWEED_Y DS.L		01
 
 *-----------------------------------------------------------
 * Section       : Graphic Colors
