@@ -50,11 +50,9 @@ DRAW_PLYR_LEFT_1:
 * Line Upper fin  --------------------------------
     ; Set Pixel Colors
     MOVE.L  #PLAYER_0_FIN,  D1          ; Set Pen color
-    MOVE.B  #80,                D0          ; Task for Pen Color
-    TRAP    #15                             ; Trap (Perform action)
+    JSR     SET_PEN_COLOR
     MOVE.L  #PLAYER_0_FIN,  D1          ; Set Fill color
-    MOVE.B  #81,                D0          ; Task for Fill Color
-    TRAP    #15                             ; Trap (Perform action)
+    JSR     SET_FILL_COLOR
     
   ; Set Pen Width
     MOVE.L  #04,   D1          ; Set pen pixel width
@@ -78,11 +76,9 @@ DRAW_PLYR_LEFT_1:
 * Square Upper fin (left) --------------------------------
     ; Set Pixel Colors
     MOVE.L  #PLAYER_0_FIN,  D1          ; Set Pen color
-    MOVE.B  #80,                D0          ; Task for Pen Color
-    TRAP    #15                             ; Trap (Perform action)
+    JSR     SET_PEN_COLOR
     MOVE.L  #PLAYER_0_FIN,  D1          ; Set Fill color
-    MOVE.B  #81,                D0          ; Task for Fill Color
-    TRAP    #15                             ; Trap (Perform action)
+    JSR     SET_FILL_COLOR
     
   ; Set Pen Width
     MOVE.L  #01,   D1          ; Set pen pixel width
@@ -210,11 +206,9 @@ DRAW_PLYR_LEFT_1:
 * Square Nose  --------------------------------
     ; Set Pixel Colors
     MOVE.L  #PLAYER_0_GOLD,  D1          ; Set Pen color
-    MOVE.B  #80,                D0          ; Task for Pen Color
-    TRAP    #15                             ; Trap (Perform action)
+    JSR     SET_PEN_COLOR
     MOVE.L  #PLAYER_0_GOLD,  D1          ; Set Fill color
-    MOVE.B  #81,                D0          ; Task for Fill Color
-    TRAP    #15                             ; Trap (Perform action)
+    JSR     SET_FILL_COLOR
 
 	; Set X, Y, Width and Height
     MOVE.L  POS_X,   D1       ; X
@@ -263,11 +257,9 @@ DRAW_PLYR_LEFT_1:
 * Square top banner  --------------------------------
     ; Set Pixel Colors
     MOVE.L  #PLAYER_0_ORANGE,  D1          ; Set Pen color
-    MOVE.B  #80,                D0          ; Task for Pen Color
-    TRAP    #15                             ; Trap (Perform action)
+    JSR     SET_PEN_COLOR
     MOVE.L  #PLAYER_0_ORANGE,  D1          ; Set Fill color
-    MOVE.B  #81,                D0          ; Task for Fill Color
-    TRAP    #15                             ; Trap (Perform action)
+    JSR     SET_FILL_COLOR
 
 	; Set X, Y, Width and Height
     MOVE.L  POS_X,   D1       ; X
@@ -286,11 +278,9 @@ DRAW_PLYR_LEFT_1:
 * Square bottom banner  --------------------------------
     ; Set Pixel Colors
     MOVE.L  #PLAYER_0_YELLOW,  D1          ; Set Pen color
-    MOVE.B  #80,                D0          ; Task for Pen Color
-    TRAP    #15                             ; Trap (Perform action)
+    JSR     SET_PEN_COLOR
     MOVE.L  #PLAYER_0_YELLOW,  D1          ; Set Fill color
-    MOVE.B  #81,                D0          ; Task for Fill Color
-    TRAP    #15                             ; Trap (Perform action)
+    JSR     SET_FILL_COLOR
 
 	; Set X, Y, Width and Height
     MOVE.L  POS_X,   D1       ; X
@@ -309,11 +299,9 @@ DRAW_PLYR_LEFT_1:
 * Circle eye -------------------------------
     ; Set Pixel Colors
     MOVE.L  #BLACK,       D1          ; Set pen color
-    MOVE.B  #80,                D0          ; Task for Background Color
-    TRAP    #15                             ; Trap (Perform action)
+    JSR     SET_PEN_COLOR
     MOVE.L  #BLACK,               D1          ; Set Fill color
-    MOVE.B  #81,                D0          ; Task for Fill Color
-    TRAP    #15                             ; Trap (Perform action)
+    JSR     SET_FILL_COLOR
 
     ; Set X, Y, Width and Height
     MOVE.L  POS_X,   D1       ; X
@@ -344,11 +332,9 @@ DRAW_PLYR_FLIP_1:
   * Line Upper fin  --------------------------------
     ; Set Pixel Colors
     MOVE.L  #PLAYER_0_FIN,  D1          ; Set Pen color
-    MOVE.B  #80,                D0          ; Task for Pen Color
-    TRAP    #15                             ; Trap (Perform action)
+    JSR     SET_PEN_COLOR
     MOVE.L  #PLAYER_0_FIN,  D1          ; Set Fill color
-    MOVE.B  #81,                D0          ; Task for Fill Color
-    TRAP    #15                             ; Trap (Perform action)
+    JSR     SET_FILL_COLOR
     
   ; Set Pen Width
     MOVE.L  #04,   D1          ; Set pen pixel width
@@ -375,11 +361,9 @@ DRAW_PLYR_FLIP_1:
 * Square Upper fin (left) --------------------------------
     ; Set Pixel Colors
     MOVE.L  #PLAYER_0_FIN,  D1          ; Set Pen color
-    MOVE.B  #80,                D0          ; Task for Pen Color
-    TRAP    #15                             ; Trap (Perform action)
+    JSR     SET_PEN_COLOR
     MOVE.L  #PLAYER_0_FIN,  D1          ; Set Fill color
-    MOVE.B  #81,                D0          ; Task for Fill Color
-    TRAP    #15                             ; Trap (Perform action)
+    JSR     SET_FILL_COLOR
     
   ; Set Pen Width
     MOVE.L  #01,   D1          ; Set pen pixel width
@@ -528,11 +512,9 @@ DRAW_PLYR_FLIP_1:
 * Square Nose  --------------------------------
     ; Set Pixel Colors
     MOVE.L  #PLAYER_0_GOLD,  D1          ; Set Pen color
-    MOVE.B  #80,                D0          ; Task for Pen Color
-    TRAP    #15                             ; Trap (Perform action)
+    JSR     SET_PEN_COLOR
     MOVE.L  #PLAYER_0_GOLD,  D1          ; Set Fill color
-    MOVE.B  #81,                D0          ; Task for Fill Color
-    TRAP    #15                             ; Trap (Perform action)
+    JSR     SET_FILL_COLOR
 
 	; Set X, Y, Width and Height
     MOVE.L  POS_X,   D1       ; X
@@ -590,11 +572,9 @@ DRAW_PLYR_FLIP_1:
 * Square top banner  --------------------------------
     ; Set Pixel Colors
     MOVE.L  #PLAYER_0_ORANGE,  D1          ; Set Pen color
-    MOVE.B  #80,                D0          ; Task for Pen Color
-    TRAP    #15                             ; Trap (Perform action)
+    JSR     SET_PEN_COLOR
     MOVE.L  #PLAYER_0_ORANGE,  D1          ; Set Fill color
-    MOVE.B  #81,                D0          ; Task for Fill Color
-    TRAP    #15                             ; Trap (Perform action)
+    JSR     SET_FILL_COLOR
 
 	; Set X, Y, Width and Height
     MOVE.L  POS_X,   D1       ; X
@@ -616,11 +596,9 @@ DRAW_PLYR_FLIP_1:
 * Square bottom banner  --------------------------------
     ; Set Pixel Colors
     MOVE.L  #PLAYER_0_YELLOW,  D1          ; Set Pen color
-    MOVE.B  #80,                D0          ; Task for Pen Color
-    TRAP    #15                             ; Trap (Perform action)
+    JSR     SET_PEN_COLOR
     MOVE.L  #PLAYER_0_YELLOW,  D1          ; Set Fill color
-    MOVE.B  #81,                D0          ; Task for Fill Color
-    TRAP    #15                             ; Trap (Perform action)
+    JSR     SET_FILL_COLOR
 
 	; Set X, Y, Width and Height
     MOVE.L  POS_X,   D1       ; X
@@ -642,11 +620,9 @@ DRAW_PLYR_FLIP_1:
 * Circle eye -------------------------------
     ; Set Pixel Colors
     MOVE.L  #BLACK,       D1          ; Set pen color
-    MOVE.B  #80,                D0          ; Task for Background Color
-    TRAP    #15                             ; Trap (Perform action)
+    JSR     SET_PEN_COLOR
     MOVE.L  #BLACK,               D1          ; Set Fill color
-    MOVE.B  #81,                D0          ; Task for Fill Color
-    TRAP    #15                             ; Trap (Perform action)
+    JSR     SET_FILL_COLOR
 
     ; Set X, Y, Width and Height
     MOVE.L  POS_X,   D1       ; X

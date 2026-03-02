@@ -127,6 +127,9 @@ D           EQU         $44         ; W
 * sounds and screen size
 *-----------------------------------------------------------
 INITIALISE:
+	MOVE.L  #0, FLASH_STATE
+    MOVE.L  #0, FLASH_COUNT
+    MOVE.L  #0, FLASH_TIMER
 	
 	; Set Screen Resolution to 1024x768 px
 	 MOVE.B #33,D0
@@ -439,6 +442,8 @@ GAMELOOP:
 
     ;water splash particles
     JSR     UPDATE_SPLASH
+
+    JSR     UPDATE_FLASH
 
     ;achievements
     JSR     UPDATE_ACHIEVEMENT
@@ -909,6 +914,8 @@ OCARINA_WAV     DC.B    'ocarina.wav',0
 
 
 	
+
+
 
 
 

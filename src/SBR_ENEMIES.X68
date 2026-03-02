@@ -735,6 +735,11 @@ ADD_AN_PTS:
 
 ATE_FISH:
     JSR     PLAY_EAT
+    
+    MOVE.L  #FLASH_BLINKS, FLASH_COUNT
+    MOVE.L  #FLASH_DURATION, FLASH_TIMER
+    MOVE.L  #1, FLASH_STATE
+    
     ;--- track total fish eaten ---
     ADD.L   #1, ACH_FISH_COUNT
     MOVEM.L D7/A0-A2, -(SP)
@@ -867,6 +872,7 @@ PLAYER_SIZE         DS.L    1               ;0-5 matching fish types
 
 *~Font name~Courier New~
 *~Font size~10~
+
 
 
 

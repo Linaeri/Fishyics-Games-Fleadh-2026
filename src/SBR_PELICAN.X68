@@ -3,8 +3,8 @@
 ;hadt to shorten them
 ;i don't get why, other files have even longer label names
 
-PELICAN_W           EQU     50      
-PELICAN_H           EQU     25      
+PELICAN_W           EQU     24      
+PELICAN_H           EQU     18      
 PELICAN_SPD         EQU     3
 PELICAN_SAFE_SZ     EQU     4       ;player size needed to survive
 PELICAN_PTS         EQU     150
@@ -256,6 +256,7 @@ PELICAN_X       DS.L    1
 PELICAN_Y       DS.L    1
 PELICAN_DIR     DS.L    1           ;-1 = left, 1 = right
 PELICAN_ACTIVE  DS.L    1           ;1 = flying, 0 = inactive
+
 
 
 
