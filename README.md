@@ -9,7 +9,7 @@
 
 ## 👥 Team Members  
 - Emma Brennan : Designer/Artist/Programmer
-- Adam Pohorilsky   : Programmer
+- Adam Pohorilsky   : Programmer/UI
 - Myroslav Sliusarchuk   : Programmer
 
 
@@ -24,15 +24,11 @@ Describe:
 - What makes your game unique
 - Target audience (if relevant)
 
-Example:
-
-> *"Fishyics is a 2D platform game with growth mechanics. Play as an escaped goldfish on a quest to become the biggest fish in the sea. Feed. Grow. Conquer.
-
-> *“SliLab is a 2D side scrolling platformer, in which something has gone terribly wrong and you, an organic form-shifting slime, experiment OOZ3, have gained sentience and escaped from your containment unit in an outer-space research facility. You must now find a way out of the station without being caught by the labs mech security system, headlined by the SUPERMECH, an all-powerful metal force which ensures containment. Shift your matter to sticky, gooey, or jumpy to escape through traps and lazers and break free!!! Replay to find different ways to escape and find new ways collect as much slime along the way as possible. ”*
+> *"Fishyics is a 2D platform game with growth mechanics. Play as an escaped goldfish on a quest to become the biggest fish in the sea. Feed on smaller fish to grow. Evade bigger fish. Watch out for the changing tides! Survive long enough to eat the shark, and claim the sea as your own. 
 
 ## 🎮 Gameplay Overview  
 
-- **Genre:** 2D platform 
+- **Genre:** 2D Action/Platformer
 - **Platform:** PC  
 - **Game Engine:** Easy68K Assembly
 - **Controls:** WASD/Joytick/D-pad, ESC
@@ -42,13 +38,14 @@ Example:
 ## 🔗 Project Links  
 
 - 💻 **Source Code:**  
-  [Insert GitHub Repository Link](https://bitbucket.org/MuddyGames/r36s/src/main/)
+  [[[Insert GitHub Repository Link](https://github.com/Linaeri/Fishyics-Games-Fleadh-2026/src)](https://bitbucket.org/MuddyGames/r36s/src/main/)](https://github.com/Linaeri/Fishyics-Games-Fleadh-2026/tree/main/src)
   
 - 💻 **Executable Code:**  
-  [Insert GitHub Repository Link](https://bitbucket.org/MuddyGames/r36s/src/main/)
+  [[[Insert GitHub Repository Link](https://github.com/Linaeri/Fishyics-Games-Fleadh-2026/src)](https://bitbucket.org/MuddyGames/r36s/src/main/)](https://github.com/Linaeri/Fishyics-Games-Fleadh-2026/blob/main/START%20GAME.lnk)
   
+
 - 📄 **Design Document:**  
-  [Insert link to Game Design Document](https://tus.ie/gamesfleadh/game-studio/)
+  [[Insert link to Game Design Document](https://tus.ie/gamesfleadh/game-studio/)](https://drive.google.com/drive/folders/14CrX_Qxf-SU-aEEYumZbVnwUUgd--k7-?usp=sharing)
 
 - 🎬 **Trailer Video:**  
   [Insert link to trailer video](https://youtu.be/2QLrWLoiU7M?si=6OGnst23YVyCTUei)
