@@ -450,22 +450,28 @@ DA_I_PL:
 DA_I_AF:
 DA_I_AT:
 DA_I_PJ:
-    MOVE.L  #$00446688, D1
-    MOVE.B  #80, D0
-    TRAP    #15
-    MOVE.L  #$00446688, D1
-    MOVE.B  #81, D0
-    TRAP    #15
-    MOVE.L  ACH_DRAW_X, D1
-    ADD.L   #5, D1
-    MOVE.L  ACH_DRAW_Y, D2
-    ADD.L   #20, D2
-    MOVE.L  D1, D3
-    ADD.L   #30, D3
-    MOVE.L  D2, D4
-    ADD.L   #15, D4
-    MOVE.B  #87, D0
-    TRAP    #15
+    MOVEM.L D0-D7/A0-A4, -(SP)
+    ;save real pelican state
+    MOVE.L  PELICAN_ACTIVE, -(SP)
+    MOVE.L  PELICAN_X, -(SP)
+    MOVE.L  PELICAN_Y, -(SP)
+    MOVE.L  PELICAN_DIR, -(SP)
+    ;fake it for the icon
+    MOVE.L  #1, PELICAN_ACTIVE
+    MOVE.L  ACH_DRAW_X, D0
+    ADD.L   #8, D0
+    MOVE.L  D0, PELICAN_X
+    MOVE.L  ACH_DRAW_Y, D0
+    ADD.L   #20, D0
+    MOVE.L  D0, PELICAN_Y
+    MOVE.L  #-1, PELICAN_DIR
+    JSR     DRAW_PELICAN
+    ;restore real pelican state
+    MOVE.L  (SP)+, PELICAN_DIR
+    MOVE.L  (SP)+, PELICAN_Y
+    MOVE.L  (SP)+, PELICAN_X
+    MOVE.L  (SP)+, PELICAN_ACTIVE
+    MOVEM.L (SP)+, D0-D7/A0-A4
     BRA     DA_AFIC
 
 ;--- FIRST FISH ICON: sardine facing left ---
