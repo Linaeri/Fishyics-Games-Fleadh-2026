@@ -1,11 +1,11 @@
 ;how many of each fish to spawn
-NUM_SARDINE     EQU     5
-NUM_CLOWNFISH   EQU     5
+NUM_SARDINE     EQU     10
+NUM_CLOWNFISH   EQU     6
 NUM_SPOTTY      EQU     5
-NUM_CRAB        EQU     5
-NUM_ANGELFISH   EQU     5
+NUM_CRAB        EQU     3
+NUM_ANGELFISH   EQU     3
 NUM_SHARK       EQU     1
-NUM_ENEMIES     EQU     26
+NUM_ENEMIES     EQU     28
 
 ;fish type IDs
 TYPE_SMALL      EQU     0           ;sardine
@@ -30,53 +30,53 @@ PROP_SIZE       EQU     20
 
 ;so => SMALL = SARDINE, MEDIUM = CLOWNFISH, LARGE = SPOTTY
 ;small fish properties (sardine)
-SMALL_W         EQU     8
+SMALL_W         EQU     10
 SMALL_H         EQU     6
 SMALL_SPD       EQU     2
 SMALL_CLR       EQU     $00FFFFFF
 
 ;medium fish properties (clownfish)
-MEDIUM_W        EQU     16
-MEDIUM_H        EQU     10
+MEDIUM_W        EQU     12
+MEDIUM_H        EQU     9
 MEDIUM_SPD      EQU     2
 MEDIUM_CLR      EQU     $00008000
 
 ;large fish properties (spotty)
-LARGE_W         EQU     28
-LARGE_H         EQU     16
+LARGE_W         EQU     24
+LARGE_H         EQU     13
 LARGE_SPD       EQU     1
 LARGE_CLR       EQU     $000000FF
 
 ;crab properties
-CRAB_W          EQU     36
-CRAB_H          EQU     22
-CRAB_SPD        EQU     2
+CRAB_W          EQU     24
+CRAB_H          EQU     32
+CRAB_SPD        EQU     1
 CRAB_CLR        EQU     $000080FF       ;orang
 
 ;angelfish properties
-ANGEL_W         EQU     48
-ANGEL_H         EQU     30
-ANGEL_SPD       EQU     1
+ANGEL_W         EQU     45
+ANGEL_H         EQU     28
+ANGEL_SPD       EQU     2
 ANGEL_CLR       EQU     $00FFFF00       ;cyan
 
 ;shark properties
-SHARK_W         EQU     64
-SHARK_H         EQU     36
+SHARK_W         EQU     70
+SHARK_H         EQU     20
 SHARK_SPD       EQU     3
 SHARK_CLR       EQU     $00505050       ;dark grey
 
 SARDINE_YMIN    EQU     80          
-SARDINE_YMAX    EQU     250         
+SARDINE_YMAX    EQU     420         
 CLOWN_YMIN      EQU     150         
-CLOWN_YMAX      EQU     380         
+CLOWN_YMAX      EQU     430         
 SPOTTY_YMIN     EQU     300         
-SPOTTY_YMAX     EQU     550         
-CRAB_YMIN       EQU     660         
-CRAB_YMAX       EQU     740         
+SPOTTY_YMAX     EQU     620         
+CRAB_YMIN       EQU     620         
+CRAB_YMAX       EQU     700         
 ANGEL_YMIN      EQU     350         
 ANGEL_YMAX      EQU     620         
 SHARK_YMIN      EQU     250         
-SHARK_YMAX      EQU     500         
+SHARK_YMAX      EQU     410         
 
 ;points per fish type
 SMALL_PTS       EQU     10
@@ -93,25 +93,28 @@ MIN_SPAWN_WINDOW   EQU 80
 REACT_DIST          EQU     65
 
 ;growth thresholds in score points
-GROW_THRESH_1   EQU     50    ; 10 fishes was too much so
-GROW_THRESH_2   EQU     200   ; 300 points was reachable by me just before the tide was starting to move so it was change to be more dynamic
-GROW_THRESH_3   EQU     1000  ; at this point you have 3 times of fish to eat and dodge the bigger fishes so this part will be engaging and can be a bit longer
-GROW_THRESH_4   EQU     1500  ; a bit crabs      
-GROW_THRESH_5   EQU     3500  
+GROW_THRESH_1   EQU     30    ; 10 fishes was too much so
+GROW_THRESH_2   EQU     125   ; 300 points was reachable by me just before the tide was starting to move so it was change to be more dynamic
+GROW_THRESH_3   EQU     550  ; at this point you have 3 times of fish to eat and dodge the bigger fishes so this part will be engaging and can be a bit longer
+GROW_THRESH_4   EQU     1000  ; a bit crabs      
+GROW_THRESH_5   EQU     1500 
+GROW_THRESH_6   EQU     2500 ;====================
 
 ;player sizes per growth stage, MOVE TO PLAYER
-PLYR_W_SM       EQU     8
-PLYR_H_SM       EQU     8
-PLYR_W_MD       EQU     18
-PLYR_H_MD       EQU     12
-PLYR_W_LG       EQU     30
-PLYR_H_LG       EQU     20
-PLYR_W_XL       EQU     40
-PLYR_H_XL       EQU     26
-PLYR_W_XXL      EQU     52
-PLYR_H_XXL      EQU     34
-PLYR_W_MAX      EQU     68
-PLYR_H_MAX      EQU     40
+PLYR_W_SM       EQU     12
+PLYR_H_SM       EQU     7
+PLYR_W_MD       EQU     16
+PLYR_H_MD       EQU     10
+PLYR_W_LG       EQU     31
+PLYR_H_LG       EQU     13
+PLYR_W_XL       EQU     33
+PLYR_H_XL       EQU     15
+PLYR_W_XXL      EQU     38
+PLYR_H_XXL      EQU     17
+PLYR_W_MAX      EQU     45
+PLYR_H_MAX      EQU     20
+PLYR_W_SIKE     EQU     70		; your amazing artist/designer increased the scope again :)
+PLYR_H_SIKE     EQU     22
 
 ;max range of spawning X outside of the screen, so there are no groups of fish
 MAX_SPAWN_X     EQU     500
@@ -588,8 +591,9 @@ DO_DRAW_CRAB:
     BRA     DONE_ENEMY_DRAW
 
 DO_DRAW_ANGEL:
+	MOVE.L  (A4), D3
     MOVEM.L D7/A0-A4, -(SP)
-    BSR     DRAW_ENEMY_ANGELFISH
+    JSR     DRAW_ANGELFISH
     MOVEM.L (SP)+, D7/A0-A4
     BRA     DONE_ENEMY_DRAW
 
@@ -616,376 +620,7 @@ SKIP_DRAW_ENEMY:
 * Input: D1 = baseX (enemy X), D2 = baseY (enemy Y)
 *-----------------------------------------------------------
 
-;large fish 28x16 body (SPOTTY)
-DRAW_ENEMY_FISH_LARGE:
-    MOVE.L  D1, D5
-    MOVE.L  D2, D6
 
-    ;set colour
-    MOVE.L  #LARGE_CLR, D1
-    MOVE.B  #80, D0
-    TRAP    #15
-    MOVE.L  #LARGE_CLR, D1
-    MOVE.B  #81, D0
-    TRAP    #15
-
-    ; body
-    MOVE.L  D5, D1
-    MOVE.L  D6, D2
-    MOVE.L  D5, D3
-    ADD.L   #28, D3
-    MOVE.L  D6, D4
-    ADD.L   #16, D4
-    MOVE.B  #87, D0
-    TRAP    #15
-
-    ; mouth
-    MOVE.L  D5, D1
-    SUB.L   #6, D1
-    MOVE.L  D6, D2
-    ADD.L   #5, D2
-    MOVE.L  D5, D3
-    MOVE.L  D6, D4
-    ADD.L   #11, D4
-    MOVE.B  #87, D0
-    TRAP    #15
-
-    ; top fin
-    MOVE.L  D5, D1
-    ADD.L   #10, D1
-    MOVE.L  D6, D2
-    SUB.L   #3, D2
-    MOVE.L  D5, D3
-    ADD.L   #20, D3
-    MOVE.L  D6, D4
-    ADD.L   #2, D4
-    MOVE.B  #87, D0
-    TRAP    #15
-
-    ; bottom fin
-    MOVE.L  D5, D1
-    ADD.L   #10, D1
-    MOVE.L  D6, D2
-    ADD.L   #15, D2
-    MOVE.L  D5, D3
-    ADD.L   #20, D3
-    MOVE.L  D6, D4
-    ADD.L   #20, D4
-    MOVE.B  #87, D0
-    TRAP    #15
-
-    ; tail base
-    MOVE.L  D5, D1
-    ADD.L   #28, D1
-    MOVE.L  D6, D2
-    ADD.L   #6, D2
-    MOVE.L  D5, D3
-    ADD.L   #36, D3
-    MOVE.L  D6, D4
-    ADD.L   #10, D4
-    MOVE.B  #87, D0
-    TRAP    #15
-
-    ; tail fork lines
-    MOVE.L  #4, D1
-    MOVE.B  #93, D0
-    TRAP    #15
-
-    ; upper line
-    MOVE.L  D5, D1
-    ADD.L   #34, D1
-    MOVE.L  D6, D2
-    ADD.L   #8, D2
-    MOVE.L  D5, D3
-    ADD.L   #46, D3
-    MOVE.L  D6, D4
-    ADD.L   #3, D4
-    MOVE.B  #84, D0
-    TRAP    #15
-
-    ; lower line
-    MOVE.L  D5, D1
-    ADD.L   #34, D1
-    MOVE.L  D6, D2
-    ADD.L   #8, D2
-    MOVE.L  D5, D3
-    ADD.L   #46, D3
-    MOVE.L  D6, D4
-    ADD.L   #13, D4
-    MOVE.B  #84, D0
-    TRAP    #15
-
-    ; reset pen width 1
-    MOVE.L  #1, D1
-    MOVE.B  #93, D0
-    TRAP    #15
-
-    ; eye
-    MOVE.L  #$00000000, D1
-    MOVE.B  #81, D0
-    TRAP    #15
-
-    MOVE.L  D5, D1
-    ADD.L   #6, D1
-    MOVE.L  D6, D2
-    ADD.L   #6, D2
-    MOVE.L  D5, D3
-    ADD.L   #9, D3
-    MOVE.L  D6, D4
-    ADD.L   #9, D4
-    MOVE.B  #87, D0
-    TRAP    #15
-
-    RTS
-
-
-DRAW_ENEMY_CRAB:
-    MOVE.L  D1, D5          ; baseX
-    MOVE.L  D2, D6          ; baseY
-
-    ;set colour - orange
-    MOVE.L  #CRAB_CLR, D1
-    MOVE.B  #80, D0
-    TRAP    #15
-    MOVE.L  #CRAB_CLR, D1
-    MOVE.B  #81, D0
-    TRAP    #15
-
-    ; main body
-    MOVE.L  D5, D1
-    MOVE.L  D6, D2
-    MOVE.L  D5, D3
-    ADD.L   #36, D3
-    MOVE.L  D6, D4
-    ADD.L   #22, D4
-    MOVE.B  #87, D0
-    TRAP    #15
-
-    ; left claw
-    MOVE.L  D5, D1
-    SUB.L   #10, D1
-    MOVE.L  D6, D2
-    ADD.L   #2, D2
-    MOVE.L  D5, D3
-    ADD.L   #2, D3
-    MOVE.L  D6, D4
-    ADD.L   #10, D4
-    MOVE.B  #87, D0
-    TRAP    #15
-
-    ; right claw
-    MOVE.L  D5, D1
-    ADD.L   #34, D1
-    MOVE.L  D6, D2
-    ADD.L   #2, D2
-    MOVE.L  D5, D3
-    ADD.L   #46, D3
-    MOVE.L  D6, D4
-    ADD.L   #10, D4
-    MOVE.B  #87, D0
-    TRAP    #15
-
-    ; legs left side
-    MOVE.L  D5, D1
-    ADD.L   #4, D1
-    MOVE.L  D6, D2
-    ADD.L   #22, D2
-    MOVE.L  D5, D3
-    ADD.L   #8, D3
-    MOVE.L  D6, D4
-    ADD.L   #28, D4
-    MOVE.B  #87, D0
-    TRAP    #15
-
-    ; legs left midde
-    MOVE.L  D5, D1
-    ADD.L   #12, D1
-    MOVE.L  D6, D2
-    ADD.L   #22, D2
-    MOVE.L  D5, D3
-    ADD.L   #16, D3
-    MOVE.L  D6, D4
-    ADD.L   #28, D4
-    MOVE.B  #87, D0
-    TRAP    #15
-
-    ; legs right middle
-    MOVE.L  D5, D1
-    ADD.L   #20, D1
-    MOVE.L  D6, D2
-    ADD.L   #22, D2
-    MOVE.L  D5, D3
-    ADD.L   #24, D3
-    MOVE.L  D6, D4
-    ADD.L   #28, D4
-    MOVE.B  #87, D0
-    TRAP    #15
-
-    ; legs right side
-    MOVE.L  D5, D1
-    ADD.L   #28, D1
-    MOVE.L  D6, D2
-    ADD.L   #22, D2
-    MOVE.L  D5, D3
-    ADD.L   #32, D3
-    MOVE.L  D6, D4
-    ADD.L   #28, D4
-    MOVE.B  #87, D0
-    TRAP    #15
-
-    ; left eye
-    MOVE.L  #$00000000, D1
-    MOVE.B  #80, D0
-    TRAP    #15
-    MOVE.L  #$00000000, D1
-    MOVE.B  #81, D0
-    TRAP    #15
-
-    MOVE.L  D5, D1
-    ADD.L   #8, D1
-    MOVE.L  D6, D2
-    SUB.L   #4, D2
-    MOVE.L  D5, D3
-    ADD.L   #12, D3
-    MOVE.L  D6, D4
-    ADD.L   #2, D4
-    MOVE.B  #87, D0
-    TRAP    #15
-
-    ;right eye
-    MOVE.L  D5, D1
-    ADD.L   #24, D1
-    MOVE.L  D6, D2
-    SUB.L   #4, D2
-    MOVE.L  D5, D3
-    ADD.L   #28, D3
-    MOVE.L  D6, D4
-    ADD.L   #2, D4
-    MOVE.B  #87, D0
-    TRAP    #15
-
-    RTS
-
-DRAW_ENEMY_ANGELFISH:
-    MOVE.L  D1, D5          ; baseX
-    MOVE.L  D2, D6          ; baseY
-
-    ;set colour - cyan
-    MOVE.L  #ANGEL_CLR, D1
-    MOVE.B  #80, D0
-    TRAP    #15
-    MOVE.L  #ANGEL_CLR, D1
-    MOVE.B  #81, D0
-    TRAP    #15
-
-    ; main body
-    MOVE.L  D5, D1
-    MOVE.L  D6, D2
-    MOVE.L  D5, D3
-    ADD.L   #48, D3
-    MOVE.L  D6, D4
-    ADD.L   #30, D4
-    MOVE.B  #87, D0
-    TRAP    #15
-
-    ; mouth
-    MOVE.L  D5, D1
-    SUB.L   #8, D1
-    MOVE.L  D6, D2
-    ADD.L   #10, D2
-    MOVE.L  D5, D3
-    MOVE.L  D6, D4
-    ADD.L   #20, D4
-    MOVE.B  #87, D0
-    TRAP    #15
-
-    ; tall fin
-    MOVE.L  D5, D1
-    ADD.L   #14, D1
-    MOVE.L  D6, D2
-    SUB.L   #10, D2
-    MOVE.L  D5, D3
-    ADD.L   #30, D3
-    MOVE.L  D6, D4
-    ADD.L   #2, D4
-    MOVE.B  #87, D0
-    TRAP    #15
-
-    ; bottom fin
-    MOVE.L  D5, D1
-    ADD.L   #14, D1
-    MOVE.L  D6, D2
-    ADD.L   #28, D2
-    MOVE.L  D5, D3
-    ADD.L   #30, D3
-    MOVE.L  D6, D4
-    ADD.L   #38, D4
-    MOVE.B  #87, D0
-    TRAP    #15
-
-    ; tail:
-    MOVE.L  D5, D1
-    ADD.L   #48, D1
-    MOVE.L  D6, D2
-    ADD.L   #8, D2
-    MOVE.L  D5, D3
-    ADD.L   #60, D3
-    MOVE.L  D6, D4
-    ADD.L   #22, D4
-    MOVE.B  #87, D0
-    TRAP    #15
-
-    ; stripe 1
-    MOVE.L  #$00808000, D1
-    MOVE.B  #80, D0
-    TRAP    #15
-    MOVE.L  #$00808000, D1
-    MOVE.B  #81, D0
-    TRAP    #15
-
-    MOVE.L  D5, D1
-    ADD.L   #10, D1
-    MOVE.L  D6, D2
-    ADD.L   #2, D2
-    MOVE.L  D5, D3
-    ADD.L   #14, D3
-    MOVE.L  D6, D4
-    ADD.L   #28, D4
-    MOVE.B  #87, D0
-    TRAP    #15
-
-    ; stripe 2
-    MOVE.L  D5, D1
-    ADD.L   #30, D1
-    MOVE.L  D6, D2
-    ADD.L   #2, D2
-    MOVE.L  D5, D3
-    ADD.L   #34, D3
-    MOVE.L  D6, D4
-    ADD.L   #28, D4
-    MOVE.B  #87, D0
-    TRAP    #15
-
-    ; eye
-    MOVE.L  #$00000000, D1
-    MOVE.B  #80, D0
-    TRAP    #15
-    MOVE.L  #$00000000, D1
-    MOVE.B  #81, D0
-    TRAP    #15
-
-    MOVE.L  D5, D1
-    ADD.L   #4, D1
-    MOVE.L  D6, D2
-    ADD.L   #12, D2
-    MOVE.L  D5, D3
-    ADD.L   #8, D3
-    MOVE.L  D6, D4
-    ADD.L   #16, D4
-    MOVE.B  #87, D0
-    TRAP    #15
-
-    RTS
 
 *-----------------------------------------------------------
 * Subroutine    : CHECK_ALL_COLLISIONS
@@ -1129,6 +764,8 @@ CHECK_GROWTH:
     MOVE.L  PLAYER_SCORE, D0
 
     ;check from highest threshold down
+    CMP.L   #GROW_THRESH_6, D0
+    BGE     TRY_GROW_6
     CMP.L   #GROW_THRESH_5, D0
     BGE     TRY_GROW_5
     CMP.L   #GROW_THRESH_4, D0
@@ -1184,6 +821,15 @@ TRY_GROW_5:
     MOVE.L  #5, PLAYER_SIZE
     MOVE.L  #PLYR_W_MAX, PLYR_W_CURRENT
     MOVE.L  #PLYR_H_MAX, PLYR_H_CURRENT
+
+TRY_GROW_6:
+    CMP.L   #6, PLAYER_SIZE
+    BGE     GROWTH_DONE
+    JSR     PLAY_GROW
+    MOVE.L  #6, PLAYER_SIZE
+    MOVE.L  #PLYR_W_SIKE, PLYR_W_CURRENT
+    MOVE.L  #PLYR_H_SIKE, PLYR_H_CURRENT
+
 GROWTH_DONE:
     MOVEM.L (SP)+, D0
     RTS
@@ -1214,13 +860,15 @@ PLAYER_SIZE         DS.L    1               ;0-5 matching fish types
     include "SBR_DRAW_SHARK.X68"
     include "SBR_DRAW_CRAB.X68"
     include "SBR_DRAW_SPOTTY.X68"
-
+   	include "SBR_DRAW_ANGELFISH.X68"
 
 
 
 
 *~Font name~Courier New~
 *~Font size~10~
+
+
 
 
 
