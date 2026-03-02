@@ -28,7 +28,7 @@
 ## 🔗 Project Links  
 
 - 💻 **Source Code:**  
-[https://github.com/Linaeri/Fishyics-Games-Fleadh-2026/src]
+[https://github.com/Linaeri/Fishyics-Games-Fleadh-2026/blob/main/src]
   
 - 💻 **Executable Code:**  
   [https://github.com/Linaeri/Fishyics-Games-Fleadh-2026/blob/main/START%20GAME.lnk]
