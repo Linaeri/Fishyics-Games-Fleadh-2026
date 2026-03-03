@@ -1,6 +1,6 @@
 *-----------------------------------------------------------
 * Title      : SBR_INPUT
-* Description: Handle keyboard input
+* Desription: Handle keyboard input
 * Subroutines: (in this order:)
 
 *	INPUT				; checks for last pressed key
@@ -42,6 +42,15 @@ PROCESS_INPUT:
     CMP.L   #ESCAPE,    CURRENT_KEY ; Is Current Key Escape
     BEQ     EXIT                    ; Exit if Escape
   
+    MOVE.L  D2,         CURRENT_KEY ; Put Current Key in Memory
+    CMP.L   #76,    CURRENT_KEY ; Is Current Key Escape
+    BEQ     STARTx            ; Exit if Escape
+    BNE     CONTINUE_IN
+    
+STARTx:
+    JMP    START
+  
+CONTINUE_IN:
     MOVEM.L (SP)+, D0-D2
     RTS                             ; Return to subroutine
     
@@ -50,7 +59,7 @@ PROCESS_INPUT:
 * Description   : See Easy68k help manual for reference - checks the state of 4 specified keys 
 *-----------------------------------------------------------
 WASD_CHECK_INPUT:
-    MOVEM.L D0-D1, -(SP)
+     MOVEM.L D0-D1, -(SP)
 
     ; Assume no movement this frame - clear x and y directions
      MOVE.L  #0, PLYR_DIRECTION_X
@@ -106,6 +115,8 @@ WASD_CHECK_INPUT:
 
 *----------------------------------------------------
 	include "SBR_PLYR_MOVEMENT.X68"	; for calling the Set Swim direction subroutines
+
+
 
 
 

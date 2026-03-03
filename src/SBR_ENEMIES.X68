@@ -2,10 +2,10 @@
 NUM_SARDINE     EQU     10
 NUM_CLOWNFISH   EQU     6
 NUM_SPOTTY      EQU     5
-NUM_CRAB        EQU     3
-NUM_ANGELFISH   EQU     3
+NUM_CRAB        EQU     5
+NUM_ANGELFISH   EQU     4
 NUM_SHARK       EQU     1
-NUM_ENEMIES     EQU     28
+NUM_ENEMIES     EQU     31
 
 ;fish type IDs
 TYPE_SMALL      EQU     0           ;sardine
@@ -30,8 +30,8 @@ PROP_SIZE       EQU     20
 
 ;so => SMALL = SARDINE, MEDIUM = CLOWNFISH, LARGE = SPOTTY
 ;small fish properties (sardine)
-SMALL_W         EQU     10
-SMALL_H         EQU     6
+SMALL_W         EQU     12
+SMALL_H         EQU     8
 SMALL_SPD       EQU     2
 SMALL_CLR       EQU     $00FFFFFF
 
@@ -66,9 +66,9 @@ SHARK_SPD       EQU     3
 SHARK_CLR       EQU     $00505050       ;dark grey
 
 SARDINE_YMIN    EQU     80          
-SARDINE_YMAX    EQU     420         
+SARDINE_YMAX    EQU     520         
 CLOWN_YMIN      EQU     150         
-CLOWN_YMAX      EQU     430         
+CLOWN_YMAX      EQU     480         
 SPOTTY_YMIN     EQU     300         
 SPOTTY_YMAX     EQU     620         
 CRAB_YMIN       EQU     620         
@@ -872,6 +872,9 @@ PLAYER_SIZE         DS.L    1               ;0-5 matching fish types
 
 *~Font name~Courier New~
 *~Font size~10~
+
+
+
 
 
 
