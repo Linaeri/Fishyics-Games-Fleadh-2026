@@ -1,9 +1,11 @@
-START_DOT_X_L   EQU     485
-START_DOT_X_R   EQU     510  
-START_DOT_Y_L   EQU     336
-START_DOT_Y_H   EQU     317
+START_DOT_X_L   EQU     494
+START_DOT_X_R   EQU     514  
+START_DOT_Y_L   EQU     380
+START_DOT_Y_H   EQU     360
 
 TITLE_START:
+    JSR     STOP_OCARINA
+    JSR     STOP_BACKGROUND
     JSR     LOOP_TITLE_MUSIC
 TITLE_LOOP:
     ; Enable back buffer
@@ -144,110 +146,138 @@ TITLE_SCREEN:
     RTS
     
 STARTING_POINT:
-    MOVE.B  #TC_CURSR_P, D0
-    MOVE.W  #$3614, D1
+    MOVE.L  #$00FFFFFF, D1
+    MOVE.B  #80, D0
     TRAP    #15
-    
-    LEA     startpoint1, A1
-    MOVE    #13,    D0
+    MOVE.L  #$00AE9E2E, D1
+    MOVE.B  #81, D0
     TRAP    #15
-
-    MOVE.B  #TC_CURSR_P, D0
-    MOVE.W  #$3615, D1
+    MOVE.L  #2, D1
+    MOVE.B  #93, D0
     TRAP    #15
-    
-    LEA     startpoint2, A1
-    MOVE    #13,    D0
-    TRAP    #15
-
-    MOVE.B  #TC_CURSR_P, D0
-    MOVE.W  #$3616, D1
-    TRAP    #15
-    
-    LEA     startpoint3, A1
-    MOVE    #13,    D0
+    MOVE.L  #469, D1
+    MOVE.L  #325, D2
+    MOVE.L  #539, D3
+    MOVE.L  #395, D4
+    MOVE.B  #88, D0
     TRAP    #15
 
-    MOVE.B  #TC_CURSR_P, D0
-    MOVE.W  #$3617, D1
+    MOVE.L  #$00000000, D1
+    MOVE.B  #80, D0
     TRAP    #15
-    
-    LEA     startpoint4, A1
-    MOVE    #13,    D0
+    MOVE.L  #$00000000, D1
+    MOVE.B  #81, D0
     TRAP    #15
-
-    MOVE.B  #TC_CURSR_P, D0
-    MOVE.W  #$3618, D1
-    TRAP    #15
-    
-    LEA     startpoint5, A1
-    MOVE    #13,    D0
+    MOVE.L  #467, D1
+    MOVE.L  #323, D2
+    MOVE.L  #541, D3
+    MOVE.L  #337, D4
+    MOVE.B  #87, D0
     TRAP    #15
 
-    MOVE.B  #TC_CURSR_P, D0
-    MOVE.W  #$3619, D1
+    MOVE.L  #$00FFFFFF, D1
+    MOVE.B  #80, D0
     TRAP    #15
-    
-    LEA     startpoint6, A1
-    MOVE    #13,    D0
+    MOVE.L  #469, D1
+    MOVE.L  #355, D2
+    MOVE.L  #478, D3
+    MOVE.L  #333, D4
+    MOVE.B  #84, D0
+    TRAP    #15
+    MOVE.L  #539, D1
+    MOVE.L  #355, D2
+    MOVE.L  #530, D3
+    MOVE.L  #333, D4
+    MOVE.B  #84, D0
     TRAP    #15
 
-    MOVE.B  #TC_CURSR_P, D0
-    MOVE.W  #$361A, D1
+    MOVE.L  #$00FFFFFF, D1
+    MOVE.B  #80, D0
     TRAP    #15
-    
-    LEA     startpoint7, A1
-    MOVE    #13,    D0
+    MOVE.L  #$00000000, D1
+    MOVE.B  #81, D0
+    TRAP    #15
+    MOVE.L  #478, D1
+    MOVE.L  #325, D2
+    MOVE.L  #530, D3
+    MOVE.L  #337, D4
+    MOVE.B  #88, D0
+    TRAP    #15
+
+    MOVE.L  #1, D1
+    MOVE.B  #93, D0
+    TRAP    #15
+
+    MOVE.L  #$00000000, D1
+    MOVE.B  #81, D0
+    TRAP    #15
+    MOVE.L  #$00FFFFFF, D1
+    MOVE.B  #80, D0
     TRAP    #15
 
     MOVE.B  #TC_CURSR_P, D0
     MOVE.W  #$361B, D1
     TRAP    #15
-    
-    LEA     startpoint8, A1
-    MOVE    #13,    D0
+    LEA     startpoint5, A1
+    MOVE    #13, D0
     TRAP    #15
 
     MOVE.B  #TC_CURSR_P, D0
     MOVE.W  #$361C, D1
     TRAP    #15
-    
-    LEA     startpoint9, A1
-    MOVE    #13,    D0
+    LEA     startpoint6, A1
+    MOVE    #13, D0
     TRAP    #15
 
     MOVE.B  #TC_CURSR_P, D0
     MOVE.W  #$361D, D1
     TRAP    #15
-    
-    LEA     startpoint10, A1
-    MOVE    #13,    D0
+    LEA     startpoint7, A1
+    MOVE    #13, D0
     TRAP    #15
 
     MOVE.B  #TC_CURSR_P, D0
     MOVE.W  #$361E, D1
     TRAP    #15
-    
-    LEA     startpoint11, A1
-    MOVE    #13,    D0
+    LEA     startpoint8, A1
+    MOVE    #13, D0
     TRAP    #15
 
     MOVE.B  #TC_CURSR_P, D0
     MOVE.W  #$361F, D1
     TRAP    #15
-    
-    LEA     startpoint12, A1
-    MOVE    #13,    D0
+    LEA     startpoint9, A1
+    MOVE    #13, D0
     TRAP    #15
 
     MOVE.B  #TC_CURSR_P, D0
     MOVE.W  #$3620, D1
     TRAP    #15
-    
+    LEA     startpoint10, A1
+    MOVE    #13, D0
+    TRAP    #15
+
+    MOVE.B  #TC_CURSR_P, D0
+    MOVE.W  #$3621, D1
+    TRAP    #15
+    LEA     startpoint11, A1
+    MOVE    #13, D0
+    TRAP    #15
+
+    MOVE.B  #TC_CURSR_P, D0
+    MOVE.W  #$3622, D1
+    TRAP    #15
+    LEA     startpoint12, A1
+    MOVE    #13, D0
+    TRAP    #15
+
+    MOVE.B  #TC_CURSR_P, D0
+    MOVE.W  #$3623, D1
+    TRAP    #15
     LEA     startpoint13, A1
-    MOVE    #13,    D0
-    TRAP    #15    
-    
+    MOVE    #13, D0
+    TRAP    #15
+
     RTS
 
 title1 dc.b  '                                           ( )       ',0
@@ -261,9 +291,9 @@ title8 dc.b  '                                                 ( )',0
 title9 dc.b  '                                                      ( )',0
 
 
-startpoint1 dc.b  '      ______      ',0
+startpoint1 dc.b  '      /    \      ',0
 startpoint2 dc.b  '     |      |     ',0
-startpoint3 dc.b  '     |______|     ',0
+startpoint3 dc.b  '      \____/      ',0
 startpoint4 dc.b  '                  ',0
 startpoint5 dc.b  '        /\        ',0
 startpoint6 dc.b  '       //\\       ',0
@@ -276,8 +306,17 @@ startpoint12 dc.b '-================-',0
 startpoint13 dc.b 'SWIM HERE TO START',0
 
 
+sp_pad6    dc.b '      ',0
+sp_pad5    dc.b '     ',0
+;sp1_mid    dc.b '/    \',0
+;sp2_mid    dc.b '|      |',0
+;sp3_mid    dc.b '\____/',0
 
-
+sp_blk6    dc.b '      ',0
+sp_blk5    dc.b '     ',0
+sp1_mid    dc.b '/    \',0
+sp2_mid    dc.b '|      |',0
+sp3_mid    dc.b '\____/',0
 
 
 

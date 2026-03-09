@@ -8,8 +8,8 @@ MOON_GROW_MAX       EQU     20
 MOON_GROW_MIN       EQU     0
 MOON_GROW_RATE      EQU     20      ;how often to grow/shrink
 
-MOON_PURPLE_CLR     EQU     $00F5E297       ;same colour as the sky so it blends in
-MOON_PINK_CLR       EQU     $00F5FAFC
+MOON_PURPLE_CLR     EQU     $00A08888       ;same colour as the sky so it blends in
+MOON_PINK_CLR       EQU     $00F8F7F7
 
 ;set starting positions
 INIT_MOONS:
@@ -207,6 +207,7 @@ CHECK_MOON_COLLISION:
 MOON_X              DS.L    1       ;purple centre X
 MOON_GROW           DS.L    1       ;extra radius right now
 MOON_GROW_TIMER     DS.L    1       ;frame counter for growing
+
 
 
 
