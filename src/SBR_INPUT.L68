@@ -1,0 +1,493 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 02/03/2026 18:41:46
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      : SBR_INPUT
+00000000                             3  * Desription: Handle keyboard input
+00000000                             4  * Subroutines: (in this order:)
+00000000                             5  
+00000000                             6  *   INPUT               ; checks for last pressed key
+00000000                             7  *   PROCESS_INPUT       ; compares last pressed key, used to exit the program with Esc
+00000000                             8  *   WASD_CHECK_INPUT    ; checks the state of multiple keys pressed at once, for example is W AND D are held
+00000000                             9  *   Any other keys, repeat WASD code here
+00000000                            10  *-----------------------------------------------------------
+00000000                            11  
+00000000                            12  
+00000000                            13  *-----------------------------------------------------------
+00000000                            14  * Subroutine    : Input
+00000000                            15  * Description   : Process Keyboard Input
+00000000                            16  *-----------------------------------------------------------
+00000000                            17  INPUT:
+00000000  48E7 E000                 18      MOVEM.L D0-D2, -(SP)
+00000004                            19      ; Process Input
+00000004  4282                      20      CLR.L   D2
+00000006  4281                      21      CLR.L   D1                      ; Clear Data Register
+Line 22 ERROR: Undefined symbol
+00000008  103C 0016                 22      MOVE.B  #TC_KEYCODE,D0          ; Listen for Keys
+0000000C  4E4F                      23      TRAP    #15                     ; Trap (Perform action)
+0000000E  1401                      24      MOVE.B  D1,         D2          ; Move last key D1 to D2
+00000010  B43C 0000                 25      CMP.B   #00,        D2          ; Key is pressed
+00000014  6700 0012                 26      BEQ     PROCESS_INPUT           ; Process Key
+00000018  4E4F                      27      TRAP    #15                     ; Trap for Last Key
+0000001A                            28      ; Check if key still pressed
+0000001A  B23C 00FF                 29      CMP.B   #$FF,       D1          ; Is it still pressed
+0000001E  6700 0008                 30      BEQ     PROCESS_INPUT           ; Process Last Key
+00000022  4CDF 0007                 31      MOVEM.L (SP)+, D0-D2
+00000026  4E75                      32      RTS                             ; Return to subroutine
+00000028                            33  
+00000028                            34  *-----------------------------------------------------------
+00000028                            35  * Subroutine    : Process Input
+00000028                            36  * Description   : Branch based on keys pressed
+00000028                            37  * single-key check goes here if needed
+00000028                            38  *       If you need multiple keys pressed at once, use another WASD input check block
+00000028                            39  *-----------------------------------------------------------
+00000028                            40  PROCESS_INPUT:
+Line 41 ERROR: Undefined symbol
+00000028  23C2 005455D0             41      MOVE.L  D2,         CURRENT_KEY ; Put Current Key in Memory
+Line 42 ERROR: Undefined symbol
+0000002E  0CB9 004DBD16 005455CC    42      CMP.L   #ESCAPE,    CURRENT_KEY ; Is Current Key Escape
+Line 43 ERROR: Undefined symbol
+00000038  6700 BCDC                 43      BEQ     EXIT                    ; Exit if Escape
+0000003C                            44    
+0000003C  4CDF 0007                 45      MOVEM.L (SP)+, D0-D2
+00000040  4E75                      46      RTS                             ; Return to subroutine
+00000042                            47      
+00000042                            48  *-----------------------------------------------------------
+00000042                            49  * Subroutine    : WASD check input
+00000042                            50  * Description   : See Easy68k help manual for reference - checks the state of 4 specified keys 
+00000042                            51  *-----------------------------------------------------------
+00000042                            52  WASD_CHECK_INPUT:
+00000042  48E7 C000                 53      MOVEM.L D0-D1, -(SP)
+00000046                            54  
+00000046                            55      ; Assume no movement this frame - clear x and y directions
+Line 56 ERROR: Undefined symbol
+00000046  23FC 00000000 005455B8    56       MOVE.L  #0, PLYR_DIRECTION_X
+Line 57 ERROR: Undefined symbol
+00000050  23FC 00000000 005455B8    57       MOVE.L  #0, PLYR_DIRECTION_Y
+0000005A                            58  
+0000005A  103C 0013                 59       MOVE.B #19,D0     
+0000005E                            60  
+0000005E  223C 57534144             61       MOVE.L #'W'<<24+'S'<<16+'A'<<8+'D',D1 ; check for keypress (w,s,a,d)
+00000064                            62  
+00000064  4E4F                      63       TRAP   #15
+00000066                            64  
+00000066                            65      * Vertical Check ------------------------------------------------
+00000066                            66      * Up
+00000066  0801 0018                 67       BTST.L #24,D1     ; test for 'w'
+0000006A                            68       IF <NE> THEN      ; if 'w'
+0000006E  4EB9 000000C8             69          JSR     SET_SWIM_UP                     ; if up key pressed, go up  
+00000074                            70       ENDI
+00000074                            71  
+00000074                            72       * Down
+00000074  0801 0010                 73       BTST.L #16,D1     ; test for 's'
+00000078                            74       IF <NE> THEN      ; if 's'
+0000007C  0801 0018                 75              BTST.L #24,D1     ; test for 'w' again
+00000080                            76              IF <NE> THEN 
+00000084  4EB9 000000F8             77                  JSR     CLEAR_SWIM_VERTICAL     ; If both up and down key are pressed, dont move
+0000008A                            78              ELSE
+0000008E  4EB9 000000D4             79                  JSR    SET_SWIM_DOWN            ; otherwise you can swim down
+00000094                            80  
+00000094                            81              ENDI
+00000094                            82       ENDI
+00000094                            83  
+00000094                            84      * Horizontal Check ------------------------------------------------
+00000094                            85      * Left
+00000094  0801 0008                 86       BTST.L #8,D1     ; test for 'a'
+00000098                            87       IF <NE> THEN      ; if 'a'
+0000009C                            88          
+0000009C  4EB9 000000E0             89               JSR     SET_SWIM_LEFT              ; if left key pressed, go left
+000000A2                            90       ENDI
+000000A2                            91  
+000000A2                            92       * Right
+000000A2  0801 0000                 93       BTST.L #0,D1     ; test for 'd'
+000000A6                            94       IF <NE> THEN      ; if 's'
+000000AA  0801 0008                 95              BTST.L #8,D1     ; test for 'a' again
+000000AE                            96              IF <NE> THEN 
+000000B2  4EB9 00000104             97                  JSR     CLEAR_SWIM_HORIZONTAL   ; If both left and right key are pressed, dont move
+000000B8                            98              ELSE
+000000BC  4EB9 000000EC             99                  JSR     SET_SWIM_RIGHT          ; otherwise you can swim right
+000000C2                           100              ENDI
+000000C2                           101       ENDI
+000000C2                           102  
+000000C2                           103      
+000000C2  4CDF 0003                104      MOVEM.L (SP)+, D0-D1
+000000C6  4E75                     105      RTS
+000000C8                           106  
+000000C8                           107  *----------------------------------------------------
+000000C8                           108      include "SBR_PLYR_MOVEMENT.X68" ; for calling the Set Swim direction subroutines
+000000C8                           109  
+000000C8                           110  
+000000C8                           111  
+000000C8                           112  SET_SWIM_UP:
+Line 113 ERROR: Undefined symbol
+000000C8  23FC FFFFFFFF 005455D0   113      MOVE.L  #-1, PLYR_DIRECTION_Y   ; set swim direction to UP
+000000D2  4E75                     114      RTS
+000000D4                           115  
+000000D4                           116  SET_SWIM_DOWN:
+Line 117 ERROR: Undefined symbol
+000000D4  23FC 00000001 005455D0   117      MOVE.L  #1, PLYR_DIRECTION_Y   ; set swim direction to DOWN
+000000DE  4E75                     118      RTS
+000000E0                           119  
+000000E0                           120  SET_SWIM_LEFT:
+Line 121 ERROR: Undefined symbol
+000000E0  23FC FFFFFFFF 005455D0   121      MOVE.L  #-1, PLYR_DIRECTION_X   ; set swim direction to  LEFT
+000000EA  4E75                     122      RTS
+000000EC                           123  
+000000EC                           124  SET_SWIM_RIGHT:
+Line 125 ERROR: Undefined symbol
+000000EC  23FC 00000001 005455D0   125      MOVE.L  #1, PLYR_DIRECTION_X   ; set swim direction to RIGHT
+000000F6  4E75                     126      RTS
+000000F8                           127  
+000000F8                           128  CLEAR_SWIM_VERTICAL:
+Line 129 ERROR: Undefined symbol
+000000F8  23FC 00000000 005455D0   129      MOVE.L  #0, PLYR_DIRECTION_Y   ; set no vertical swim direction
+00000102  4E75                     130      RTS
+00000104                           131  
+00000104                           132  CLEAR_SWIM_HORIZONTAL:
+Line 133 ERROR: Undefined symbol
+00000104  23FC 00000000 005455D0   133      MOVE.L  #0, PLYR_DIRECTION_X   ; set no horizontal swim direction
+0000010E  4E75                     134      RTS
+00000110                           135  
+00000110                           136  
+00000110                           137  PLAYER_MOVEMENT:
+00000110  48E7 DC00                138      MOVEM.L D0-D1/D3-D5, -(SP)
+00000114                           139  
+00000114                           140      ; check if we're moving on both axes at once
+Line 141 ERROR: Undefined symbol
+00000114  2639 004DBD16            141      MOVE.L  PLYR_DIRECTION_X, D3
+Line 142 ERROR: Undefined symbol
+0000011A  2839 004DBD16            142      MOVE.L  PLYR_DIRECTION_Y, D4
+00000120                           143  
+00000120                           144      ; dont let the player swim up if theyre out of the water
+Line 145 ERROR: Undefined symbol
+00000120  4AB9 004DBD16            145      TST.L   PLYR_IN_WATER_NOW
+00000126  6600 0010                146      BNE     PM_IN_WATER             ; underwater, let them swim any direction
+0000012A  4A84                     147      TST.L   D4
+0000012C  6C00 000A                148      BGE     PM_IN_WATER             ; going down or not moving, thats fine
+00000130                           149      ; trying to swim up while in air, block that
+00000130  4284                     150      CLR.L   D4
+Line 151 ERROR: Undefined symbol
+00000132  42B9 004DBD16            151      CLR.L   PLYR_DIRECTION_Y        ; clear so draw doesnt show swim-up
+00000138                           152  
+00000138                           153  PM_IN_WATER:
+00000138                           154  
+00000138                           155      ; start with normal max speed
+Line 156 ERROR: Undefined symbol
+00000138  2A3C 004DBD16            156      MOVE.L  #PLYR_MAX_SPEED, D5
+0000013E                           157  
+0000013E  4A83                     158      TST.L   D3
+00000140  6700 000E                159      BEQ     PM_MAX_SET              ; not moving on X
+00000144  4A84                     160      TST.L   D4
+00000146  6700 0008                161      BEQ     PM_MAX_SET              ; not moving on Y
+0000014A                           162      ; moving diagonally, use lower max
+Line 163 ERROR: Undefined symbol
+0000014A  2A3C 004DBD16            163      MOVE.L  #PLYR_MAX_SPEED_DIAG, D5
+00000150                           164  
+00000150                           165  PM_MAX_SET:
+00000150                           166  
+00000150                           167      ; --- X movement ---
+00000150  4A83                     168      TST.L   D3
+00000152  6700 004C                169      BEQ     PM_DRAG_X               ; no X input, slow down
+00000156                           170  
+00000156                           171      ; if we switched direction, reset velocity so the turn feels instant
+Line 172 ERROR: Undefined symbol
+00000156  2039 004DBD16            172      MOVE.L  PLYR_VELOCITY_X, D0
+0000015C  C1C3                     173      MULS    D3, D0                  ; multiply input dir by current vel - negative means they flipped
+0000015E  6C00 0008                174      BGE     PM_ACCEL_X              ; still going same way (or was stopped), skip reset
+Line 175 ERROR: Undefined symbol
+00000162  42B9 004DBD16            175      CLR.L   PLYR_VELOCITY_X         ; was going the other way, zero out before accelerating
+00000168                           176  PM_ACCEL_X:
+00000168                           177      ; add PLYR_ACCEL in whichever direction D3 says
+Line 178 ERROR: Undefined symbol
+00000168  223C 004DBD16            178      MOVE.L  #PLYR_ACCEL, D1
+0000016E  C3C3                     179      MULS    D3, D1
+Line 180 ERROR: Undefined symbol
+00000170  D3B9 005455B8            180      ADD.L   D1, PLYR_VELOCITY_X
+00000176                           181  
+00000176                           182      ; clamp X velocity to +/- max speed
+Line 183 ERROR: Undefined symbol
+00000176  2039 004DBD16            183      MOVE.L  PLYR_VELOCITY_X, D0
+0000017C  B085                     184      CMP.L   D5, D0
+0000017E  6F00 000C                185      BLE     PM_CLAMP_X_LO
+Line 186 ERROR: Undefined symbol
+00000182  23C5 005455B8            186      MOVE.L  D5, PLYR_VELOCITY_X
+00000188  6000 006E                187      BRA     PM_DONE_X
+0000018C                           188  PM_CLAMP_X_LO:
+0000018C  2205                     189      MOVE.L  D5, D1
+0000018E  4481                     190      NEG.L   D1
+00000190  B081                     191      CMP.L   D1, D0
+00000192  6C00 0064                192      BGE     PM_DONE_X
+Line 193 ERROR: Undefined symbol
+00000196  23C1 005455B8            193      MOVE.L  D1, PLYR_VELOCITY_X
+0000019C  6000 005A                194      BRA     PM_DONE_X
+000001A0                           195  
+000001A0                           196  PM_DRAG_X:
+000001A0                           197      ; not pressing left/right, slow down
+Line 198 ERROR: Undefined symbol
+000001A0  2039 004DBD16            198      MOVE.L  PLYR_VELOCITY_X, D0
+000001A6  4A80                     199      TST.L   D0
+000001A8  6700 004E                200      BEQ     PM_DONE_X               ; already stopped
+000001AC                           201  
+000001AC                           202      ; use different drag depending on air vs water
+Line 203 ERROR: Undefined symbol
+000001AC  4AB9 004DBD16            203      TST.L   PLYR_IN_WATER_NOW
+000001B2  6600 000C                204      BNE     PM_DRAG_X_WTR
+Line 205 ERROR: Undefined symbol
+000001B6  223C 004DBD16            205      MOVE.L  #PLYR_AIR_DRAG, D1      ; in air
+000001BC  6000 0008                206      BRA     PM_DRAG_X_APPLY
+000001C0                           207  PM_DRAG_X_WTR:
+Line 208 ERROR: Undefined symbol
+000001C0  223C 004DBD16            208      MOVE.L  #PLYR_WTR_DRAG, D1      ; in water
+000001C6                           209  PM_DRAG_X_APPLY:
+000001C6  4A81                     210      TST.L   D1
+000001C8  6700 002E                211      BEQ     PM_DONE_X               ; no drag, skip
+000001CC                           212  
+000001CC  4A80                     213      TST.L   D0
+000001CE  6B00 0012                214      BMI     PM_DRAG_X_NEG
+000001D2                           215  
+000001D2                           216      ; moving right, subtract drag
+000001D2  9081                     217      SUB.L   D1, D0
+000001D4  6F00 001C                218      BLE     PM_ZERO_X               ; went past zero, just stop
+Line 219 ERROR: Undefined symbol
+000001D8  23C0 005455B8            219      MOVE.L  D0, PLYR_VELOCITY_X
+000001DE  6000 0018                220      BRA     PM_DONE_X
+000001E2                           221  
+000001E2                           222  PM_DRAG_X_NEG:
+000001E2                           223      ; moving left, add drag
+000001E2  D081                     224      ADD.L   D1, D0
+000001E4  6C00 000C                225      BGE     PM_ZERO_X
+Line 226 ERROR: Undefined symbol
+000001E8  23C0 005455B8            226      MOVE.L  D0, PLYR_VELOCITY_X
+000001EE  6000 0008                227      BRA     PM_DONE_X
+000001F2                           228  
+000001F2                           229  PM_ZERO_X:
+Line 230 ERROR: Undefined symbol
+000001F2  42B9 004DBD16            230      CLR.L   PLYR_VELOCITY_X
+000001F8                           231  
+000001F8                           232  PM_DONE_X:
+000001F8                           233  
+000001F8                           234      ; --- Y movement ---
+000001F8  4A84                     235      TST.L   D4
+000001FA  6700 004C                236      BEQ     PM_DRAG_Y               ; no Y input, slow down
+000001FE                           237  
+000001FE                           238      ; same direction-flip check as X
+Line 239 ERROR: Undefined symbol
+000001FE  2039 004DBD16            239      MOVE.L  PLYR_VELOCITY_Y, D0
+00000204  C1C4                     240      MULS    D4, D0
+00000206  6C00 0008                241      BGE     PM_ACCEL_Y
+Line 242 ERROR: Undefined symbol
+0000020A  42B9 004DBD16            242      CLR.L   PLYR_VELOCITY_Y
+00000210                           243  PM_ACCEL_Y:
+00000210                           244      ; add PLYR_ACCEL in whichever direction D4 says
+Line 245 ERROR: Undefined symbol
+00000210  223C 004DBD16            245      MOVE.L  #PLYR_ACCEL, D1
+00000216  C3C4                     246      MULS    D4, D1
+Line 247 ERROR: Undefined symbol
+00000218  D3B9 005455B8            247      ADD.L   D1, PLYR_VELOCITY_Y
+0000021E                           248  
+0000021E                           249      ; clamp Y velocity to +/- max speed
+Line 250 ERROR: Undefined symbol
+0000021E  2039 004DBD16            250      MOVE.L  PLYR_VELOCITY_Y, D0
+00000224  B085                     251      CMP.L   D5, D0
+00000226  6F00 000C                252      BLE     PM_CLAMP_Y_LO
+Line 253 ERROR: Undefined symbol
+0000022A  23C5 005455B8            253      MOVE.L  D5, PLYR_VELOCITY_Y
+00000230  6000 006E                254      BRA     PM_DONE_Y
+00000234                           255  PM_CLAMP_Y_LO:
+00000234  2205                     256      MOVE.L  D5, D1
+00000236  4481                     257      NEG.L   D1
+00000238  B081                     258      CMP.L   D1, D0
+0000023A  6C00 0064                259      BGE     PM_DONE_Y
+Line 260 ERROR: Undefined symbol
+0000023E  23C1 005455B8            260      MOVE.L  D1, PLYR_VELOCITY_Y
+00000244  6000 005A                261      BRA     PM_DONE_Y
+00000248                           262  
+00000248                           263  PM_DRAG_Y:
+00000248                           264      ; not pressing up/down, slow down
+Line 265 ERROR: Undefined symbol
+00000248  2039 004DBD16            265      MOVE.L  PLYR_VELOCITY_Y, D0
+0000024E  4A80                     266      TST.L   D0
+00000250  6700 004E                267      BEQ     PM_DONE_Y
+00000254                           268  
+00000254                           269      ; different drag for air vs water
+Line 270 ERROR: Undefined symbol
+00000254  4AB9 004DBD16            270      TST.L   PLYR_IN_WATER_NOW
+0000025A  6600 000C                271      BNE     PM_DRAG_Y_WTR
+Line 272 ERROR: Undefined symbol
+0000025E  223C 004DBD16            272      MOVE.L  #PLYR_AIR_DRAG, D1
+00000264  6000 0008                273      BRA     PM_DRAG_Y_APPLY
+00000268                           274  PM_DRAG_Y_WTR:
+Line 275 ERROR: Undefined symbol
+00000268  223C 004DBD16            275      MOVE.L  #PLYR_WTR_DRAG, D1
+0000026E                           276  PM_DRAG_Y_APPLY:
+0000026E  4A81                     277      TST.L   D1
+00000270  6700 002E                278      BEQ     PM_DONE_Y               ; no drag, skip
+00000274                           279  
+00000274  4A80                     280      TST.L   D0
+00000276  6B00 0012                281      BMI     PM_DRAG_Y_NEG
+0000027A                           282  
+0000027A  9081                     283      SUB.L   D1, D0
+0000027C  6F00 001C                284      BLE     PM_ZERO_Y
+Line 285 ERROR: Undefined symbol
+00000280  23C0 005455B8            285      MOVE.L  D0, PLYR_VELOCITY_Y
+00000286  6000 0018                286      BRA     PM_DONE_Y
+0000028A                           287  
+0000028A                           288  PM_DRAG_Y_NEG:
+0000028A  D081                     289      ADD.L   D1, D0
+0000028C  6C00 000C                290      BGE     PM_ZERO_Y
+Line 291 ERROR: Undefined symbol
+00000290  23C0 005455B8            291      MOVE.L  D0, PLYR_VELOCITY_Y
+00000296  6000 0008                292      BRA     PM_DONE_Y
+0000029A                           293  
+0000029A                           294  PM_ZERO_Y:
+Line 295 ERROR: Undefined symbol
+0000029A  42B9 004DBD16            295      CLR.L   PLYR_VELOCITY_Y
+000002A0                           296  
+000002A0                           297  PM_DONE_Y:
+000002A0  4CDF 003B                298      MOVEM.L (SP)+, D0-D1/D3-D5
+000002A4  4E75                     299      RTS
+000002A6                           300  
+000002A6                           301  
+000002A6                           302  CLAMP_PLAYER:
+000002A6  48E7 F000                303      MOVEM.L D0-D3,-(A7)
+Line 304 ERROR: Undefined symbol
+000002AA  2239 004DBD16            304      MOVE.L  PLAYER_X, D1
+000002B0  4283                     305      CLR.L   D3
+Line 306 ERROR: Undefined symbol
+000002B2  263C 004DBD16            306      MOVE.L  #SCREEN_PADDING_X, D3
+000002B8                           307  
+000002B8                           308      ; Left edge
+000002B8  B283                     309      CMP.L   D3, D1
+000002BA  6C00 0012                310      BGE     CHECK_X_RIGHT
+Line 311 ERROR: Undefined symbol
+000002BE  23C3 005455B8            311      MOVE.L  D3, PLAYER_X
+Line 312 ERROR: Undefined symbol
+000002C4  42B9 004DBD16            312      CLR.L   PLYR_VELOCITY_X
+000002CA  6000 0028                313      BRA     CLAMP_RESYNC_X
+000002CE                           314  
+000002CE                           315      * Right Edge
+000002CE                           316  CHECK_X_RIGHT: 
+000002CE  7400                     317      MOVE.L  #0, D2
+Line 318 ERROR: Undefined symbol
+000002D0  3439 004DBD16            318      MOVE.W  SCREEN_W, D2
+Line 319 ERROR: Undefined symbol
+000002D6  0482 004DBD16            319      SUB.L   #PLYR_W_INIT, D2
+Line 320 ERROR: Undefined symbol
+000002DC  0482 004DBD16            320      SUB.L   #SCREEN_PADDING_X, D2
+000002E2                           321  
+000002E2  B282                     322      CMP.L   D2, D1
+000002E4  6F00 001C                323      BLE     CLAMP_Y
+Line 324 ERROR: Undefined symbol
+000002E8  23C2 005455B8            324      MOVE.L  D2, PLAYER_X
+Line 325 ERROR: Undefined symbol
+000002EE  42B9 004DBD16            325      CLR.L   PLYR_VELOCITY_X
+000002F4                           326  
+000002F4                           327  CLAMP_RESYNC_X:
+000002F4                           328      ; position was forced, so rebuild PLYR_X_SUB from it (SUB = position << 8)
+Line 329 ERROR: Undefined symbol
+000002F4  2039 004DBD16            329      MOVE.L  PLAYER_X, D0
+000002FA  E180                     330      ASL.L   #8, D0
+Line 331 ERROR: Undefined symbol
+000002FC  23C0 005455B8            331      MOVE.L  D0, PLYR_X_SUB
+00000302                           332  
+00000302                           333  CLAMP_Y:
+Line 334 ERROR: Undefined symbol
+00000302  2239 004DBD16            334      MOVE.L  PLAYER_Y, D1
+00000308                           335  
+00000308                           336      ; Top edge
+Line 337 ERROR: Undefined symbol
+00000308  B2BC 004DBD16            337      CMP.L   #SCREEN_PADDING_Y, D1
+0000030E  6C00 0016                338      BGE     CHECK_Y_BOTTOM
+Line 339 ERROR: Undefined symbol
+00000312  23FC 004DBD16 005455B8   339      MOVE.L  #SCREEN_PADDING_Y, PLAYER_Y
+Line 340 ERROR: Undefined symbol
+0000031C  42B9 004DBD16            340      CLR.L   PLYR_VELOCITY_Y
+00000322  6000 0026                341      BRA     CLAMP_RESYNC_Y
+00000326                           342  
+00000326                           343      * Bottom edge
+00000326                           344  CHECK_Y_BOTTOM:
+Line 345 ERROR: Undefined symbol
+00000326  3439 004DBD16            345      MOVE.W  SCREEN_H, D2
+Line 346 ERROR: Undefined symbol
+0000032C  0482 004DBD16            346      SUB.L   #PLYR_H_INIT, D2
+Line 347 ERROR: Undefined symbol
+00000332  0482 004DBD16            347      SUB.L   #SCREEN_PADDING_Y, D2
+00000338  B282                     348      CMP.L   D2, D1
+0000033A  6F00 001C                349      BLE     DONE_CLAMP
+Line 350 ERROR: Undefined symbol
+0000033E  23C2 005455B8            350      MOVE.L  D2, PLAYER_Y
+Line 351 ERROR: Undefined symbol
+00000344  42B9 004DBD16            351      CLR.L   PLYR_VELOCITY_Y
+0000034A                           352  
+0000034A                           353  CLAMP_RESYNC_Y:
+0000034A                           354      ; position was forced, so rebuild PLYR_Y_SUB from it
+Line 355 ERROR: Undefined symbol
+0000034A  2039 004DBD16            355      MOVE.L  PLAYER_Y, D0
+00000350  E180                     356      ASL.L   #8, D0
+Line 357 ERROR: Undefined symbol
+00000352  23C0 005455B8            357      MOVE.L  D0, PLYR_Y_SUB
+00000358                           358  
+00000358                           359  DONE_CLAMP:   
+00000358  4CDF 000F                360      MOVEM.L (A7)+,D0-D3  
+0000035C  4E75                     361      RTS
+0000035E                           362  
+0000035E                           363  
+0000035E                           364  
+0000035E                           365  -------------------- end include --------------------
+0000035E                           366  
+0000035E                           367  
+0000035E                           368  
+0000035E                           369  
+Line 370 WARNING: END directive missing, starting address not set
+
+68 errors detected
+1 warning generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+CHECK_X_RIGHT       2CE
+CHECK_Y_BOTTOM      326
+CLAMP_PLAYER        2A6
+CLAMP_RESYNC_X      2F4
+CLAMP_RESYNC_Y      34A
+CLAMP_Y             302
+CLEAR_SWIM_HORIZONTAL  104
+CLEAR_SWIM_VERTICAL  F8
+DONE_CLAMP          358
+INPUT               0
+PLAYER_MOVEMENT     110
+PM_ACCEL_X          168
+PM_ACCEL_Y          210
+PM_CLAMP_X_LO       18C
+PM_CLAMP_Y_LO       234
+PM_DONE_X           1F8
+PM_DONE_Y           2A0
+PM_DRAG_X           1A0
+PM_DRAG_X_APPLY     1C6
+PM_DRAG_X_NEG       1E2
+PM_DRAG_X_WTR       1C0
+PM_DRAG_Y           248
+PM_DRAG_Y_APPLY     26E
+PM_DRAG_Y_NEG       28A
+PM_DRAG_Y_WTR       268
+PM_IN_WATER         138
+PM_MAX_SET          150
+PM_ZERO_X           1F2
+PM_ZERO_Y           29A
+PROCESS_INPUT       28
+SET_SWIM_DOWN       D4
+SET_SWIM_LEFT       E0
+SET_SWIM_RIGHT      EC
+SET_SWIM_UP         C8
+WASD_CHECK_INPUT    42
+_00000000           74
+_00000001           94
+_00000002           8E
+_00000003           94
+_00000004           A2
+_00000005           C2
+_00000006           BC
+_00000007           C2

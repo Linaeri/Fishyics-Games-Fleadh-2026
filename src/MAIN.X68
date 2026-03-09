@@ -243,6 +243,9 @@ INITIALISE:
     ;init water splash particles
     JSR     INIT_SPLASH
 
+    ;init background shark silhouettes
+    JSR     INIT_BG_SHARKS
+
     ; Enable the screen back buffer(see easy 68k help)
 	MOVE.B  #TC_DBL_BUF,D0          ; 92 Enables Double Buffer
     MOVE.B  #17,        D1          ; Combine Tasks
@@ -443,6 +446,9 @@ GAMELOOP:
     ;water splash particles
     JSR     UPDATE_SPLASH
 
+    ;background shark silhouettes
+    JSR     UPDATE_BG_SHARKS
+
     JSR     UPDATE_FLASH
 
     ;achievements
@@ -477,6 +483,7 @@ DRAW:
 	JSR     DRAW_MOONS
 	JSR     DRAW_PELICAN
 	JSR		DRAW_WATER				; draw water tide
+    JSR     DRAW_BG_SHARKS          ; Draw background shark silhouettes (behind fish)
     JSR     DRAW_PLYR_DATA          ; Draw Draw Score, HUD, Player X and Y
 	JSR     DRAW_SAND               ; Draw Sand
     JSR     DRAW_PLAYER             ; Draw Player
@@ -909,11 +916,17 @@ OCARINA_WAV     DC.B    'ocarina.wav',0
 	include "SBR_DRAW_SEAWEED.X68"
 	include "SBR_WIN_SCREEN.X68"
 	include "SBR_DRAW_PELICAN.X68"
+	include "SBR_BG_SHARKS.X68"
 
     END    START        ; last line of source
 
 
 	
+
+
+
+
+
 
 
 

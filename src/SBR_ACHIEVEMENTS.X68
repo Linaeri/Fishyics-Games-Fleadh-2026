@@ -17,7 +17,7 @@
 *-----------------------------------------------------------
 
 ;achievement display stuff
-ACH_DISPLAY_TIME    EQU     3000        ;ms the banner stays on screen
+ACH_DISPLAY_TIME    EQU     400         ;ms the banner stays on screen
 ACH_BOX_W           EQU     260         ;banner width
 ACH_BOX_H           EQU     52          ;banner height
 ACH_BOX_MARGIN      EQU     12          ;gap from screen edge
@@ -47,10 +47,10 @@ ACH_WALL_GRID_Y2    EQU     240
 ACH_WALL_GRID_Y3    EQU     310
 
 ;the exit button hitbox on the trophy wall
-WALL_EXIT_X_L       EQU     460
-WALL_EXIT_X_R       EQU     565
-WALL_EXIT_Y_T       EQU     430
-WALL_EXIT_Y_B       EQU     450
+WALL_EXIT_X_L       EQU     494
+WALL_EXIT_X_R       EQU     514
+WALL_EXIT_Y_T       EQU     400
+WALL_EXIT_Y_B       EQU     420
 
 PLAYER_Y_WALL_INIT  EQU     300
 
@@ -1205,15 +1205,126 @@ AW_9_DRW:
 
 ;"swim here to go back" text at the bottom
 WALL_EXIT_SIGN:
+    MOVE.L  #$00FFFFFF, D1
+    MOVE.B  #80, D0
+    TRAP    #15
+    MOVE.L  #$00AE9E2E, D1
+    MOVE.B  #81, D0
+    TRAP    #15
+    MOVE.L  #2, D1
+    MOVE.B  #93, D0
+    TRAP    #15
+    MOVE.L  #469, D1
+    MOVE.L  #375, D2
+    MOVE.L  #539, D3
+    MOVE.L  #445, D4
+    MOVE.B  #88, D0
+    TRAP    #15
+
+    MOVE.L  #$00000000, D1
+    MOVE.B  #80, D0
+    TRAP    #15
+    MOVE.L  #$00000000, D1
+    MOVE.B  #81, D0
+    TRAP    #15
+    MOVE.L  #467, D1
+    MOVE.L  #373, D2
+    MOVE.L  #541, D3
+    MOVE.L  #387, D4
+    MOVE.B  #87, D0
+    TRAP    #15
+
+    MOVE.L  #$00FFFFFF, D1
+    MOVE.B  #80, D0
+    TRAP    #15
+    MOVE.L  #469, D1
+    MOVE.L  #405, D2
+    MOVE.L  #478, D3
+    MOVE.L  #383, D4
+    MOVE.B  #84, D0
+    TRAP    #15
+    MOVE.L  #539, D1
+    MOVE.L  #405, D2
+    MOVE.L  #530, D3
+    MOVE.L  #383, D4
+    MOVE.B  #84, D0
+    TRAP    #15
+
+    MOVE.L  #$00FFFFFF, D1
+    MOVE.B  #80, D0
+    TRAP    #15
+    MOVE.L  #$00000000, D1
+    MOVE.B  #81, D0
+    TRAP    #15
+    MOVE.L  #478, D1
+    MOVE.L  #375, D2
+    MOVE.L  #530, D3
+    MOVE.L  #387, D4
+    MOVE.B  #88, D0
+    TRAP    #15
+
+    MOVE.L  #1, D1
+    MOVE.B  #93, D0
+    TRAP    #15
+
+    MOVE.L  #$00000000, D1
+    MOVE.B  #81, D0
+    TRAP    #15
+    MOVE.L  #$00FFFFFF, D1
+    MOVE.B  #80, D0
+    TRAP    #15
+
     MOVE.B  #TC_CURSR_P, D0
-    MOVE.W  #$361B, D1              ;col 54, row 27
+    MOVE.W  #$361E, D1
+    TRAP    #15
+    LEA     wall_arrow1, A1
+    MOVE.B  #13, D0
+    TRAP    #15
+
+    MOVE.B  #TC_CURSR_P, D0
+    MOVE.W  #$361F, D1
+    TRAP    #15
+    LEA     wall_arrow2, A1
+    MOVE.B  #13, D0
+    TRAP    #15
+
+    MOVE.B  #TC_CURSR_P, D0
+    MOVE.W  #$3620, D1
+    TRAP    #15
+    LEA     wall_arrow3, A1
+    MOVE.B  #13, D0
+    TRAP    #15
+
+    MOVE.B  #TC_CURSR_P, D0
+    MOVE.W  #$3621, D1
+    TRAP    #15
+    LEA     wall_arrow4, A1
+    MOVE.B  #13, D0
+    TRAP    #15
+
+    MOVE.B  #TC_CURSR_P, D0
+    MOVE.W  #$3622, D1
+    TRAP    #15
+    LEA     wall_arrow4, A1
+    MOVE.B  #13, D0
+    TRAP    #15
+
+    MOVE.B  #TC_CURSR_P, D0
+    MOVE.W  #$3623, D1
+    TRAP    #15
+    LEA     wall_arrow4, A1
+    MOVE.B  #13, D0
+    TRAP    #15
+
+    MOVE.B  #TC_CURSR_P, D0
+    MOVE.W  #$3624, D1
     TRAP    #15
     LEA     WALL_EXIT_LINE1, A1
     MOVE.B  #13, D0
     TRAP    #15
 
     MOVE.B  #TC_CURSR_P, D0
-    MOVE.W  #$361C, D1              ;col 54, row 28
+    MOVE.W  #$3625, D1
     TRAP    #15
     LEA     WALL_EXIT_LINE2, A1
     MOVE.B  #13, D0
@@ -1318,7 +1429,16 @@ ACH_SAVE_FILE   DC.B    'ach.dat',0
 ACH_SND_IDX EQU         03          ; achievement jingle sound index
 ACH_WAV     DC.B        'achieve.wav',0  ; achievement sound file
 
+
+wall_arrow1 dc.b  '        /\        ',0
+wall_arrow2 dc.b  '       //\\       ',0
+wall_arrow3 dc.b  '      //  \\      ',0
+wall_arrow4 dc.b  '        ||        ',0
+
     DS.W    0                       ;alignment padding
+
+
+
 
 
 
